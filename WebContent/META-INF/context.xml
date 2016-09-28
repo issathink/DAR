@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<Context>
+	<Resource name="jdbc/db" type="javax.sql.DataSource"
+		maxActive="100" maxIdle="30" maxWait="10000"
+		url="jdbc:mysql://132.227.201.129:33306/gr3_wahb_maha"
+		driverClassName="com.mysql.jdbc.Driver" username="gr3_wahb_maha"
+		password="gr3_wahb_maha$"
+		factory="org.apache.commons.dbcp.BasicDataSourceFactory" />
+</Context>
