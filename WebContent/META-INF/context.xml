@@ -3,8 +3,8 @@
 <Context>
 	<Resource name="jdbc/db" type="javax.sql.DataSource"
 		maxActive="100" maxIdle="30" maxWait="10000"
-		url="jdbc:mysql://132.227.201.129:33306/gr3_wahb_maha"
-		driverClassName="com.mysql.jdbc.Driver" username="gr3_wahb_maha"
-		password="gr3_wahb_maha$"
+		url="jdbc:mysql://51.254.102.166/projet_dar"
+		driverClassName="com.mysql.jdbc.Driver" username="projet_dar"
+		password="projet_dar"
 		factory="org.apache.commons.dbcp.BasicDataSourceFactory" />
 </Context>
