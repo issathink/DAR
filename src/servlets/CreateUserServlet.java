@@ -35,16 +35,16 @@ public class CreateUserServlet extends HttpServlet {
 		Map<String, String> params = req.getParameterMap();
 		String email = null;
 
-		if (params.containsKey("mail") && params.containsKey("name")
-				&& params.containsKey("pass") && params.containsKey("address")) {
+		if (params.containsKey("mail") && params.containsKey("login")
+				&& params.containsKey("pw") && params.containsKey("address")) {
 
 			email = req.getParameter("mail");
-			String name = req.getParameter("name");
-			String pass = req.getParameter("pass");
+			String login = req.getParameter("login");
+			String pw = req.getParameter("pw");
 			String address = req.getParameter("address");
 
 			resp.getWriter()
-					.write(CreateUserService.createUser(email, name, pass,
+					.write(CreateUserService.createUser(email, login, pw,
 							address));
 
 		} else

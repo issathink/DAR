@@ -29,7 +29,7 @@ import tools.DBStatic;
 
 public class CreateUserService {
 
-	public static String createUser(String mail, String name, String pass, String address) {
+	public static String createUser(String mail, String login, String pw, String address) {
 		Connection conn = null;
 		JSONObject result = new JSONObject();
 		ResultSet listOfUsers = null;
@@ -42,7 +42,7 @@ public class CreateUserService {
 					+ mail + "'";
 
 			String quer = "INSERT INTO " + DBStatic.mysql_db +  ".users values (NULL, '"
-					+ mail + "','" + name + "','" + pass + "','" + address
+					+ mail + "','" + login + "','" + pw + "','" + address
 					+ "')";
 			statement = (Statement) conn.createStatement();
 
