@@ -37,7 +37,7 @@ public class LogoutService {
 			}
 			else {
 				statement.executeUpdate(requestResp);
-				jsonResult.put("OK", "OK");
+				jsonResult.put("OK", "Deconnexion effective");
 			}
 
 			if(statement != null)

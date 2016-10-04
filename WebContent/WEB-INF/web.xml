@@ -7,11 +7,22 @@
 		<servlet-name>CreateUserServlet</servlet-name>
 		<servlet-class>servlets.CreateUserServlet</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>LogoutServlet</servlet-name>
+		<servlet-class>servlets.LogoutServlet</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>CreateUserServlet</servlet-name>
 		<url-pattern>/subscribe</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>LogoutServlet</servlet-name>
+		<url-pattern>/logout</url-pattern>
+	</servlet-mapping>
+	
 	<resource-env-ref>
 		<resource-env-ref-name>jdbc/projet_dar</resource-env-ref-name>
 		<resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>

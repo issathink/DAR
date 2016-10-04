@@ -21,13 +21,13 @@ public class LogoutServlet extends HttpServlet {
 		@SuppressWarnings("unchecked")
 		Map<String, String> params = req.getParameterMap();
 
-		if(params.containsKey("session_id")) {
-			String idSession = req.getParameter("session_id");
+		if(params.containsKey("keyID")) {
+			String idSession = req.getParameter("keyID");
 			String response = LogoutService.logoutUser(idSession);
 			resp.getWriter().write(response);
 		}
 		else { // Gerer cas erreur
-
+			resp.getWriter().write("Erreur : Argument 'keyID' n'existe pas");
 		}
 	}
 }
