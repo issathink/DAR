@@ -40,12 +40,13 @@ public class CreateUserServlet extends HttpServlet {
 
 			email = req.getParameter("mail");
 			String login = req.getParameter("login");
-			String pw = req.getParameter("pw");
+			String password = req.getParameter("pw");
 			String address = req.getParameter("address");
+			String addressWork = req.getParameter("addressWork").trim();
 
 			resp.getWriter()
-					.write(CreateUserService.createUser(email, login, pw,
-							address));
+					.write(CreateUserService.createUser(email, login, password,
+							address, addressWork));
 
 		} else
 			;;

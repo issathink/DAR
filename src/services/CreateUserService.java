@@ -20,16 +20,17 @@ import tools.DBStatic;
  * 
  * @param 
  *   login - Le login de l'utilisateur. 
- *   pw - Le mot de passe
+ *   password - Le mot de passe
  *   nom - Le nom de l'utilisateur. 
  *   prenom - Son prenom.
  *   email - Son email.
+ *   addressWork - Adresse du lieu de travail
  * 
  */
 
 public class CreateUserService {
 
-	public static String createUser(String mail, String login, String pw, String address) {
+	public static String createUser(String mail, String login, String password, String address, String addressWork) {
 		Connection conn = null;
 		JSONObject result = new JSONObject();
 		ResultSet listOfUsers = null;
@@ -42,7 +43,7 @@ public class CreateUserService {
 					+ mail + "'";
 
 			String quer = "INSERT INTO " + DBStatic.mysql_db +  ".users values (NULL, '"
-					+ mail + "','" + login + "','" + pw + "','" + address
+					+ mail + "','" + login + "','" + password + "','" + address +"',"+addressWork
 					+ "')";
 			statement = (Statement) conn.createStatement();
 
@@ -53,7 +54,7 @@ public class CreateUserService {
 						"Le login existe deja, veuillez en choisir un autre.");
 			} else {
 				statement.executeUpdate(quer);
-				result.put("ok", "ok");
+				result.put("CreateUser", "La creation c'est bien passe");
 			}
 		} catch (SQLException e1) {
 			// return Tools.erreurSQL;

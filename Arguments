@@ -1,0 +1,2 @@
+Logout ==> keyID = id_session
+CreateUserServlet ==> mail = string, login = string, pw = string, address = string, adressWork = string 
