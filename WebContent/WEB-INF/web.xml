@@ -7,10 +7,18 @@
 		<servlet-name>CreateUserServlet</servlet-name>
 		<servlet-class>servlets.CreateUserServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>AuthenticateUserServlet</servlet-name>
+		<servlet-class>servlets.AuthenticateUserServlet</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>CreateUserServlet</servlet-name>
 		<url-pattern>/subscribe</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>AuthenticateUserServlet</servlet-name>
+		<url-pattern>/login</url-pattern>
 	</servlet-mapping>
 	<resource-env-ref>
 		<resource-env-ref-name>jdbc/projet_dar</resource-env-ref-name>

@@ -71,7 +71,7 @@ public class Tools {
 		ResultSet KeyToUser = null;
 		ResultSet is_connected = null;
 		String login = "";
-		String connecte = "";
+		String start = "";
 		Connection conn = null;
 
 		Statement statement = null;
@@ -82,9 +82,9 @@ public class Tools {
 			e1.printStackTrace();
 		}
 
-		String query2 = "select login from gr3_wahb_maha.logs where connection_key='"
+		String query2 = "select login from " + DBStatic.mysql_db +  ".sessions where session_id='"
 				+ key + "'";
-		String query3 = "select is_connected from gr3_wahb_maha.logs where connection_key='"
+		String query3 = "select start from " + DBStatic.mysql_db +  ".sessions where session_id='"
 				+ key + "'";
 
 		try {
@@ -106,13 +106,13 @@ public class Tools {
 		try {
 			is_connected = statement.executeQuery(query3);
 			while (is_connected.next()) {
-				connecte += is_connected.getString("is_connected");
+				start += is_connected.getString("start");
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 
-		if (connecte.equals("0")) {
+		if (moreThan30Min(Long.valueOf(start))) {
 			try {
 				if (statement != null)
 					statement.close();
@@ -139,7 +139,7 @@ public class Tools {
 			e1.printStackTrace();
 		}
 
-		String query = "select id from gr3_wahb_maha.users where login='"
+		String query = "select id from " + DBStatic.mysql_db +  ".users where login='"
 				+ login + "'";
 
 		try {
@@ -186,7 +186,7 @@ public class Tools {
 			e1.printStackTrace();
 		}
 
-		String query = "select followed from gr3_wahb_maha.friends where follower='"
+		String query = "select followed from " + DBStatic.mysql_db +  ".friends where follower='"
 				+ login + "'";
 
 		try {
@@ -233,7 +233,7 @@ public class Tools {
 			e1.printStackTrace();
 		}
 
-		String query = "select followed from gr3_wahb_maha.friends where follower='"
+		String query = "select followed from " + DBStatic.mysql_db +  ".friends where follower='"
 				+ login + "'";
 
 		try {
@@ -278,7 +278,7 @@ public class Tools {
 			e1.printStackTrace();
 		}
 
-		String query = "select date from gr3_wahb_maha.logs where connection_key='"
+		String query = "select date from " + DBStatic.mysql_db +  ".logs where session_id='"
 				+ key + "'";
 
 		try {
@@ -378,12 +378,12 @@ public class Tools {
 	}*/
 	
 	
-	public static void removeOldConnexion(String login, String key) throws SQLException{
+	public static void removeOldConnexion(String id, String key) throws SQLException{
 		Connection conn = null;
 		Statement statement = null;
 		
 		conn = DBStatic.getMySQLConnection();
-		String query = "DELETE FROM gr3_wahb_maha.logs WHERE login='" + login + "' and connection_key!='" + key + "'";
+		String query = "DELETE FROM " + DBStatic.mysql_db +  ".sessions WHERE user_id='" + Integer.valueOf(id) + "' and session_id!='" + key + "'";
 		statement = (Statement) conn.createStatement();
 		statement.executeUpdate(query);
 		
