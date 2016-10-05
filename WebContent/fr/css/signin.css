@@ -1,0 +1,62 @@
+@import url("http://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Montserrat:400,700");
+
+.signin {
+	height: 100vh;
+	text-align: center;
+ 	display: flex;
+  	align-items: center;
+  	justify-content: space-around;
+}
+
+.signin .btn-normal {
+  color: #6AD58B;
+  border: 1px solid #6AD58B;
+  padding: 6px 15px;
+  border-radius: 20px;
+  background: #ffffff;
+}
+
+.signin a {
+	text-decoration: none;
+}
+
+.signin .logo a {
+	font-size: 3em;
+}
+
+.signin p {
+ 	font-size: 25px;
+ 	font-weight: lighter;
+}
+
+.signin .forgot-pass {
+	margin-top: 20px;
+}
+
+.signin .signin-div {
+ 	font-size: 1.2em;
+ 	margin-top: 5px;
+}
+
+.signin .email-holder, .signin .password-holder {
+	min-width: 200px;
+	padding: 6px;
+	padding-left: 10px;
+	border: 1px solid #6AD58B;
+	border-radius: 5px;
+	margin-bottom: 10px;
+}
+
+.signin #error_holder {
+	color: red;
+	margin-bottom: 10px;
+}
+
+/* --- Fonts --- */
+body {
+  font-family: "Open Sans", "Helvetica", "sans-serif";
+  /* padding-bottom: 200px; */
+}
+h1, h2, h3 {
+  font-family: "Montserrat", "sans-serif";
+}

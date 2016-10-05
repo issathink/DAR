@@ -1,0 +1,105 @@
+@import url("http://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Montserrat:400,700");
+
+.signup {
+	height: 100vh;
+	text-align: center;
+ 	display: flex;
+  	align-items: center;
+  	justify-content: space-around;
+}
+
+.signup .btn-normal {
+  color: #6AD58B;
+  border: 1px solid #6AD58B;
+  padding: 6px 15px;
+  border-radius: 20px;
+  background: #ffffff;
+}
+
+.signup .email {
+	padding: 6px;
+	border: 1px solid #6AD58B;
+	border-radius: 5px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	min-width: 250px;
+}
+
+.signup .pwd {
+	padding: 6px;
+	border: 1px solid #6AD58B;
+	border-radius: 5px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	min-width: 250px;
+}
+
+.signup h1 {
+	font-size: 50px;
+  	font-weight: bolder;
+}
+
+.signup p {
+ 	font-size: 25px;
+ 	font-weight: lighter;
+}
+
+.signup a {
+	text-decoration: none;
+}
+
+.signup .logo a {
+	font-size: 3em;
+}
+
+.signup .login-p {
+	margin-top: 10px;
+	margin-bottom: 30px;
+}
+
+.signup .login-p p {
+	font-size: 1.2em;
+}
+
+.sign-with-fa, .sign-with-tw,
+.sign-with-gm {
+	color: white;
+	border: 0px solid #999999;
+  	padding: 5px 15px;
+  	border-radius: 50px;
+  	font-weight: lighter;
+  	margin-bottom: 10px;
+}
+
+.sign-with-tw {
+	background: #55acee;
+}
+
+.sign-with-fa {
+	background: #3b5998;
+}
+
+.sign-with-gm {
+	background: #dd4b39;
+  	font-weight: normal;
+}
+
+.signup .conditions {
+	font-size: 0.9em;
+	font-weight: lighter;
+}
+
+
+.signup #error_holder {
+	color: red;
+	margin-bottom: 10px;
+}
+
+/* --- Fonts --- */
+body {
+  font-family: "Open Sans", "Helvetica", "sans-serif";
+  /* padding-bottom: 200px; */
+}
+h1, h2, h3 {
+  font-family: "Montserrat", "sans-serif";
+}
