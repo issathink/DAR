@@ -16,6 +16,10 @@
 		<servlet-class>servlets.LogoutServlet</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>IsConnectedServlet</servlet-name>
+		<servlet-class>servlets.IsConnectedServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>SendMessageServlet</servlet-name>
 		<servlet-class>servlets.SendMessageServlet</servlet-class>
 	</servlet>
@@ -44,6 +48,10 @@
 	<servlet-mapping>
 		<servlet-name>SigninServlet</servlet-name>
 		<url-pattern>/signin</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>IsConnectedServlet</servlet-name>
+		<url-pattern>/isconnected</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>SendMessageServlet</servlet-name>
