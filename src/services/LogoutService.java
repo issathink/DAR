@@ -48,7 +48,7 @@ public class LogoutService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (JSONException e) {
-			return e.getMessage();
+			e.printStackTrace();
 		}
 
 		return jsonResult.toString();

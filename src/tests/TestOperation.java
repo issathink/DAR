@@ -8,7 +8,11 @@ import java.sql.Statement;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import org.json.JSONException;
+
+import services.LogoutService;
+import services.SeenMessageService;
 import tools.DBStatic;
+import tools.NameOfTables;
 
 
 /**
@@ -22,12 +26,13 @@ public class TestOperation {
 		// System.out.println(Calcul.calcul("5", "0", "div"));
 
 		// testCreate();
-		testJDBC();
+		//testJDBC();
 	}
 
 	public static void testCreate() throws JSONException {
-		
+
 	}
+
 
 	public static String testJDBC() {
 		String result = "";
