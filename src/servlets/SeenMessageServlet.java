@@ -26,7 +26,7 @@ public class SeenMessageServlet extends HttpServlet {
 			resp.getWriter().write(response);
 		}
 		else { // Gerer cas erreur
-			resp.getWriter().write("Erreur : Argument 'id_user' ou 'id_other' n'existe pas");
+			resp.getWriter().write("{ \"Erreur\" : \"Argument 'id_user' ou 'id_other' n'existe pas\" }");
 		}
 	}
 

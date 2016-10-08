@@ -3,6 +3,10 @@
 <web-app>
 	<display-name>#LFC</display-name>
 
+	<welcome-file-list>
+		<welcome-file>chat.html</welcome-file>
+	</welcome-file-list>
+
 	<servlet>
 		<servlet-name>SignupServlet</servlet-name>
 		<servlet-class>servlets.SignupServlet</servlet-class>
@@ -39,7 +43,7 @@
 		<servlet-name>CommentServlet</servlet-name>
 		<servlet-class>servlets.CommentServlet</servlet-class>
 	</servlet>
-	
+
 
 	<servlet-mapping>
 		<servlet-name>SignupServlet</servlet-name>
@@ -77,7 +81,7 @@
 		<servlet-name>CommentServlet</servlet-name>
 		<url-pattern>/comment</url-pattern>
 	</servlet-mapping>
-	
+
 	<resource-env-ref>
 		<resource-env-ref-name>jdbc/projet_dar</resource-env-ref-name>
 		<resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
