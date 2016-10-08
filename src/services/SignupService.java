@@ -30,7 +30,7 @@ import tools.DBStatic;
 
 public class SignupService {
 
-	public static String createUser(String mail, String login, String password, String address, String addressWork) {
+	public static String createUser(String mail, String login, String password) {
 		Connection conn = null;
 		JSONObject result = new JSONObject();
 		ResultSet listOfUsers = null;
@@ -43,15 +43,13 @@ public class SignupService {
 					+ mail + "'";
 
 			String quer = "INSERT INTO " + DBStatic.mysql_db +  ".users values (NULL, '"
-					+ mail + "','" + login + "','" + password + "','" + address +"',"+addressWork
-					+ "')";
+					+ mail + "','" + login + "','" + password + "')";
 			statement = (Statement) conn.createStatement();
 
 			listOfUsers = statement.executeQuery(present);
 
 			if (!listOfUsers.first() == false) {
-				result.put("erreur",
-						"Le login existe deja, veuillez en choisir un autre.");
+				result.put("erreur", "Le login existe deja, veuillez en choisir un autre.");
 			} else {
 				statement.executeUpdate(quer);
 				result.put("CreateUser", "La creation c'est bien passe");

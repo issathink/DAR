@@ -44,10 +44,9 @@ public class Tools {
 		return calendar.getTimeInMillis();
 	}
 
-	public static boolean moreThan30Min(long d) {
-		long now = getNowMillis();
+	public static boolean moreThan30Min(long start) {
 		
-		if (d >= now && d < (now + 30*60*1000))
+		if (start < (getNowMillis() - 30*60*1000))
 			return true;
 		return false;
 	}
@@ -58,65 +57,6 @@ public class Tools {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static String getLogin(String key) throws JSONException {
-		ResultSet KeyToUser = null;
-		ResultSet is_connected = null;
-		String login = "";
-		String start = "";
-		Connection conn = null;
-
-		Statement statement = null;
-
-		try {
-			conn = DBStatic.getMySQLConnection();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
-		String query2 = "select login from " + DBStatic.mysql_db +  ".sessions where session_id='"
-				+ key + "'";
-		String query3 = "select start from " + DBStatic.mysql_db +  ".sessions where session_id='"
-				+ key + "'";
-
-		try {
-			statement = (Statement) conn.createStatement();
-		} catch (SQLException e1) {
-			e1.getStackTrace();
-		}
-
-		try {
-			KeyToUser = statement.executeQuery(query2);
-
-			while (KeyToUser.next()) {
-				login += KeyToUser.getString("login");
-			}
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		try {
-			is_connected = statement.executeQuery(query3);
-			while (is_connected.next()) {
-				start += is_connected.getString("start");
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
-		if (moreThan30Min(Long.valueOf(start))) {
-			try {
-				if (statement != null)
-					statement.close();
-				if (conn != null)
-					conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
-		return login;
 	}
 
 	public static int getId(String login) {
@@ -162,53 +102,6 @@ public class Tools {
 		}
 
 		return id;
-	}
-
-	public static ArrayList<Integer> getFriendsId(String login) {
-		ArrayList<Integer> amis = new ArrayList<Integer>();
-		amis.add(getId(login));
-
-		ResultSet res = null;
-		Connection conn = null;
-
-		Statement statement = null;
-
-		try {
-			conn = DBStatic.getMySQLConnection();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
-		String query = "select followed from " + DBStatic.mysql_db +  ".friends where follower='"
-				+ login + "'";
-
-		try {
-			statement = (Statement) conn.createStatement();
-		} catch (SQLException e1) {
-			e1.getStackTrace();
-			return null;
-		}
-
-		try {
-			res = statement.executeQuery(query);
-			while (res.next()) {
-				amis.add(getId(res.getString("followed")));
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			return null;
-		}
-
-		try {
-			if (statement != null)
-				statement.close();
-			if (conn != null)
-				conn.close();
-		} catch (SQLException e) {
-			return null;
-		}
-
-		return amis;
 	}
 
 	public static ArrayList<String> getFriendsLogin(String login) {

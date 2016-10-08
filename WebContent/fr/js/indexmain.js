@@ -1,8 +1,6 @@
 // var filter_cpt = 0;
 // var filters = [];
 // var user = null;
-var C_NAME   = "fyf_ident";
-var C_LES    = "$2a$08$b0MHMsT3ErLoTRjpjzsCie"; /* It's not what you think it is :) */
 
 var elems    = []; /* Array of id (filter id) [size = 10] */
 var s_result = [];
@@ -141,68 +139,3 @@ Filter.prototype.getHtml = function(com) {
 };
 
 
-/************************ Cookie mnam mnam mnam ***********************/
-function setCookie(cname, cvalue, minutes) {
-
-	var d = new Date();
-	d.setTime(d.getTime() + (minutes * 60 * 60 * 1000));
-	var expires = "expires=" + d.toUTCString();
-
-	document.cookie = cname + "=" + cvalue + "; " + expires;
-	console.log("[SetCookie] OK " + cname + ", " + cvalue + ", " + minutes);
-}
-
-function getCookie(cname) {
-
-	var name = cname + "=";
-	var ca = document.cookie.split(';');
-
-	for ( var i = 0; i < ca.length; i++) {
-		var c = ca[i];
-
-		while (c.charAt(0) == ' ')
-			c = c.substring(1);
-
-		if (c.indexOf(name) == 0) {
-			str = c.substring(name.length, c.length);
-			if(str == "-1") {
-				console.log("Oh oh it has been reinitialised.");
-				return null;
-			}
-			console.log("[GetCookie] OK " + cname + ": " + str);
-			return str;
-		}
-	}
-
-	console.log("[GetCookie] Nothing to show");
-	return null;
-
-}
-
-function checkCookie(name) {
-
-	us = getCookie(name);
-	if (us != null) {
-		// alert("Welcome again " + us);
-	} else {
-		console.log("[CheckCookie] " + name + " FAILED! ");
-	}
-
-}
-
-/* Convetion : Cookie value equals "-1" means there is no active session. */
-function logout() {
-	setCookie(C_NAME, "-1", 1);
-	window.location.href = "login.html";
-}
-
-/* Banniere pour afficher le message d'erreur */
-function topBar(message) {
-    $("<div />", { class: 'erreur_topbar', text: message }).hide().prependTo("body")
-      .slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
-}
-
-function okBar(message) {
-	$("<div />", { class: 'ok_topbar', text: message }).hide().prependTo("body")
-      .slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
-}
