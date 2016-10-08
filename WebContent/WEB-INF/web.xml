@@ -3,10 +3,6 @@
 <web-app>
 	<display-name>#LFC</display-name>
 
-	<welcome-file-list>
-		<welcome-file>chat.html</welcome-file>
-	</welcome-file-list>
-
 	<servlet>
 		<servlet-name>SignupServlet</servlet-name>
 		<servlet-class>servlets.SignupServlet</servlet-class>

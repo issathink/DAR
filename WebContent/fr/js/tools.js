@@ -64,7 +64,7 @@ function isConnected() {
         dataType : "jsonp",
         callback : responseIsConnected,
         success : function(rep) {
-            responseIsConnected(rep);
+            responseIsConnected(rep.Message_3);
         },
         error : function(jqXHR, textStatus, errorThrown) {
             // We do nothing if there isn't an active session
