@@ -20,11 +20,11 @@ import org.json.JSONObject;
 
 public class Tools {
 
-	public static String erreur = "{ \"erreur\" : \"Une erreur inattendue s'est produite. Veuillez verifier et réessayer.\" }";
-	public static String erreurSQL = "{ \"erreur\" : \"Une erreur inattendue s'est produite(SQL). Veuillez verifier et réessayer.\" }";
-	public static String erreurMongo = "{ \"erreur\" : \"Une erreur inattendue s'est produite(NoSQL). Veuillez verifier et réessayer.\" }";
-	public static String erreurJSON = "{ \"erreur\" : \"Une erreur inattendue s'est produite(JSON). Veuillez verifier et réessayer.\" }";
-	public static String erreurParam = "{ \"erreur\": \"Erreur paramêtres. Veuillez vérifier et réessayer.\" }";
+	public static String erreur = "{ \"erreur\" : \"Une erreur inattendue s'est produite. Veuillez verifier et reessayer.\" }";
+	public static String erreurSQL = "{ \"erreur\" : \"Une erreur inattendue s'est produite(SQL). Veuillez verifier et reessayer.\" }";
+	public static String erreurMongo = "{ \"erreur\" : \"Une erreur inattendue s'est produite(NoSQL). Veuillez verifier et reessayer.\" }";
+	public static String erreurJSON = "{ \"erreur\" : \"Une erreur inattendue s'est produite(JSON). Veuillez verifier et reessayer.\" }";
+	public static String erreurParam = "{ \"erreur\": \"Erreur parametres. Veuillez verifier et reessayer.\" }";
 	public static String ok = "{ \"ok\" : \"ok\" }";
 
 	public static String getSessionKey() {
@@ -45,9 +45,9 @@ public class Tools {
 	}
 
 	public static boolean moreThan30Min(long d) {
-		d += 30 * 60 * 1000;
-
-		if (d < getNowMillis())
+		long now = getNowMillis();
+		
+		if (d >= now && d < (now + 30*60*1000))
 			return true;
 		return false;
 	}
@@ -271,7 +271,7 @@ public class Tools {
 			e1.printStackTrace();
 		}
 
-		String query = "select date from " + DBStatic.mysql_db +  ".logs where session_id='"
+		String query = "select date from " + DBStatic.mysql_db +  ".sessions where session_id='"
 				+ key + "'";
 
 		try {
@@ -302,74 +302,6 @@ public class Tools {
 
 		return date;
 	}
-
-	/*public static String getLikeLogin(String id_comment) {
-
-		DB db = null;
-		try {
-			db = DBStatic.getMongoDB();
-		} catch (MongoException e) {
-			e.printStackTrace();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		DBCollection collection = db.getCollection("comments");
-
-		BasicDBObject dbObj = new BasicDBObject();
-		dbObj.put("id", id_comment);
-
-		DBCursor dbCursor = collection.find(dbObj).limit(1);
-		if (dbCursor.hasNext())
-			return dbCursor.next().get("auteur_login").toString();
-		else
-			return null;
-	}
-
-	public static int getScore(String id) {
-		DB db = null;
-		try {
-			db = DBStatic.getMongoDB();
-		} catch (MongoException e) {
-			e.printStackTrace();
-			return 0;
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			return 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return 0;
-		}
-		DBCollection collection = db.getCollection("like");
-
-		BasicDBObject dbObj = new BasicDBObject();
-		dbObj.put("id_comment", id);
-
-		DBCursor dbCursor = collection.find(dbObj);
-
-		return dbCursor.count();
-	}
-
-
-	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(
-			Map<K, V> map) {
-		List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
-		Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
-			@Override
-			public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
-				return (o2.getValue()).compareTo(o1.getValue());
-			}
-		});
-
-		Map<K, V> result = new LinkedHashMap<>();
-		for (Map.Entry<K, V> entry : list) {
-			result.put(entry.getKey(), entry.getValue());
-		}
-		
-		return result;
-	}*/
-	
 	
 	public static void removeOldConnexion(String id, String key) throws SQLException{
 		Connection conn = null;
@@ -385,8 +317,34 @@ public class Tools {
 				statement.close();
 			if (conn != null)
 				conn.close();
-		} catch (SQLException e) {
+		} catch (SQLException e) {}
+	}
+
+	public static boolean extendSession(String id) {
+		Connection conn = null;
+		Statement statement = null;
+		
+		try {
+			conn = DBStatic.getMySQLConnection();
+			statement = (Statement) conn.createStatement();
+			String update = "UPDATE " + DBStatic.mysql_db +  ".sessions SET start = '"
+					+ Tools.getNowMillis()
+					+ "' where session_id = '" + id
+					+ "'";
+			statement.executeUpdate(update);
+		} catch (SQLException e1) {
+			// e1.printStackTrace();
+			return false;
 		}
+		
+		try {
+			if (statement != null)
+				statement.close();
+			if (conn != null)
+				conn.close();
+		} catch (SQLException e) {}
+
+		return true;
 	}
 
 }
@@ -394,4 +352,3 @@ public class Tools {
 /*
  * Connect to ssh ssh guest@li328.lip6.fr mdp : guest$
  */
-
