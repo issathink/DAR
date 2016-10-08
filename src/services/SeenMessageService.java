@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,7 +19,7 @@ public class SeenMessageService {
 	public static String getMessages(String userId, String friendId){
 
 		ResultSet resRequeteToGetMessages, resRequestToGetName;
-		JSONObject jsonResult = new JSONObject();
+		JSONArray jsonResult = new JSONArray();
 		Connection connexion = null;
 		Statement statement = null;
 
@@ -55,7 +56,11 @@ public class SeenMessageService {
 				String message = resRequeteToGetMessages.getString("message");
 				String date = resRequeteToGetMessages.getString("date_send");
 				String pseudoSender = id_sender.equals(userId) ? userName : friendName;
-				jsonResult.put("Message_"+(cpt++), pseudoSender+" ["+date+"]"+":"+message);
+				JSONObject jObj = new JSONObject();
+				jObj.put("login", pseudoSender);
+				jObj.put("message", message);
+				jObj.put("date_send", date);
+				jsonResult.put(jObj);
 			}
 			if(statement != null)
 				statement.close();
@@ -64,7 +69,7 @@ public class SeenMessageService {
 		} catch (SQLException e) {
 			return e.getMessage(); 
 		} catch (JSONException e) {
-			return e.getMessage();
+			e.printStackTrace();
 		} 
 		
 		return jsonResult.toString();
