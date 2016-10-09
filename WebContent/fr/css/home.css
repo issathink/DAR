@@ -16,6 +16,10 @@
 	margin-top: 5px;
 }
 
+#maps {
+	margin-top: 25px;
+}
+
 #top_check_box1 {
 	margin-top: 25px;
 	margin-left: 10px
@@ -24,4 +28,46 @@
 #top_check_box2 {
 	margin-top: 5px;
 	margin-left: 10px
+}
+
+#container1 {
+	margin-left: 5px;
+}
+
+#se {
+	border: 1px solid #ddd;
+	max-height: 700px;
+	overflow-y:auto;
+}
+
+#stars {
+    width: 140px;
+    overflow: hidden;
+}
+
+.aligncenter, div.aligncenter {
+    overflow: hidden;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ui-stars-star-disabled, .ui-stars-star-disabled a, .ui-stars-cancel-disabled a {
+    cursor: default !important;
+}
+.ui-stars-star, .ui-stars-cancel {
+    float: left;
+    display: block;
+    overflow: hidden;
+    text-indent: -999em;
+    cursor: pointer;
+}
+
+#note {
+  color: #333;
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 35px;
+  margin-left: 20px;
+  font-family: "New Century Schoolbook", serif;
 }
