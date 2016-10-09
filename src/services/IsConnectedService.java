@@ -24,18 +24,21 @@ public class IsConnectedService {
 			statement = (Statement) conn.createStatement();
 			
 			String query = "select start from " + DBStatic.mysql_db +  ".sessions where session_id='" + id + "'";
-			
 			long start;
-			
 			connections = statement.executeQuery(query);
+			
 			if(connections.next()) {
 				start = Long.parseLong(String.valueOf(connections.getString("start")));
 				if(!Tools.moreThan30Min(start)) {
-					result.put("notmorethan30", true);
+					result.put("log", true);
 					if(Tools.extendSession(id)) {
 						result.put("ok", 0);
 					}
+				} else {
+					result.put("erreur", "session expired");
 				}
+			} else {
+				result.put("erreur", "invalid session id");
 			}
 		} catch (SQLException e1) {
 			return Tools.erreurSQL;

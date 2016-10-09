@@ -13,14 +13,9 @@
     <!-- Including Bootstrap JS (with its jQuery dependency) so that dynamic components work -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="./js/bCrypt.js"></script>
-    <script type="text/javascript" src="./js/indexmain.js"></script>
-    <script type="text/javascript" src="./js/login.js"></script>
-    
-    <script type="text/javascript">
-      /* Inline it because i want this code to be executed now not after the page get loaded */
-      main();
-    </script>
+    <script type="text/javascript" src="./js/tools.js"></script>
+    <script type="text/javascript" src="./js/signin.js"></script>
+
   </head>
   <body>
 
@@ -32,7 +27,7 @@
         <p>Welcome back!</p>
 
         <div class="row">
-          <form action="#" method='POST' onsubmit="validate(); return false;" name="signin">
+          <form action="" method='POST' onsubmit="validate(); return false;" name="signin">
             <div id="error_holder"><!-- ERROR HOLDER --></div>
             <div>
               <input name="email" type="email" placeholder="youremail@email.com" class="email-holder" />

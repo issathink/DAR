@@ -47,52 +47,30 @@ function checkCookie(name) {
 }
 
 
-function isConnected() {
+function isConnected(callBack) {
 
     genId = getCookie(C_NAME);
     if(genId == null) {
         console.log("No previous session id.");
-        responseIsConnected({"ok": 1});
         return;
     }
 
     $.ajax({
-        url : "http://vps197081.ovh.net:8080/FindYourFlat/isconnected?",
+        url : "http://vps197081.ovh.net:8080/Issa/isconnected?",
         type : "get",
-        crossDomain: true,
-        data : "format=jsonp" + "&session_id=" + genId,
-        dataType : "jsonp",
-        callback : responseIsConnected,
+        crossDomain: false,
+        data : "format=json" + "&session_id=" + genId,
+        dataType : "json",
         success : function(rep) {
-            responseIsConnected(rep.Message_3);
+            callBack(rep);
         },
         error : function(jqXHR, textStatus, errorThrown) {
             // We do nothing if there isn't an active session
             console.log("Error(" + textStatus + ") : " + jqXHR.responseText);
             console.log("Maybe user is not connected.");
-            // window.location.href = "login.html";
+            callBack({});        
         }
     });
-}
-
-
-function responseIsConnected(rep) {
-
-   if(rep.ok != undefined) {
-        alert("Already logged in: " + getCookie(C_NAME));
-        console.log("Elem: " + document.getElementById("popopo"));
-        document.getElementById("index_signin_message").innerHTML = "<button type='button'" 
-            + " class='btn btn-default btn-md'><a class='glyphicon glyphicon-envelope'" 
-            + " aria-hidden='true' href='chat.html'></a></button>";
-        
-        document.getElementById("index_signup_profile").innerHTML = "<button type='button'" 
-            + " class='btn btn-default btn-md' href='profile.html'>"
-            + "<a class='glyphicon glyphicon-user' aria-hidden='true'></a></button>";
-   } else {
-        setCookie(C_NAME, "-1", 1);
-        alert("responseIsConnected: session expired");
-   }
-    
 }
 
 
