@@ -10,13 +10,14 @@
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/jquery.rateyo.css"/>
 
   <!-- Custom styles for this template -->
   <!-- <link href="blog.css" rel="stylesheet"> -->
   <link rel="stylesheet" href="css/home.css" />
-
-  <script type="text/javascript" src="/js/jquery/jquery.ui.stars.min.js"></script>
-  <link href="/themes/blue/css/jquery.ui.stars.css" media="screen" rel="stylesheet" type="text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+ <script src="js/jquery.rateyo.js"></script>
+  
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -65,7 +66,7 @@
           <span class="input-group-addon">
             <input type="checkbox" aria-label="...">
           </span>
-          <div class="col-sm-4" style="background-color:lavender;">Commerce</div>
+          <div class="col-sm-4" style="background-color:#d9d9d9; height:30px;">Commerce</div>
         </div>
       </li>
 
@@ -74,7 +75,7 @@
           <span class="input-group-addon">
             <input type="checkbox" aria-label="...">
           </span>
-          <div class="col-sm-4" style="background-color:lavender;">Sport</div>
+          <div class="col-sm-4" style="background-color:#d9d9d9; height:30px;">Sport</div>
         </div>
       </li>
 
@@ -83,7 +84,7 @@
           <span class="input-group-addon">
             <input type="checkbox" aria-label="...">
           </span>
-          <div class="col-sm-4" style="background-color:lavender;">Sant&eacute;</div>
+          <div class="col-sm-4" style="background-color:#d9d9d9; height:30px;">Sant&eacute;</div>
         </div>
       </li>
 
@@ -92,26 +93,25 @@
           <span class="input-group-addon">
             <input type="checkbox" aria-label="...">
           </span>
-          <div class="col-sm-4" style="background-color:lavender;">Education</div>
+          <div class="col-sm-4" style="background-color:#d9d9d9; height:30px;">Education</div>
         </div>
       </li>
       <li>
         <div id="note">Donner une note :</div>
       </li>
+
       <li>
         <div id="stars" class="aligncenter">
-
-          <div class="ui-stars-star ui-stars-star-on ui-stars-star-disabled"><a title="">1</a></div>
-          <div class="ui-stars-star ui-stars-star-on ui-stars-star-disabled"><a title="">2</a></div>
-          <div class="ui-stars-star ui-stars-star-on ui-stars-star-disabled"><a title="">3</a></div>
-          <div class="ui-stars-star ui-stars-star-on ui-stars-star-disabled"><a title="">4</a></div>
-          <div class="ui-stars-star ui-stars-star-on ui-stars-star-disabled"><a title="">5</a></div>
-          <input disabled="disabled" name="newrate" value="5" type="hidden"></input>
+          <div id="rateYo"></div>
         </div>
         <script type="text/javascript">
-        $(function(){
-          $("#stars").stars({disabled: true});
-        });
+         $(function () {
+ 
+  	$("#rateYo").rateYo({
+  	  rating: 3.6
+  	});
+ 
+	});
         </script>
     </li>
 
