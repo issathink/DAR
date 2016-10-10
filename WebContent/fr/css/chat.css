@@ -14,7 +14,7 @@
 }
 
 
-#cadreMessages {
+#cadreRecent {
 	color: white;
 	background-color: #428bca;
 
@@ -57,11 +57,12 @@ a:hover.list-group-item {
 	background-color: white;
 }
 
-#se {
+#zoneContacts {
 	border: 1px solid #ddd;
-	max-height: 700px;
+	max-height: 690px;
 	overflow-y:auto;
 	color: white;
+	border-bottom: 1px solid #BECBBD;
 }
 
 

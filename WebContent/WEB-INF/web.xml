@@ -39,7 +39,7 @@
 		<servlet-name>CommentServlet</servlet-name>
 		<servlet-class>servlets.CommentServlet</servlet-class>
 	</servlet>
-	
+
 
 	<servlet-mapping>
 		<servlet-name>SignupServlet</servlet-name>
@@ -77,7 +77,7 @@
 		<servlet-name>CommentServlet</servlet-name>
 		<url-pattern>/comment</url-pattern>
 	</servlet-mapping>
-	
+
 	<resource-env-ref>
 		<resource-env-ref-name>jdbc/projet_dar</resource-env-ref-name>
 		<resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>

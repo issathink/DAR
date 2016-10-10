@@ -37,17 +37,13 @@ public class SignupServlet extends HttpServlet {
 		String email = null;
 
 		if (params.containsKey("mail") && params.containsKey("login")
-				&& params.containsKey("pw") && params.containsKey("address")) {
+				&& params.containsKey("pw")) {
 
 			email = req.getParameter("mail");
 			String login = req.getParameter("login");
 			String password = req.getParameter("pw");
-			String address = req.getParameter("address");
-			String addressWork = req.getParameter("addressWork").trim();
 
-			resp.getWriter()
-					.write(SignupService.createUser(email, login, password,
-							address, addressWork));
+			resp.getWriter().write(SignupService.createUser(email, login, password));
 
 		} else {
 			resp.getWriter().write(Tools.erreurParam);
