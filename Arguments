@@ -1,2 +1,20 @@
 Logout ==> keyID = id_session
 CreateUserServlet ==> mail = string, login = string, pw = string, address = string, adressWork = string 
+
+
+
+
+
+
+
+
+
+
+Serveur :
+
+http://vps197081.ovh.net/phpmyadmin
+
+http://vps197081.ovh.net:8080/manager/html // biffe à qui ?
+
+
+http://vps197081.ovh.net:8080/FindYourFlat/fr/chat.html?user_login=Bil&friend_login=issa
