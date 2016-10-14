@@ -5,6 +5,19 @@ if(userLogin === "" || friendLogin === "")
 	alert("Error : 'user_login' = "+userLogin+", friend_login = "+friendLogin);
 
 refreshPage();
+var obj = document.getElementById("idDivMessages"); ///////////////////////////////////::
+obj.scrollTop = obj.scrollHeight;
+
+
+
+// Press enter will send a message, shit+enter will just go to next line
+document.getElementById("champTexte").onkeyup = function(e){
+	e = e || event;
+	if (e.keyCode === 13 && !e.shiftKey) 
+		sendMessageText();
+	return true;
+};
+
 
 function refreshPage() {
 	setMessages(userLogin, friendLogin);
@@ -13,18 +26,20 @@ function refreshPage() {
 }
 
 
-
 document.getElementById("subButton").addEventListener("click", function(){
+	sendMessageText();
+});
+
+
+function sendMessageText() {
 	var myChampTexte = document.getElementById("champTexte");
 	var s = myChampTexte.value;
-	//alert("Avant function");
 	if(s !== "") {
 		myChampTexte.value = "";
 		sendMessageToServeur(userLogin, friendLogin, s);
 		refreshPage();
 	}
-});
-
+}
 
 function sendMessageToServeur(pseudo_sender, pseudo_receiver, message) {
 	$.ajax({
@@ -57,17 +72,12 @@ function setContact(user_login) {
 }
 
 function responseSetContact(rep, user_login) {
+	var myListeContact = document.getElementById("idListeContact");
+	while (myListeContact.hasChildNodes()) 
+		myListeContact.removeChild(myListeContact.lastChild);
 
-	   // <li class="list-group-item">
-    //           <a href="#" class="list-group-item">Rachid<span class="badge">3</span> </a>
-    //         </li>
-
-    var myListeContact = document.getElementById("idListeContact");
-    while (myListeContact.hasChildNodes()) 
-    	myListeContact.removeChild(myListeContact.lastChild);
-
-    for(var i=0 ; i<rep.length ; i++) {
-    	var loginFriend = rep[i].loginFriend;
+	for(var i=0 ; i<rep.length ; i++) {
+		var loginFriend = rep[i].loginFriend;
     	//alert("Friend = "+loginFriend);
 
     	var newBaliseA = document.createElement("a");
@@ -135,9 +145,10 @@ function responseSetMessages(rep, pseudo_friend) {
 
 
 function setScrollbar() {
-	var obj = document.getElementById("affMessages");
-	obj.scrollTop = obj.scrollHeight;
+	var obj = document.getElementById("idDivMessages");
+	obj.scrollTop = obj.scrollHeight + 10;
 }
+
 
 function errorFunction(resultatXHR, statut, erreur) {
 	alert("En erreur : "+erreur);
@@ -145,7 +156,7 @@ function errorFunction(resultatXHR, statut, erreur) {
 	alert("Statut = "+ statut);
 	console.log("Error(" + status + ") : " + resultatXHR.responseText);
 	console.log("Maybe user is not connected.");
-	//window.location.href = "login.html";
+	// window.location.href = "login.html";
 }
 
 function get_ParamGET(param) {

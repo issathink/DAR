@@ -2,6 +2,11 @@
 	resize: none;
 }
 
+/*EXPERIMENTATION*/
+/*panel-body {
+    padding: 0px; 
+}*/
+
 #subButton {
 	background-color: #428bca;
 	color: white;
@@ -30,8 +35,9 @@ h3 {
 }
 
 
-#affMessages {
-	height: 585px;
+/*#affMessages {*/
+#idDivMessages {
+	height: 535px;
 	overflow-y:auto;
 	border-radius: 0px;
 }
@@ -59,7 +65,7 @@ a:hover.list-group-item {
 
 #zoneContacts {
 	border: 1px solid #ddd;
-	max-height: 690px;
+	height: 640px;
 	overflow-y:auto;
 	color: white;
 	border-bottom: 1px solid #BECBBD;
