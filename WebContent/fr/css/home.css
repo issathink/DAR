@@ -20,14 +20,26 @@
 	margin-top: 25px;
 }
 
+.col-sm-5 {
+	font-size: 17px;
+	font-family: Gill Sans, sans-serif;
+}
+
+.parent {
+  display: flex;
+}
+.enfant {
+  margin: auto;
+}
+
 #top_check_box1 {
 	margin-top: 25px;
-	margin-left: 10px
+	margin-left: 10px;
 }
 
 #top_check_box2 {
 	margin-top: 5px;
-	margin-left: 10px
+	margin-left: 10px;
 }
 
 #container1 {
@@ -40,9 +52,9 @@
 	overflow-y:auto;
 }
 
-#stars {
-    width: 140px;
+.stars {
     overflow: hidden;
+    margin-left: 10px;
 }
 
 .aligncenter, div.aligncenter {
@@ -69,5 +81,13 @@
   font-weight: bold;
   margin-top: 35px;
   margin-left: 20px;
+  font-family: "New Century Schoolbook", serif;
+}
+
+#moyenne {
+  color: #333;
+  margin-top: 15px;
+  font-size: 25px;
+  font-weight: bold;
   font-family: "New Century Schoolbook", serif;
 }
