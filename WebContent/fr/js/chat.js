@@ -1,36 +1,43 @@
 var userLogin = get_ParamGET("user_login");
 var friendLogin = get_ParamGET("friend_login");
 
-setScrollbar();
-setMessages(userLogin, friendLogin);
-setContact(userLogin);
+if(userLogin === "" || friendLogin === "") 
+	alert("Error : 'user_login' = "+userLogin+", friend_login = "+friendLogin);
+
+refreshPage();
+
+function refreshPage() {
+	setMessages(userLogin, friendLogin);
+	setContact(userLogin);
+	setScrollbar();
+}
 
 
 
 document.getElementById("subButton").addEventListener("click", function(){
 	var myChampTexte = document.getElementById("champTexte");
 	var s = myChampTexte.value;
+	//alert("Avant function");
 	if(s !== "") {
+		myChampTexte.value = "";
 		sendMessageToServeur(userLogin, friendLogin, s);
-		setMessages(userLogin); // Mise a jour des messages apres le send au serveur
+		refreshPage();
 	}
-
-	alert("En construction...");
 });
 
 
 function sendMessageToServeur(pseudo_sender, pseudo_receiver, message) {
-	// $.ajax({
-	// 	url : "http://vps197081.ovh.net:8080/FindYourFlat/sendmessage?",
-	// 	type : "GET",
-	// 	data : "pseudo_sender=" + user_login + "&pseudo_receiver="+pseudo_receiver+"&message="+message,
-	// 	dataType : "json",
-	// 	success : function(rep) {
-	// 	}, 
-	// 	error : function(resultatXHR, statut, erreur) {
-	// 		errorFunction(resultatXHR, statut, erreur);
-	// 	}
-	// });
+	$.ajax({
+		url : "http://vps197081.ovh.net:8080/FindYourFlat/sendmessage?",
+		type : "POST",
+		data : "pseudo_sender=" + pseudo_sender + "&pseudo_receiver="+pseudo_receiver+"&message="+message,
+		dataType : "json",
+		success : function(rep) {
+		}, 
+		error : function(resultatXHR, statut, erreur) {
+			errorFunction(resultatXHR, statut, erreur);
+		}
+	});
 }
 
 
@@ -55,6 +62,9 @@ function responseSetContact(rep, user_login) {
     //           <a href="#" class="list-group-item">Rachid<span class="badge">3</span> </a>
     //         </li>
 
+    var myListeContact = document.getElementById("idListeContact");
+    while (myListeContact.hasChildNodes()) 
+    	myListeContact.removeChild(myListeContact.lastChild);
 
     for(var i=0 ; i<rep.length ; i++) {
     	var loginFriend = rep[i].loginFriend;
@@ -69,7 +79,7 @@ function responseSetContact(rep, user_login) {
     	newBaliseLi.className = "list-group-item";
     	newBaliseLi.appendChild(newBaliseA);
 
-    	var myListeContact = document.getElementById("idListeContact");
+
     	myListeContact.appendChild(newBaliseLi);
     }
 }
@@ -95,6 +105,11 @@ function responseSetMessages(rep, pseudo_friend) {
 	document.getElementById("h3NomContact").innerHTML = "<b>"+pseudo_friend+"</b>";
 	
 	var myDiv = document.getElementById("idDivMessages");
+
+
+	while (myDiv.hasChildNodes()) 
+		myDiv.removeChild(myDiv.lastChild);
+
 	for(var i=0 ; i<rep.length ; i++) {
 		var login = rep[i].login;
 		var message = rep[i].message;
