@@ -1,13 +1,44 @@
 var userLogin = get_ParamGET("user_login");
 var friendLogin = get_ParamGET("friend_login");
 
-if(userLogin === "" || friendLogin === "") 
+if(userLogin == null || friendLogin == null) 
 	alert("Error : 'user_login' = "+userLogin+", friend_login = "+friendLogin);
+else {
+	var obj = document.getElementById("idDivMessages"); ///////////////////////////////////::
+	console.log("[Debug 1] pos = "+obj.scrollTop+", height = "+obj.scrollHeight);
+	refreshPage();
+	console.log("[Debug 2] pos = "+obj.scrollTop+", height = "+obj.scrollHeight);
+	obj.scrollTop = obj.scrollHeight;  
+	obj.setScrollbar = obj.scrollHeight;
+	$("#idDivMessages").scrollTop($("#idDivMessages")[0].scrollHeight);
+	console.log("[Debug 3] apres modif pos = "+obj.scrollTop+", height = "+obj.scrollHeight);
+}
 
-refreshPage();
-var obj = document.getElementById("idDivMessages"); ///////////////////////////////////::
-obj.scrollTop = obj.scrollHeight;
 
+
+
+// $.fn.scrollBottom = function() {
+// 	return $(document).height() - this.scrollTop() - this.height();
+// };
+
+function setScrollbar() {
+	var obj = document.getElementById("idDivMessages");
+	var obj2 = document.getElementById("affMessages");
+	obj.scrollTop = document.getElementById("idDivMessages").scrollHeight;
+	
+	var scrollBottom = $(document).height() - $(window).height() - $(window).scrollTop();
+	$("#idDivMessages").scrollTop(scrollBottom);
+}
+
+
+// var scrollBottom = $(document).height() - $(window).height() - $(window).scrollTop();
+
+function refreshPage() {
+	setMessages(userLogin, friendLogin);
+	setContact(userLogin);
+	setScrollbar();
+	console.log("[Debug Refresh] pos = "+document.getElementById("idDivMessages").scrollTop+", height = "+document.getElementById("idDivMessages").scrollHeight);
+}
 
 
 // Press enter will send a message, shit+enter will just go to next line
@@ -17,14 +48,6 @@ document.getElementById("champTexte").onkeyup = function(e){
 		sendMessageText();
 	return true;
 };
-
-
-function refreshPage() {
-	setMessages(userLogin, friendLogin);
-	setContact(userLogin);
-	setScrollbar();
-}
-
 
 document.getElementById("subButton").addEventListener("click", function(){
 	sendMessageText();
@@ -55,7 +78,6 @@ function sendMessageToServeur(pseudo_sender, pseudo_receiver, message) {
 	});
 }
 
-
 function setContact(user_login) {
 	$.ajax({
 		url : "http://vps197081.ovh.net:8080/FindYourFlat/seencontact?",
@@ -78,20 +100,19 @@ function responseSetContact(rep, user_login) {
 
 	for(var i=0 ; i<rep.length ; i++) {
 		var loginFriend = rep[i].loginFriend;
-    	//alert("Friend = "+loginFriend);
+		var isConnected = rep[i].connected;
+		var newBaliseA = document.createElement("a");
+		newBaliseA.href = "chat.html?user_login="+user_login+"&friend_login="+loginFriend;
+		newBaliseA.className = "list-group-item";
+		var myColor = (isConnected === "1") ? "green" : "#428bca";
+		newBaliseA.innerHTML = loginFriend+"<span class=\"badge\" style=\"background-color:"+myColor+"\">3</span>";
 
-    	var newBaliseA = document.createElement("a");
-    	newBaliseA.href = "chat.html?user_login="+user_login+"&friend_login="+loginFriend;
-    	newBaliseA.className = "list-group-item";
-    	newBaliseA.innerHTML = loginFriend+"<span class=\"badge\">3</span>";
+		var newBaliseLi = document.createElement("li");
+		newBaliseLi.className = "list-group-item";
+		newBaliseLi.appendChild(newBaliseA);
 
-    	var newBaliseLi = document.createElement("li");
-    	newBaliseLi.className = "list-group-item";
-    	newBaliseLi.appendChild(newBaliseA);
-
-
-    	myListeContact.appendChild(newBaliseLi);
-    }
+		myListeContact.appendChild(newBaliseLi);
+	}
 }
 
 
@@ -113,41 +134,29 @@ function setMessages(user_login, friend_login) {
 
 function responseSetMessages(rep, pseudo_friend) {
 	document.getElementById("h3NomContact").innerHTML = "<b>"+pseudo_friend+"</b>";
-	
 	var myDiv = document.getElementById("idDivMessages");
-
-
-	while (myDiv.hasChildNodes()) 
+	while (myDiv.hasChildNodes()) // Remove l'ancien affichage
 		myDiv.removeChild(myDiv.lastChild);
-
+	var lastVu = null;
 	for(var i=0 ; i<rep.length ; i++) {
 		var login = rep[i].login;
 		var message = rep[i].message;
 		var date = rep[i].date_send;
-
 		var newBalise = document.createElement("p");
+		var num = (login === pseudo_friend) ? 2 : 1;
+		var isRead = (login !== pseudo_friend) ? rep[i].isRead : null;
 		newBalise.innerHTML = message;
-		var num;
-
-		if(login === pseudo_friend) 
-			num = 2;
-		else 
-			num = 1;
 		newBalise.className ="m m"+num;
+		if(isRead !== null && isRead === "1") {
+			lastVu = newBalise;
+			dateVu = date;
+		}
 		myDiv.appendChild(newBalise);
 	}
-
-
-
-	
-	
+	if(lastVu != null)
+		lastVu.innerHTML += " [Vu: "+dateVu+"]";
 }
 
-
-function setScrollbar() {
-	var obj = document.getElementById("idDivMessages");
-	obj.scrollTop = obj.scrollHeight + 10;
-}
 
 
 function errorFunction(resultatXHR, statut, erreur) {
@@ -165,11 +174,8 @@ function get_ParamGET(param) {
 		/[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
 		function( m, key, value ) { // callback
 			vars[key] = value !== undefined ? value : '';
-		}
-		);
-
-	if ( param ) {
+		});
+	if ( param )
 		return vars[param] ? vars[param] : null;	
-	}
 	return vars;
 }
