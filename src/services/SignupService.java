@@ -36,7 +36,7 @@ public class SignupService {
 		JSONObject result = new JSONObject();
 		ResultSet listOfUsers = null;
 		Statement statement = null;
-		String s = null;
+		int i = 0;
 
 		try {
 			conn = DBStatic.getMySQLConnection();
@@ -47,25 +47,21 @@ public class SignupService {
 			statement = (Statement) conn.createStatement();
 			listOfUsers = statement.executeQuery(present);
 
-			s += listOfUsers.next() + " " + insert + " ";
-			if (listOfUsers.next()) {
-				result.put("erreur", "Le login existe deja, veuillez en choisir un autre.");
-				s += 1;
+			while(listOfUsers.next())
+				i++;
+			
+			if (i > 0) {
+				result.put("erreur", "Il existe un email associe a ce compte.");
 			} else {
-				s += 2;
 				statement.executeUpdate(insert);
 				JSONObject obj = new JSONObject(SigninService.authenticateUser(login, pw));
 				result.put("ok", "La creation s'est bien passe");
 				result.put("key", obj.get("key"));
 			}
 		} catch (SQLException e1) {
-			s += e1.getMessage();
-			
-			// return Tools.erreurSQL;
-			return "{\"erreur\":" + "\"" + s + "\" }";
+			return Tools.erreurSQL;
 		} catch (JSONException e) {
-			return e.getMessage() + s;
-			// return Tools.erreurJSON;
+			return Tools.erreurJSON;
 		}
 
 		try {

@@ -4,7 +4,7 @@ isConnected(responseIsConnected);
 
 
 function responseIsConnected(response) {
-	if(response.ok) {
+	if(response.ok != undefined) {
 		console.log("already connected");
 		window.location.href = "home.html";
 	} else {
@@ -14,22 +14,18 @@ function responseIsConnected(response) {
 
 function validate() {
 
-	mail = document.forms["signin"]["email"].value;
+	login = document.forms["signin"]["login"].value;
 	pwd  = document.forms["signin"]["pwd"].value;
 
-	m = mail
-	console.log("mail: " + mail);
-	console.log("pwd: " + pwd);
-
 	document.body.className += "loading";
-	valMail = validateEmail(mail)
+	// valMail = validateEmail(mail)
 
-	if(valMail == true && pwd.length >= 6) {
-		console.log("pwd :" + pwd + " mail: " + m);
-		login(m, pwd);
+	if(login.length >= 6 && pwd.length >= 6) {
+		console.log("pwd :" + pwd + " login: " + login);
+		signin(login, pwd);
 		$("#error_holder").text("");
-	} else if(valMail == false) {
-		$("#error_holder").text("Please enter valid email.").fadeIn('fast');
+	} else if(login.length < 6) {
+		$("#error_holder").text("Your login is too short (at least 6 chars).").fadeIn('fast');
 		document.body.className = '';
 	} else if(pwd.length < 6) {
 		$("#error_holder").text("Your password is too short (at least 6 chars).").fadeIn('fast');
@@ -41,16 +37,16 @@ function validate() {
 }
 
 
-function login(mail, pwd) {
+function signin(login, pwd) {
 
 	$.ajax({
 		url : "http://vps197081.ovh.net:8080/Issa/signin",
 		type : "get",
-		data : "format=json" + "&email=" + mail + "&pwd=" + pwd,
+		data : "format=json" + "&login=" + login + "&pw=" + pwd,
 		dataType : "json",
-		callback : responseLogin,
-		success : function(rep) {
-			responseLogin(rep, mail);
+		callback : responseSignin,
+		success : function(response) {
+			responseSignin(response);
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			// func_erreur(-1, jqXHR.responseText, errorThrown);
@@ -61,19 +57,19 @@ function login(mail, pwd) {
 
 }
 
-function responseLogin(rep, mail) {
+function responseSignin(response) {
 	$("#error_holder").fadeOut('fast');
-	console.log("Retour: " + JSON.stringify(rep));
+	console.log("Retour: " + JSON.stringify(response));
 
-	if(rep.ret_code == 0) {
+	if(response.ok != undefined) {
 		// Successfully logged in
 		$("#error_holder").text("Bravo! You're now logged in.").fadeIn('fast');
 		document.body.className = '';
-		setCookie(C_NAME, rep.genId, 30);
+		setCookie(C_NAME, response.key, 30);
 		window.location.href = "home.html";
 	} else {
 		// Something wrong
-		$("#error_holder").text(rep.message).fadeIn('fast');
+		$("#error_holder").text(response.message).fadeIn('fast');
 		document.body.className = '';
 	}
 }
