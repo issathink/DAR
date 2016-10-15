@@ -1,45 +1,28 @@
 var userLogin = get_ParamGET("user_login");
 var friendLogin = get_ParamGET("friend_login");
 
-if(userLogin == null || friendLogin == null) 
+
+
+/* A l'ouverture de la page */
+if(userLogin == null || friendLogin == null) {
 	alert("Error : 'user_login' = "+userLogin+", friend_login = "+friendLogin);
-else {
-	var obj = document.getElementById("idDivMessages"); ///////////////////////////////////::
-	console.log("[Debug 1] pos = "+obj.scrollTop+", height = "+obj.scrollHeight);
+	window.location.href = "login.html";
+} else {
 	refreshPage();
-	console.log("[Debug 2] pos = "+obj.scrollTop+", height = "+obj.scrollHeight);
-	obj.scrollTop = obj.scrollHeight;  
-	obj.setScrollbar = obj.scrollHeight;
-	$("#idDivMessages").scrollTop($("#idDivMessages")[0].scrollHeight);
-	console.log("[Debug 3] apres modif pos = "+obj.scrollTop+", height = "+obj.scrollHeight);
 }
 
 
-
-
-// $.fn.scrollBottom = function() {
-// 	return $(document).height() - this.scrollTop() - this.height();
-// };
+/* Liste des fonctions */
 
 function setScrollbar() {
 	var obj = document.getElementById("idDivMessages");
-	var obj2 = document.getElementById("affMessages");
 	obj.scrollTop = document.getElementById("idDivMessages").scrollHeight;
-	
-	var scrollBottom = $(document).height() - $(window).height() - $(window).scrollTop();
-	$("#idDivMessages").scrollTop(scrollBottom);
 }
-
-
-// var scrollBottom = $(document).height() - $(window).height() - $(window).scrollTop();
 
 function refreshPage() {
 	setMessages(userLogin, friendLogin);
 	setContact(userLogin);
-	setScrollbar();
-	console.log("[Debug Refresh] pos = "+document.getElementById("idDivMessages").scrollTop+", height = "+document.getElementById("idDivMessages").scrollHeight);
 }
-
 
 // Press enter will send a message, shit+enter will just go to next line
 document.getElementById("champTexte").onkeyup = function(e){
@@ -52,7 +35,6 @@ document.getElementById("champTexte").onkeyup = function(e){
 document.getElementById("subButton").addEventListener("click", function(){
 	sendMessageText();
 });
-
 
 function sendMessageText() {
 	var myChampTexte = document.getElementById("champTexte");
@@ -101,20 +83,18 @@ function responseSetContact(rep, user_login) {
 	for(var i=0 ; i<rep.length ; i++) {
 		var loginFriend = rep[i].loginFriend;
 		var isConnected = rep[i].connected;
+		var nbMessageNotRead = rep[i].nbMessageNotRead;
 		var newBaliseA = document.createElement("a");
 		newBaliseA.href = "chat.html?user_login="+user_login+"&friend_login="+loginFriend;
 		newBaliseA.className = "list-group-item";
 		var myColor = (isConnected === "1") ? "green" : "#428bca";
-		newBaliseA.innerHTML = loginFriend+"<span class=\"badge\" style=\"background-color:"+myColor+"\">3</span>";
-
+		newBaliseA.innerHTML = loginFriend+"<span class=\"badge\" style=\"background-color:"+myColor+"\">"+nbMessageNotRead+"</span>";
 		var newBaliseLi = document.createElement("li");
 		newBaliseLi.className = "list-group-item";
 		newBaliseLi.appendChild(newBaliseA);
-
 		myListeContact.appendChild(newBaliseLi);
 	}
 }
-
 
 function setMessages(user_login, friend_login) {
 	$.ajax({
@@ -124,6 +104,7 @@ function setMessages(user_login, friend_login) {
 		dataType : "json",
 		success : function(rep) {
 			responseSetMessages(rep, friend_login);
+			setScrollbar();
 		}, 
 		error : function(resultatXHR, statut, erreur) {
 			errorFunction(resultatXHR, statut, erreur);
@@ -156,8 +137,6 @@ function responseSetMessages(rep, pseudo_friend) {
 	if(lastVu != null)
 		lastVu.innerHTML += " <i style=\"font-size:10px;color:black\">[last seen: "+dateVu+"]</i>";
 }
-
-
 
 function errorFunction(resultatXHR, statut, erreur) {
 	alert("En erreur : "+erreur);

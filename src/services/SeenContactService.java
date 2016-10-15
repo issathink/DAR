@@ -68,7 +68,6 @@ public class SeenContactService {
 			cpt = 0;
 			JSONObject jObj;
 			for(String loginFriend : myMap.keySet()) {
-
 				jObj = new JSONObject();
 				jObj.put("loginFriend", loginFriend);
 				jObj.put("connected", isConnected(myMap.get(loginFriend)));
@@ -90,12 +89,18 @@ public class SeenContactService {
 		return jsonResult.toString();
 	}
 
-	private static String nbMessageNotRead(String idUser, String idFriend) {
-//		String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
-//		SELECT * FROM 
+	private static String nbMessageNotRead(String idUser, String idFriend) throws SQLException {
+		String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
+		String request = "SELECT COUNT(*) FROM "+tableMessage+
+				" WHERE id_sender=" +idFriend+" AND id_receiver="+idUser+" AND is_read=0";
+		Statement statement = connexion.createStatement();
+		ResultSet resRequest = statement.executeQuery(request);
+		resRequest.next();
+		String res = resRequest.getString(1);
+		return res;
 	}
-	
-	
+
+
 
 	private static String isConnected(String idUser) throws SQLException {
 		String tableSessions = DBStatic.mysql_db + "." + NameOfTables.sessions;
