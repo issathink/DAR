@@ -1,7 +1,11 @@
 var userLogin = get_ParamGET("user_login");
 var friendLogin = get_ParamGET("friend_login");
 
-var heightIdDivMessage = 535; // Valeur height du div
+
+// Trier les contacts selon la date !!!
+// Retirer le \n lorsqu'on fait entre !!!!
+
+var heightIdDivMessage = document.getElementById("idDivMessages").clientHeight; // (ou offsetHeight) Valeur height du div
 
 /* A l'ouverture de la page */
 if(userLogin == null || friendLogin == null) {
@@ -90,10 +94,18 @@ function responseSetContact(rep, user_login) {
 		newBaliseA.href = "chat.html?user_login="+user_login+"&friend_login="+loginFriend;
 		newBaliseA.className = "list-group-item";
 		var myColor = (isConnected === "1") ? "green" : "#428bca";
-		newBaliseA.innerHTML = loginFriend+"<span class=\"badge\" style=\"background-color:"+myColor+"\">"+nbMessageNotRead+"</span>";
+		var myColorNum = (nbMessageNotRead === "0") ? myColor : "white";
+		newBaliseA.innerHTML = loginFriend+"<span class=\"badge\" style=\"color:"+myColorNum+";background-color:"+myColor+"\">"+nbMessageNotRead+"</span>";
 		var newBaliseLi = document.createElement("li");
 		newBaliseLi.className = "list-group-item";
 		newBaliseLi.appendChild(newBaliseA);
+
+
+
+
+
+
+		
 		myListeContact.appendChild(newBaliseLi);
 	}
 }
@@ -138,7 +150,7 @@ function responseSetMessages(rep, pseudo_friend) {
 		newBalise.className ="m m"+num;
 		if(isRead !== null && isRead === "1") {
 			lastVu = newBalise;
-			dateVu = date;
+			dateVu = date; // SERT A RIEN A supp je crois
 		}
 		else if(isRead === null) {
 			lastVu = null;
