@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import tools.DBStatic;
+import tools.Tools;
 
 /**
  * <b>CreateUserService est le service qui cree un nouvel utilisateur.</b>
@@ -30,36 +31,41 @@ import tools.DBStatic;
 
 public class SignupService {
 
-	public static String createUser(String mail, String login, String password) {
+	public static String createUser(String mail, String login, String pw) {
 		Connection conn = null;
 		JSONObject result = new JSONObject();
 		ResultSet listOfUsers = null;
 		Statement statement = null;
+		String s = null;
 
 		try {
 			conn = DBStatic.getMySQLConnection();
-
 			String present = "SELECT id FROM " + DBStatic.mysql_db +  ".users WHERE mail='"
 					+ mail + "'";
-
-			String quer = "INSERT INTO " + DBStatic.mysql_db +  ".users values (NULL, '"
-					+ mail + "','" + login + "','" + password + "')";
+			String insert = "INSERT INTO " + DBStatic.mysql_db +  ".users values (NULL, '"
+					+ mail + "','" + login + "','" + pw + "')";
 			statement = (Statement) conn.createStatement();
-
 			listOfUsers = statement.executeQuery(present);
 
-			if (!listOfUsers.first() == false) {
+			s += listOfUsers.next() + " " + insert + " ";
+			if (listOfUsers.next()) {
 				result.put("erreur", "Le login existe deja, veuillez en choisir un autre.");
+				s += 1;
 			} else {
-				statement.executeUpdate(quer);
-				result.put("CreateUser", "La creation c'est bien passe");
+				s += 2;
+				statement.executeUpdate(insert);
+				JSONObject obj = new JSONObject(SigninService.authenticateUser(login, pw));
+				result.put("ok", "La creation s'est bien passe");
+				result.put("key", obj.get("key"));
 			}
 		} catch (SQLException e1) {
+			s += e1.getMessage();
+			
 			// return Tools.erreurSQL;
-			return e1.getMessage();
+			return "{\"erreur\":" + "\"" + s + "\" }";
 		} catch (JSONException e) {
+			return e.getMessage() + s;
 			// return Tools.erreurJSON;
-			return e.getMessage();
 		}
 
 		try {
