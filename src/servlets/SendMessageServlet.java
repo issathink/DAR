@@ -10,32 +10,48 @@ import javax.servlet.http.HttpServletResponse;
 import services.SendMessageService;
 
 public class SendMessageServlet extends HttpServlet {
-	
+
 	// pseudo_sender, pseudo_receiver, message
 	// TODO securiser message !!
 
 	private static final long serialVersionUID = 1L;
 
+	private String res;
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		this.doGet(req, resp);
-	}
-	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		@SuppressWarnings("unchecked")
 		Map<String, String> params = req.getParameterMap();
-
 		if(params.containsKey("pseudo_sender") && params.containsKey("pseudo_receiver") && params.containsKey("message")) {
+			//this.doGet(req, resp);
 			String sender = req.getParameter("pseudo_sender");
 			String receiver = req.getParameter("pseudo_receiver");
 			String message = req.getParameter("message");
 			String response = SendMessageService.sendMessage(sender, receiver, message);
-			resp.getWriter().write(response);
+			res = response;
 		}
-		else { // Gerer cas erreur
-			resp.getWriter().write("{ \"Erreur\" : \"Argument 'pseudo_sender' ou 'pseudo_receiver' ou 'message' n'existe pas\" }");
+		else {
+			res = "{ \"Erreur\" : \"Argument 'pseudo_sender' ou 'pseudo_receiver' ou 'message' n'existe pas\" }";
 		}
+		resp.getWriter().write(res);
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+//		@SuppressWarnings("unchecked")
+//		Map<String, String> params = req.getParameterMap();
+//
+//		if(params.containsKey("pseudo_sender") && params.containsKey("pseudo_receiver") && params.containsKey("message")) {
+//			String sender = req.getParameter("pseudo_sender");
+//			String receiver = req.getParameter("pseudo_receiver");
+//			String message = req.getParameter("message");
+//			String response = SendMessageService.sendMessage(sender, receiver, message);
+//			resp.getWriter().write(response);
+//		}
+//		else { // Gerer cas erreur
+//			resp.getWriter().write("{ \"Erreur\" : \"Argument 'pseudo_sender' ou 'pseudo_receiver' ou 'message' n'existe pas\" }");
+//		}
+
+		//resp.getWriter().write(res+" RES DU DoGET");
 	}
 
 }

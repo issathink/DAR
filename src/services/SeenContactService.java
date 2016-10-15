@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,15 +17,15 @@ import tools.NameOfTables;
 
 public class SeenContactService {
 
-
+	private static Connection connexion = null;
 
 	public static String getMessages(String userLogin) {
 		ResultSet resRequest;
 		JSONArray jsonResult = new JSONArray();
-		Connection connexion = null;
+
 		Statement statement = null;
 		Statement statement2 = null;
-		
+
 		try {
 			connexion = DBStatic.getMySQLConnection();
 			statement = connexion.createStatement();
@@ -46,9 +47,9 @@ public class SeenContactService {
 			System.out.println("Ok");
 			// Parcourt du resultat
 			int cpt = 0; // Pour les afficher dans l'ordre peut etre
-			Map<String, Integer> myMap = new HashMap<String, Integer>();
+			Map<String, String> myMap = new HashMap<String, String>();
 			ResultSet resRequest2;
-			
+
 			while(resRequest.next()) {
 				String id_sender = resRequest.getString("id_sender");
 				String id_receiver = resRequest.getString("id_receiver");
@@ -61,7 +62,7 @@ public class SeenContactService {
 				String friendLogin = resRequest2.getString("login");
 
 				// Resultat du service
-				myMap.put(friendLogin, cpt++); // Reflechir la dessus .... pour garder un bonne ordre au niveau du dernier message
+				myMap.put(friendLogin, ""+idFriend); // Reflechir la dessus .... pour garder un bonne ordre au niveau du dernier message
 			}
 
 			cpt = 0;
@@ -69,6 +70,8 @@ public class SeenContactService {
 			for(String loginFriend : myMap.keySet()) {
 				jObj = new JSONObject();
 				jObj.put("loginFriend", loginFriend);
+				jObj.put("connected", isConnected(myMap.get(loginFriend)));
+				jObj.put("nbMessageNotRead", nbMessageNotRead(userId, myMap.get(loginFriend)));
 				jsonResult.put(jObj);
 			}
 
@@ -76,7 +79,7 @@ public class SeenContactService {
 				statement.close();
 			if(connexion != null)
 				connexion.close();
-			
+
 		} catch (SQLException e) {
 			return e.getMessage(); 
 		} catch (JSONException e) {
@@ -85,5 +88,30 @@ public class SeenContactService {
 
 		return jsonResult.toString();
 	}
+
+	private static String nbMessageNotRead(String idUser, String idFriend) throws SQLException {
+		String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
+		String request = "SELECT COUNT(*) FROM "+tableMessage+
+				" WHERE id_sender=" +idFriend+" AND id_receiver="+idUser+" AND is_read=0";
+		Statement statement = connexion.createStatement();
+		ResultSet resRequest = statement.executeQuery(request);
+		resRequest.next();
+		String res = resRequest.getString(1);
+		return res;
+	}
+
+
+
+	private static String isConnected(String idUser) throws SQLException {
+		String tableSessions = DBStatic.mysql_db + "." + NameOfTables.sessions;
+		String requestUserId = "SELECT session_id FROM "+tableSessions+" WHERE user_id="+idUser;
+		Statement statement = connexion.createStatement();
+		ResultSet resRequest = statement.executeQuery(requestUserId);
+		String res = resRequest.next() ? "1" : "0"; // Si jamais y a une ligne (donc connecte)
+		statement.close();
+		return res;
+	}
+
+
 
 }

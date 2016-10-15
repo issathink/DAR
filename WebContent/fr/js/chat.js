@@ -1,14 +1,28 @@
 var userLogin = get_ParamGET("user_login");
 var friendLogin = get_ParamGET("friend_login");
 
-if(userLogin === "" || friendLogin === "") 
+
+
+/* A l'ouverture de la page */
+if(userLogin == null || friendLogin == null) {
 	alert("Error : 'user_login' = "+userLogin+", friend_login = "+friendLogin);
+	window.location.href = "login.html";
+} else {
+	refreshPage();
+}
 
-refreshPage();
-var obj = document.getElementById("idDivMessages"); ///////////////////////////////////::
-obj.scrollTop = obj.scrollHeight;
 
+/* Liste des fonctions */
 
+function setScrollbar() {
+	var obj = document.getElementById("idDivMessages");
+	obj.scrollTop = document.getElementById("idDivMessages").scrollHeight;
+}
+
+function refreshPage() {
+	setMessages(userLogin, friendLogin);
+	setContact(userLogin);
+}
 
 // Press enter will send a message, shit+enter will just go to next line
 document.getElementById("champTexte").onkeyup = function(e){
@@ -18,18 +32,9 @@ document.getElementById("champTexte").onkeyup = function(e){
 	return true;
 };
 
-
-function refreshPage() {
-	setMessages(userLogin, friendLogin);
-	setContact(userLogin);
-	setScrollbar();
-}
-
-
 document.getElementById("subButton").addEventListener("click", function(){
 	sendMessageText();
 });
-
 
 function sendMessageText() {
 	var myChampTexte = document.getElementById("champTexte");
@@ -55,7 +60,6 @@ function sendMessageToServeur(pseudo_sender, pseudo_receiver, message) {
 	});
 }
 
-
 function setContact(user_login) {
 	$.ajax({
 		url : "http://vps197081.ovh.net:8080/FindYourFlat/seencontact?",
@@ -78,22 +82,19 @@ function responseSetContact(rep, user_login) {
 
 	for(var i=0 ; i<rep.length ; i++) {
 		var loginFriend = rep[i].loginFriend;
-    	//alert("Friend = "+loginFriend);
-
-    	var newBaliseA = document.createElement("a");
-    	newBaliseA.href = "chat.html?user_login="+user_login+"&friend_login="+loginFriend;
-    	newBaliseA.className = "list-group-item";
-    	newBaliseA.innerHTML = loginFriend+"<span class=\"badge\">3</span>";
-
-    	var newBaliseLi = document.createElement("li");
-    	newBaliseLi.className = "list-group-item";
-    	newBaliseLi.appendChild(newBaliseA);
-
-
-    	myListeContact.appendChild(newBaliseLi);
-    }
+		var isConnected = rep[i].connected;
+		var nbMessageNotRead = rep[i].nbMessageNotRead;
+		var newBaliseA = document.createElement("a");
+		newBaliseA.href = "chat.html?user_login="+user_login+"&friend_login="+loginFriend;
+		newBaliseA.className = "list-group-item";
+		var myColor = (isConnected === "1") ? "green" : "#428bca";
+		newBaliseA.innerHTML = loginFriend+"<span class=\"badge\" style=\"background-color:"+myColor+"\">"+nbMessageNotRead+"</span>";
+		var newBaliseLi = document.createElement("li");
+		newBaliseLi.className = "list-group-item";
+		newBaliseLi.appendChild(newBaliseA);
+		myListeContact.appendChild(newBaliseLi);
+	}
 }
-
 
 function setMessages(user_login, friend_login) {
 	$.ajax({
@@ -103,6 +104,7 @@ function setMessages(user_login, friend_login) {
 		dataType : "json",
 		success : function(rep) {
 			responseSetMessages(rep, friend_login);
+			setScrollbar();
 		}, 
 		error : function(resultatXHR, statut, erreur) {
 			errorFunction(resultatXHR, statut, erreur);
@@ -113,42 +115,28 @@ function setMessages(user_login, friend_login) {
 
 function responseSetMessages(rep, pseudo_friend) {
 	document.getElementById("h3NomContact").innerHTML = "<b>"+pseudo_friend+"</b>";
-	
 	var myDiv = document.getElementById("idDivMessages");
-
-
-	while (myDiv.hasChildNodes()) 
+	while (myDiv.hasChildNodes()) // Remove l'ancien affichage
 		myDiv.removeChild(myDiv.lastChild);
-
+	var lastVu = null;
 	for(var i=0 ; i<rep.length ; i++) {
 		var login = rep[i].login;
 		var message = rep[i].message;
 		var date = rep[i].date_send;
-
 		var newBalise = document.createElement("p");
+		var num = (login === pseudo_friend) ? 2 : 1;
+		var isRead = (login !== pseudo_friend) ? rep[i].isRead : null;
 		newBalise.innerHTML = message;
-		var num;
-
-		if(login === pseudo_friend) 
-			num = 2;
-		else 
-			num = 1;
 		newBalise.className ="m m"+num;
+		if(isRead !== null && isRead === "1") {
+			lastVu = newBalise;
+			dateVu = date;
+		}
 		myDiv.appendChild(newBalise);
 	}
-
-
-
-	
-	
+	if(lastVu != null)
+		lastVu.innerHTML += " <i style=\"font-size:10px;color:black\">[last seen: "+dateVu+"]</i>";
 }
-
-
-function setScrollbar() {
-	var obj = document.getElementById("idDivMessages");
-	obj.scrollTop = obj.scrollHeight + 10;
-}
-
 
 function errorFunction(resultatXHR, statut, erreur) {
 	alert("En erreur : "+erreur);
@@ -165,11 +153,8 @@ function get_ParamGET(param) {
 		/[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
 		function( m, key, value ) { // callback
 			vars[key] = value !== undefined ? value : '';
-		}
-		);
-
-	if ( param ) {
+		});
+	if ( param )
 		return vars[param] ? vars[param] : null;	
-	}
 	return vars;
 }
