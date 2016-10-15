@@ -72,7 +72,7 @@ public class SeenContactService {
 				jObj = new JSONObject();
 				jObj.put("loginFriend", loginFriend);
 				jObj.put("connected", isConnected(myMap.get(loginFriend)));
-				jObj.put("nbMessageNotRead", nbMessageNotRead(myMap.get(loginFriend)));
+				jObj.put("nbMessageNotRead", nbMessageNotRead(userId, myMap.get(loginFriend)));
 				jsonResult.put(jObj);
 			}
 
@@ -90,21 +90,19 @@ public class SeenContactService {
 		return jsonResult.toString();
 	}
 
-	private static String nbMessageNotRead(String idUser) {
-		return "";
+	private static String nbMessageNotRead(String idUser, String idFriend) {
+//		String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
+//		SELECT * FROM 
 	}
+	
+	
 
 	private static String isConnected(String idUser) throws SQLException {
 		String tableSessions = DBStatic.mysql_db + "." + NameOfTables.sessions;
 		String requestUserId = "SELECT session_id FROM "+tableSessions+" WHERE user_id="+idUser;
 		Statement statement = connexion.createStatement();
 		ResultSet resRequest = statement.executeQuery(requestUserId);
-		String res;
-		if(resRequest.next()) // Si jamais y a une ligne (donc connecte)
-			res = "1";
-		else
-			res = "0";
-
+		String res = resRequest.next() ? "1" : "0"; // Si jamais y a une ligne (donc connecte)
 		statement.close();
 		return res;
 	}

@@ -154,7 +154,7 @@ function responseSetMessages(rep, pseudo_friend) {
 		myDiv.appendChild(newBalise);
 	}
 	if(lastVu != null)
-		lastVu.innerHTML += " [Vu: "+dateVu+"]";
+		lastVu.innerHTML += " <i style=\"font-size:10px;color:black\">[last seen: "+dateVu+"]</i>";
 }
 
 
