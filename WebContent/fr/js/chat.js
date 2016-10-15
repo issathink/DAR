@@ -1,14 +1,15 @@
 var userLogin = get_ParamGET("user_login");
 var friendLogin = get_ParamGET("friend_login");
 
-
+var heightIdDivMessage = 535; // Valeur height du div
 
 /* A l'ouverture de la page */
 if(userLogin == null || friendLogin == null) {
 	alert("Error : 'user_login' = "+userLogin+", friend_login = "+friendLogin);
 	window.location.href = "login.html";
 } else {
-	refreshPage();
+	refreshPage(); // 1er affichage pour pas voir de latence
+	setInterval(function(){refreshPage();}, 1000);
 }
 
 
@@ -16,7 +17,7 @@ if(userLogin == null || friendLogin == null) {
 
 function setScrollbar() {
 	var obj = document.getElementById("idDivMessages");
-	obj.scrollTop = document.getElementById("idDivMessages").scrollHeight;
+	obj.scrollTop = obj.scrollHeight - heightIdDivMessage;
 }
 
 function refreshPage() {
@@ -55,11 +56,12 @@ function sendMessageToServeur(pseudo_sender, pseudo_receiver, message) {
 		success : function(rep) {
 		}, 
 		error : function(resultatXHR, statut, erreur) {
-			errorFunction(resultatXHR, statut, erreur);
+			errorFunction(resultatXHR, statut, erreur, "sendMessageToServeur");
 		}
 	});
 }
 
+/* Gestion du bloc de contacts */
 function setContact(user_login) {
 	$.ajax({
 		url : "http://vps197081.ovh.net:8080/FindYourFlat/seencontact?",
@@ -70,7 +72,7 @@ function setContact(user_login) {
 			responseSetContact(rep, user_login);
 		}, 
 		error : function(resultatXHR, statut, erreur) {
-			errorFunction(resultatXHR, statut, erreur);
+			errorFunction(resultatXHR, statut, erreur, "setContact");
 		}
 	});
 }
@@ -96,6 +98,7 @@ function responseSetContact(rep, user_login) {
 	}
 }
 
+/* Gestion du bloc de messages */
 function setMessages(user_login, friend_login) {
 	$.ajax({
 		url : "http://vps197081.ovh.net:8080/FindYourFlat/seenmessage?",
@@ -103,14 +106,19 @@ function setMessages(user_login, friend_login) {
 		data : "pseudo_user=" + user_login + "&pseudo_other=" + friend_login,
 		dataType : "json",
 		success : function(rep) {
+			var obj = document.getElementById("idDivMessages");
+			var needToMajScroll = (obj.scrollTop === obj.scrollHeight-heightIdDivMessage) ? true : false;
 			responseSetMessages(rep, friend_login);
-			setScrollbar();
+			if(needToMajScroll)
+				setScrollbar();
 		}, 
 		error : function(resultatXHR, statut, erreur) {
-			errorFunction(resultatXHR, statut, erreur);
+			errorFunction(resultatXHR, statut, erreur, "setMessages");
 		}
 	});
 }
+
+
 
 
 function responseSetMessages(rep, pseudo_friend) {
@@ -132,13 +140,17 @@ function responseSetMessages(rep, pseudo_friend) {
 			lastVu = newBalise;
 			dateVu = date;
 		}
+		else if(isRead === null) {
+			lastVu = null;
+		}
 		myDiv.appendChild(newBalise);
 	}
-	if(lastVu != null)
+	if(lastVu !== null)
 		lastVu.innerHTML += " <i style=\"font-size:10px;color:black\">[last seen: "+dateVu+"]</i>";
 }
 
-function errorFunction(resultatXHR, statut, erreur) {
+function errorFunction(resultatXHR, statut, erreur, fctName) {
+	alert("Fonction : "+fctName);
 	alert("En erreur : "+erreur);
 	alert("XHR = "+resultatXHR.responseText);
 	alert("Statut = "+ statut);
