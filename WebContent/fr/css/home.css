@@ -8,6 +8,11 @@
     color: #fff;
 }
 
+.depl_haut{
+	margin-top: 5px;
+	margin-left: 25px
+}
+
 #search_bar {
 	margin-top: 5px;
 }

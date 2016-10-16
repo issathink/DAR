@@ -52,6 +52,7 @@ function isConnected(callBack) {
     genId = getCookie(C_NAME);
     if(genId == null) {
         console.log("No previous session id.");
+        callBack({});
         return;
     }
 
