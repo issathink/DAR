@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import services.CommentService;
+import services.CommentRateService;
 import tools.Tools;
 
 public class RateServlet extends HttpServlet {
@@ -23,11 +23,11 @@ public class RateServlet extends HttpServlet {
 		String sessionId, adresse, note;
 		
 		if (params.containsKey("session_id") && params.containsKey("adresse") && params.containsKey("note")) {
-			sessionId = params.get("session_id");
-			adresse = params.get("adresse");
-			note = params.get("note");
+			sessionId = req.getParameter("session_id");
+			adresse = req.getParameter("adresse");
+			note = req.getParameter("note");
 			
-			resp.getWriter().write(CommentService.comment(sessionId, adresse, note));
+			resp.getWriter().write(CommentRateService.commentRate(sessionId, adresse, note, false));
 			
 		} else {
 			resp.getWriter().write(Tools.erreurParam);

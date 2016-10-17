@@ -239,6 +239,26 @@ public class Tools {
 
 		return true;
 	}
+	
+	public static String getUserId(String sessionId, Statement statement) {
+		ResultSet listOfUsers = null;
+		String query = "select user_id, start from " + DBStatic.mysql_db +  ".sessions where session_id='" + sessionId + "'";
+		
+		try {
+			listOfUsers = statement.executeQuery(query);
+			
+			if(listOfUsers.next())
+				if(!Tools.moreThan30Min(Long.parseLong(listOfUsers.getString("start"))))
+					return String.valueOf(listOfUsers.getString("user_id"));
+			return null;
+		} catch (SQLException e) {
+			return "Exception: " + e.getMessage();
+		}
+	}
+	
+	public static boolean isValidAddress(String adresse) {
+		return true;
+	}
 
 }
 
