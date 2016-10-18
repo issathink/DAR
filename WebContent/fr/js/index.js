@@ -20,3 +20,9 @@ function responseIsConnected(response) {
 }
 
 
+function changePage() {
+	addr = document.getElementById("getAdresse").value;
+	if(addr.length > 0)
+		window.location.href = "home.html?adresse=" + addr;
+}
+

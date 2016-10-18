@@ -43,6 +43,10 @@
 		<servlet-name>CommentServlet</servlet-name>
 		<servlet-class>servlets.CommentServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>GetCommentsAndNoteServlet</servlet-name>
+		<servlet-class>servlets.GetCommentsAndNoteServlet</servlet-class>
+	</servlet>
 
 
 	<servlet-mapping>
@@ -84,6 +88,10 @@
 	<servlet-mapping>
 		<servlet-name>CommentServlet</servlet-name>
 		<url-pattern>/comment</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GetCommentsAndNoteServlet</servlet-name>
+		<url-pattern>/getCommentsAndNote</url-pattern>
 	</servlet-mapping>
 
 	<resource-env-ref>
