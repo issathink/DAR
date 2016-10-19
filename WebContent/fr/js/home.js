@@ -45,8 +45,14 @@ function getCommentsAndNote(adresse) {
 
 function responseSetCommentsAndNote(rep, adresse) {
 	console.log(rep.login[0]);
+	console.log(rep.comment[0]);
+	console.log(rep.moyenne[0]);
 	document.getElementById("h3NomContact").innerHTML = "<b>"+adresse+"</b>";
 	var myDiv = document.getElementById("idDivMessages");
+	var note = document.getElementById("moyenne");;
+	note.innerHTML = "Note moyenne : <span id='rateYo2'></span> <script type='text/javascript'>" +
+		"$(function() { $('#rateYo2').rateYo({ rating : "+ rep.moyenne[0].toString() + ", readOnly : true, spacing : '10px' });" +
+		"}); </script>";
 	while (myDiv.hasChildNodes()) // Remove l'ancien affichage
 		myDiv.removeChild(myDiv.lastChild);
 	for(var i=0 ; i<rep.login.length ; i++) {
@@ -54,7 +60,7 @@ function responseSetCommentsAndNote(rep, adresse) {
 		var message = rep.comment[i];
 		var newBalise = document.createElement("p");
 		//var num = (login === pseudo_friend) ? 2 : 1;
-		newBalise.innerHTML = message;
+		newBalise.innerHTML = login + " : " + message;
 		newBalise.className ="m m"+1;
 		myDiv.appendChild(newBalise);
 	}
@@ -66,5 +72,5 @@ function errorFunction(resultatXHR, statut, erreur, fctName) {
 	alert("XHR = "+resultatXHR.responseText);
 	alert("Statut = "+ statut);
 	console.log("Error(" + status + ") : " + resultatXHR.responseText);
-	console.log("Error loading comments");
+	console.log("Error loading commentsAndNote");
 }

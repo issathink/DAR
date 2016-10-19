@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,7 +21,7 @@ public class GetCommentsAndNoteService {
 		Statement statement = null;
 		JSONObject result = new JSONObject();
 		ArrayList<String> usersId = new ArrayList<>();
-		int cpt = 1;
+		int cpt = 0;
 		double note_moyenne = 0;
 
 		try {
@@ -42,7 +41,6 @@ public class GetCommentsAndNoteService {
 				note_moyenne = note_moyenne/cpt;
 				note_moyenne = (double)((int)(note_moyenne*10))/10;
 				result.append("moyenne", note_moyenne);
-				cpt = 1;
 				String s = " ";
 				for(String uId: usersId){
 					if(!uId.equals(usersId.get(usersId.size()-1)))
@@ -57,7 +55,6 @@ public class GetCommentsAndNoteService {
 				listOfUsers = statement.executeQuery(query_get_login);
 				while(listOfUsers.next()) {
 					result.append("login", listOfUsers.getString("login"));
-					cpt++;
 				}
 			} else {
 				result.put("erreur", "Invalid address '" + adresse + "'");
