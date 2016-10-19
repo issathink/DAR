@@ -21,7 +21,7 @@ function responseIsConnected(response) {
 
 
 function changePage() {
-	addr = document.getElementById("getAdresse").value;
+	addr = document.getElementById("searchTextField").value;
 	if(addr.length > 0)
 		window.location.href = "home.html?adresse=" + addr;
 }
