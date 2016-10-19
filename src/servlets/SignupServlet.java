@@ -49,4 +49,5 @@ public class SignupServlet extends HttpServlet {
 			resp.getWriter().write(Tools.erreurParam);
 		}
 	}
+	
 }
