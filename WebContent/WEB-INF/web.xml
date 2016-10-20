@@ -48,8 +48,8 @@
 		<servlet-class>servlets.GetCommentsAndNoteServlet</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>GetLoginBeginByServiceServlet</servlet-name>
-		<servlet-class>servlets.GetLoginBeginByServiceServlet</servlet-class>
+		<servlet-name>GetLoginBeginByServlet</servlet-name>
+		<servlet-class>servlets.GetLoginBeginByServlet</servlet-class>
 	</servlet>
 
 
@@ -98,8 +98,8 @@
 		<url-pattern>/getCommentsAndNote</url-pattern>
 	</servlet-mapping>
 		<servlet-mapping>
-		<servlet-name>GetLoginBeginByServiceServlet</servlet-name>
-		<url-pattern>/getloginbeginbyserviceservlet</url-pattern>
+		<servlet-name>GetLoginBeginByServlet</servlet-name>
+		<url-pattern>/getloginbeginbyservlet</url-pattern>
 	</servlet-mapping>
 
 	<resource-env-ref>
