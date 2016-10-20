@@ -47,6 +47,10 @@
 		<servlet-name>GetCommentsAndNoteServlet</servlet-name>
 		<servlet-class>servlets.GetCommentsAndNoteServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>GetLoginBeginByServiceServlet</servlet-name>
+		<servlet-class>servlets.GetLoginBeginByServiceServlet</servlet-class>
+	</servlet>
 
 
 	<servlet-mapping>
@@ -92,6 +96,10 @@
 	<servlet-mapping>
 		<servlet-name>GetCommentsAndNoteServlet</servlet-name>
 		<url-pattern>/getCommentsAndNote</url-pattern>
+	</servlet-mapping>
+		<servlet-mapping>
+		<servlet-name>GetLoginBeginByServiceServlet</servlet-name>
+		<url-pattern>/getloginbeginbyserviceservlet</url-pattern>
 	</servlet-mapping>
 
 	<resource-env-ref>

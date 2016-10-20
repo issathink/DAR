@@ -99,12 +99,6 @@ function responseSetContact(rep, user_login) {
 		var newBaliseLi = document.createElement("li");
 		newBaliseLi.className = "list-group-item";
 		newBaliseLi.appendChild(newBaliseA);
-
-
-
-
-
-
 		
 		myListeContact.appendChild(newBaliseLi);
 	}
