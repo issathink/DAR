@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +22,9 @@ public class SendMessageService {
 		Connection connexion = null;
 		Statement statement = null;
 
+		message = StringEscapeUtils.escapeHtml4(message);
+		message = message.replace("'", "''"); // Pour l'ajout dans la bdd
+		
 		try {
 			/* Connexion BD et reglage ... */
 			connexion = DBStatic.getMySQLConnection();

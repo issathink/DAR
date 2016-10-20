@@ -5,8 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.print.attribute.standard.MediaSize.Other;
-
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,6 +59,8 @@ public class SeenMessageService {
 				String idMessage = resRequeteToGetMessages.getString("id");
 				String id_sender = resRequeteToGetMessages.getString("id_sender");
 				String message = resRequeteToGetMessages.getString("message");
+				message = StringEscapeUtils.unescapeHtml4(message);
+				
 				String date = resRequeteToGetMessages.getString("date_send");
 				String isRead = resRequeteToGetMessages.getString(("is_read"));
 				String pseudoSender = id_sender.equals(userId) ? userLogin : friendLogin;

@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import services.SendMessageService;
 
 public class SendMessageServlet extends HttpServlet {
@@ -26,6 +28,7 @@ public class SendMessageServlet extends HttpServlet {
 			String sender = req.getParameter("pseudo_sender");
 			String receiver = req.getParameter("pseudo_receiver");
 			String message = req.getParameter("message");
+			message = StringEscapeUtils.escapeHtml4(message);
 			String response = SendMessageService.sendMessage(sender, receiver, message);
 			res = response;
 		}
