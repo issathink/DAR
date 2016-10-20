@@ -42,32 +42,49 @@
           </div>
         </nav>
       </div>
+
+
+      
     </div>
     <div id='espaceVide'>
     </div>
 
 
-    <!-- Barre de recherche de contact -->
-    <div class="row">
-      <div class="col-lg-offset-1 col-lg-2">
-        <div class="input-group">
-          <input type="text" class="form-control" id="idSearchLogin" placeholder="Search Contact">
-          <span class="input-group-btn">
-            <button class="btn btn-default" id="idButtonSearchLogin" type="button">Go!</button>
-          </span>
-        </div><!-- /input-group -->
-      </div>
-    </div>
+
+
+
+
+
+
+
+
+
 
 
     <div class="container" id="myTest"> 
 
       <!-- Panneau de gauche, affichage des messages -->
 
+      <!-- Barre de recherche de contact -->
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="input-group" id=idDivSearchContact>
+            <input type="text" class="form-control" id="idSearchLogin" placeholder="Search Contact">
+            <span class="input-group-btn">
+
+              <button class="btn btn-default" id="idButtonSearchLogin" type="button">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+              </button>
+            </span>
+          </div><!-- /input-group -->
+        </div>
+      </div>
+
+
       <div class="row">  <!-- style="background-color: blue" -->
         <div class="col-lg-3"> 
           <div id="cadreRecent">
-           <h3>Recent :<!--  <span class="badge">2</span> --></h3>
+           <h3>Recent :</h3>
          </div>
          <div id="zoneContacts">
            <ul class="list-group" id="idListeContact">
@@ -78,11 +95,10 @@
        <!-- Panneau du milieu affichage message + zone texte -->
 
        <div class="col-lg-7" > 
-
         <!-- Zone d'affichage -->
         <div class="row">  <!-- style="background-color: yellow" -->
 
-          <div class="panel-heading">
+          <div class="panel-heading" id="cadreNomContact">
             <h3 class="panel-title" id="h3NomContact"></h3>
           </div>
           <div class="panel panel-default" id="affMessages">

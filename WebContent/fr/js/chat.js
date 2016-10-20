@@ -6,6 +6,7 @@ var friendLogin = get_ParamGET("friend_login");
 
 
 // FAUDRAIT VERIFIER DANS MES SERVLETS SI LA SESSION EXISTE (requete return rien....)
+// DANS SEARCH CONTACT DANS LA BARRE (envoyer aussi idSession) FAUT PAS S'AFFICHER
 // Trier les contacts selon la date !!!
 // Retirer le \n lorsqu'on fait entre !!!!
 
@@ -163,10 +164,10 @@ function responseSetMessages(rep, pseudo_friend) {
 }
 
 function errorFunction(resultatXHR, statut, erreur, fctName) {
-	alert("Fonction : "+fctName);
-	alert("En erreur : "+erreur);
-	alert("XHR = "+resultatXHR.responseText);
-	alert("Statut = "+ statut);
+	// alert("Fonction : "+fctName);
+	// alert("En erreur : "+erreur);
+	// alert("XHR = "+resultatXHR.responseText);
+	// alert("Statut = "+ statut);
 	console.log("Error(" + status + ") : " + resultatXHR.responseText);
 	console.log("Maybe user is not connected.");
 	// window.location.href = "login.html";
