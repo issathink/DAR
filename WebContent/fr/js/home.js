@@ -49,10 +49,14 @@ function responseSetCommentsAndNote(rep, adresse) {
 	console.log(rep.moyenne[0]);
 	document.getElementById("h3NomContact").innerHTML = "<b>"+adresse+"</b>";
 	var myDiv = document.getElementById("idDivMessages");
-	var note = document.getElementById("moyenne");;
-	note.innerHTML = "Note moyenne : <span id='rateYo2'></span> <script type='text/javascript'>" +
-		"$(function() { $('#rateYo2').rateYo({ rating : "+ rep.moyenne[0].toString() + ", readOnly : true, spacing : '10px' });" +
-		"}); </script>";
+	var note = document.getElementById("moyenne");
+	note.innerHTML = "Note moyenne : <span id='rateYo2'></span> <script type='text/javascript'>";
+	
+	document.getElementById("moyenne").style.visibility = "visible";
+	$(function() { 
+		$('#rateYo2').rateYo({ rating : rep.moyenne[0].toString() , readOnly : true, spacing : '10px' });
+	}); 
+	
 	while (myDiv.hasChildNodes()) // Remove l'ancien affichage
 		myDiv.removeChild(myDiv.lastChild);
 	for(var i=0 ; i<rep.login.length ; i++) {
