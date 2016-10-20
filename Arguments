@@ -17,4 +17,7 @@ http://vps197081.ovh.net/phpmyadmin
 http://vps197081.ovh.net:8080/manager/html // biffe à qui ?
 
 
-http://vps197081.ovh.net:8080/FindYourFlat/fr/chat.html?user_login=log1&friend_login=log2
+http://vps197081.ovh.net:8080/FindYourFlat/fr/chat.html?friend_login=log2
+
+
+&\

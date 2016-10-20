@@ -23,9 +23,9 @@ public class SendMessageServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		@SuppressWarnings("unchecked")
 		Map<String, String> params = req.getParameterMap();
-		if(params.containsKey("pseudo_sender") && params.containsKey("pseudo_receiver") && params.containsKey("message")) {
+		if(params.containsKey("id_session") && params.containsKey("pseudo_receiver") && params.containsKey("message")) {
 			//this.doGet(req, resp);
-			String sender = req.getParameter("pseudo_sender");
+			String sender = req.getParameter("id_session");
 			String receiver = req.getParameter("pseudo_receiver");
 			String message = req.getParameter("message");
 			message = StringEscapeUtils.escapeHtml4(message);
@@ -33,7 +33,7 @@ public class SendMessageServlet extends HttpServlet {
 			res = response;
 		}
 		else {
-			res = "{ \"Erreur\" : \"Argument 'pseudo_sender' ou 'pseudo_receiver' ou 'message' n'existe pas\" }";
+			res = "{ \"Erreur\" : \"Argument 'id_session' ou 'pseudo_receiver' ou 'message' n'existe pas\" }";
 		}
 		resp.getWriter().write(res);
 	}

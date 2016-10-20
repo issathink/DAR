@@ -15,13 +15,14 @@ import tools.NameOfTables;
 
 public class SendMessageService {
 
-	public static String sendMessage(String sender, String receiver, String message) {
+	public static String sendMessage(String idSession, String receiver, String message) {
 
 		ResultSet resRequestToGetId;
 		JSONObject jsonResult = new JSONObject();
 		Connection connexion = null;
 		Statement statement = null;
 
+		message = message.replaceAll("&", "\"&\"");
 		message = StringEscapeUtils.escapeHtml4(message);
 		message = message.replace("'", "''"); // Pour l'ajout dans la bdd
 		
@@ -32,13 +33,14 @@ public class SendMessageService {
 			
 			// get id sender/receiver
 			String tableUsers = DBStatic.mysql_db + "." + NameOfTables.users;
-			String requestSenderId = "SELECT id FROM "+tableUsers+
-					" WHERE login='"+sender+"'";
+			String tableSession = DBStatic.mysql_db + "." + NameOfTables.sessions;
+			String requestSenderId = "SELECT user_id FROM "+tableSession+
+					" WHERE session_id='"+idSession+"'";
 			String requestReceiverId = "SELECT id FROM "+tableUsers+
 					" WHERE login='"+receiver+"'";
 
 			(resRequestToGetId = statement.executeQuery(requestSenderId)).next();
-			String senderId = resRequestToGetId.getString("id");
+			String senderId = resRequestToGetId.getString("user_id");
 			(resRequestToGetId = statement.executeQuery(requestReceiverId)).next();
 			String receiverId = resRequestToGetId.getString("id");
 			

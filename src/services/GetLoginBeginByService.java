@@ -35,9 +35,11 @@ public class GetLoginBeginByService {
 
 			while(resRequestToGetLogins.next()) {
 				String login = resRequestToGetLogins.getString("login");
-				login = StringEscapeUtils.unescapeCsv(login);
+				login = StringEscapeUtils.escapeHtml4(login);
+				
 				JSONObject jObj = new JSONObject();
-				jObj.put("login", login);
+				jObj.put("value", login);
+				jObj.put("label", login);
 				jsonResult.put(jObj);
 			}
 			

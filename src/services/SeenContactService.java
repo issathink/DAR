@@ -19,7 +19,7 @@ public class SeenContactService {
 
 	private static Connection connexion = null;
 
-	public static String getMessages(String userLogin) {
+	public static String getMessages(String idSession) {
 		ResultSet resRequest;
 		JSONArray jsonResult = new JSONArray();
 
@@ -32,23 +32,25 @@ public class SeenContactService {
 			statement2 = connexion.createStatement();
 
 			// Get UserId
+			String tableSession = DBStatic.mysql_db + "." + NameOfTables.sessions;
 			String tableUsers = DBStatic.mysql_db + "." + NameOfTables.users;
-			String requestUserId = "SELECT id FROM "+tableUsers+
-					" WHERE login='"+userLogin+"'";
+			
+			// Get user id from session
+			String requestUserId = "SELECT user_id FROM "+tableSession+
+					" WHERE session_id='"+idSession+"'";
 			(resRequest= statement.executeQuery(requestUserId)).next();
-			String userId = resRequest.getString("id");
+			String userId = resRequest.getString("user_id");
 
 			// Get Contact
-			String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
-			String requestMessage = "SELECT DISTINCT id_sender, id_receiver FROM "+tableMessage+
-					" WHERE (id_sender='"+userId+"' OR id_receiver='"+userId+"')";
-			resRequest = statement.executeQuery(requestMessage);
-
-			System.out.println("Ok");
 			// Parcourt du resultat
 			int cpt = 0; // Pour les afficher dans l'ordre peut etre
 			Map<String, String> myMap = new HashMap<String, String>();
 			ResultSet resRequest2;
+
+			String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
+			String requestMessage = "SELECT DISTINCT id_sender, id_receiver FROM "+tableMessage+
+					" WHERE (id_sender='"+userId+"' OR id_receiver='"+userId+"')";
+			resRequest = statement.executeQuery(requestMessage);
 
 			while(resRequest.next()) {
 				String id_sender = resRequest.getString("id_sender");

@@ -20,13 +20,13 @@ public class SeenContactServlet extends HttpServlet {
 		@SuppressWarnings("unchecked")
 		Map<String, String> params = req.getParameterMap();
 
-		if(params.containsKey("pseudo_user")) {
-			String userLogin = req.getParameter("pseudo_user");
-			String response = SeenContactService.getMessages(userLogin);
+		if(params.containsKey("id_session")) {
+			String idSession = req.getParameter("id_session");
+			String response = SeenContactService.getMessages(idSession);
 			resp.getWriter().write(response);
 		}
 		else { // Gerer cas erreur
-			resp.getWriter().write("{ \"Erreur\" : \"Argument 'pseudo_user' n'existe pas\" }");
+			resp.getWriter().write("{ \"Erreur\" : \"Argument 'id_session' n'existe pas\" }");
 		}
 	}
 }

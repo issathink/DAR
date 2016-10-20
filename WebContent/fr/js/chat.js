@@ -1,16 +1,22 @@
-var userLogin = get_ParamGET("user_login");
+
+var idUserSession = getCookie(C_NAME); 
+if(idUserSession == null)
+	idUserSession = "b04b3ab6-79d5-4b82-aeae-0bacdf19f7de1476555095875";
 var friendLogin = get_ParamGET("friend_login");
 
 
+// FAUDRAIT VERIFIER DANS MES SERVLETS SI LA SESSION EXISTE (requete return rien....)
 // Trier les contacts selon la date !!!
 // Retirer le \n lorsqu'on fait entre !!!!
 
 var heightIdDivMessage = document.getElementById("idDivMessages").clientHeight; // (ou offsetHeight) Valeur height du div
 
 /* A l'ouverture de la page */
-if(userLogin == null || friendLogin == null) {
-	alert("Error : 'user_login' = "+userLogin+", friend_login = "+friendLogin);
-	window.location.href = "login.html";
+if(idUserSession == null) {
+	alert("Error : Not connected");
+// } else if(friendLogin == null) {
+	//alert("Error : 'user_login' = "+userLogin+", friend_login = "+friendLogin);
+	//window.location.href = "login.html";
 } else {
 	refreshPage(); // 1er affichage pour pas voir de latence
 	setInterval(function(){refreshPage();}, 1000);
@@ -25,8 +31,9 @@ function setScrollbar() {
 }
 
 function refreshPage() {
-	setMessages(userLogin, friendLogin);
-	setContact(userLogin);
+	if(friendLogin !== null)
+		setMessages(idUserSession, friendLogin);
+	setContact(idUserSession);
 }
 
 // Press enter will send a message, shit+enter will just go to next line
@@ -46,16 +53,16 @@ function sendMessageText() {
 	var s = myChampTexte.value;
 	if(s !== "") {
 		myChampTexte.value = "";
-		sendMessageToServeur(userLogin, friendLogin, s);
+		sendMessageToServeur(idUserSession, friendLogin, s);
 		refreshPage();
 	}
 }
 
-function sendMessageToServeur(pseudo_sender, pseudo_receiver, message) {
+function sendMessageToServeur(id_user_session, pseudo_receiver, message) {
 	$.ajax({
 		url : "http://vps197081.ovh.net:8080/FindYourFlat/sendmessage?",
 		type : "POST",
-		data : "pseudo_sender=" + pseudo_sender + "&pseudo_receiver="+pseudo_receiver+"&message="+message,
+		data : "id_session=" + id_user_session + "&pseudo_receiver="+pseudo_receiver+"&message="+message,
 		dataType : "json",
 		success : function(rep) {
 		}, 
@@ -66,14 +73,14 @@ function sendMessageToServeur(pseudo_sender, pseudo_receiver, message) {
 }
 
 /* Gestion du bloc de contacts */
-function setContact(user_login) {
+function setContact(id_user_session) {
 	$.ajax({
 		url : "http://vps197081.ovh.net:8080/FindYourFlat/seencontact?",
 		type : "GET",
-		data : "pseudo_user=" + user_login,
+		data : "id_session=" + id_user_session,
 		dataType : "json",
 		success : function(rep) {
-			responseSetContact(rep, user_login);
+			responseSetContact(rep, id_user_session);
 		}, 
 		error : function(resultatXHR, statut, erreur) {
 			errorFunction(resultatXHR, statut, erreur, "setContact");
@@ -81,7 +88,7 @@ function setContact(user_login) {
 	});
 }
 
-function responseSetContact(rep, user_login) {
+function responseSetContact(rep, id_user_session) {
 	var myListeContact = document.getElementById("idListeContact");
 	while (myListeContact.hasChildNodes()) 
 		myListeContact.removeChild(myListeContact.lastChild);
@@ -91,7 +98,7 @@ function responseSetContact(rep, user_login) {
 		var isConnected = rep[i].connected;
 		var nbMessageNotRead = rep[i].nbMessageNotRead;
 		var newBaliseA = document.createElement("a");
-		newBaliseA.href = "chat.html?user_login="+user_login+"&friend_login="+loginFriend;
+		newBaliseA.href = "chat.html?friend_login="+loginFriend;
 		newBaliseA.className = "list-group-item";
 		var myColor = (isConnected === "1") ? "green" : "#428bca";
 		var myColorNum = (nbMessageNotRead === "0") ? myColor : "white";
@@ -105,11 +112,11 @@ function responseSetContact(rep, user_login) {
 }
 
 /* Gestion du bloc de messages */
-function setMessages(user_login, friend_login) {
+function setMessages(id_user_session, friend_login) {
 	$.ajax({
 		url : "http://vps197081.ovh.net:8080/FindYourFlat/seenmessage?",
 		type : "GET",
-		data : "pseudo_user=" + user_login + "&pseudo_other=" + friend_login,
+		data : "id_session=" + id_user_session + "&pseudo_other=" + friend_login,
 		dataType : "json",
 		success : function(rep) {
 			var obj = document.getElementById("idDivMessages");
@@ -152,7 +159,7 @@ function responseSetMessages(rep, pseudo_friend) {
 		myDiv.appendChild(newBalise);
 	}
 	if(lastVu !== null)
-		lastVu.innerHTML += " <i style=\"font-size:10px;color:black\">[last seen: "+dateVu+"]</i>";
+		lastVu.innerHTML += " <i style=\"font-size:10px;color:black\">[seen]</i>";
 }
 
 function errorFunction(resultatXHR, statut, erreur, fctName) {
@@ -176,3 +183,43 @@ function get_ParamGET(param) {
 		return vars[param] ? vars[param] : null;	
 	return vars;
 }
+
+/* Auto-completion pour la recherche d'utilisateur */
+$('#idSearchLogin').autocomplete({
+	source: function(requete, reponse){ 
+		$.ajax({
+			url : "http://vps197081.ovh.net:8080/FindYourFlat/getloginbeginbyservlet?",
+			type : "GET",
+			data : "begin_by=" + $('#idSearchLogin').val(),
+			dataType : "json",
+			success : function(rep) {
+				reponse(rep);
+			}, 
+			error : function(resultatXHR, statut, erreur) {
+				errorFunction(resultatXHR, statut, erreur, "propositionContact");
+			}
+		});
+	},
+	minLength: 1
+});
+
+
+function goToSearchContact() {
+	var t = document.getElementById("idSearchLogin");
+	window.location.href = "chat.html?friend_login="+t.value;
+}
+
+document.getElementById("idButtonSearchLogin").addEventListener("click", function(){
+	goToSearchContact();
+});
+
+document.getElementById("idSearchLogin").onkeyup = function(e){
+	e = e || event;
+	if (e.keyCode === 13) 
+		goToSearchContact();
+	return true;
+};
+
+
+
+// fr/chat.html?friend_login=log2

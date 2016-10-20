@@ -17,7 +17,7 @@ public class SeenMessageService {
 
 
 	// TODO Mettre les messages (ou on est le receiver) a vu 
-	public static String getMessages(String userLogin, String friendLogin){
+	public static String getMessages(String idSession, String friendLogin){
 
 		ResultSet resRequeteToGetMessages, resRequestToGetName;
 		JSONArray jsonResult = new JSONArray();
@@ -34,17 +34,26 @@ public class SeenMessageService {
 			/* Recuperation des Ids */
 			// TODO , faire une union pour faire qu'une seul requete a la bd
 			String tableUsers = DBStatic.mysql_db + "." + NameOfTables.users;
-			String requestUserId = "SELECT id FROM "+tableUsers+
-					" WHERE login='"+userLogin+"'";
+			String tableSession = DBStatic.mysql_db + "." + NameOfTables.sessions;
+			
+			String requestUserId = "SELECT user_id FROM "+tableSession+
+					" WHERE session_id='"+idSession+"'";
 			String requestFriendId = "SELECT id FROM "+tableUsers+
 					" WHERE login='"+friendLogin+"'";
-
+			
 
 			(resRequestToGetName = statement.executeQuery(requestUserId)).next();
-			String userId = resRequestToGetName.getString("id");
+			String userId = resRequestToGetName.getString("user_id");
 			(resRequestToGetName = statement.executeQuery(requestFriendId)).next();
 			String friendId = resRequestToGetName.getString("id");
 
+			
+			String requestUserLogin = "SELECT login FROM "+tableUsers +
+					" WHERE id='"+userId+"'";
+			(resRequestToGetName = statement.executeQuery(requestUserLogin)).next();
+			String userLogin= resRequestToGetName.getString("login");
+
+			
 			///////////////////:
 			String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
 			String requestMessage = "SELECT id, id_sender, message, date_send, is_read FROM "+tableMessage+
@@ -54,12 +63,15 @@ public class SeenMessageService {
 
 			/* Requete sql vers la base pour recuperer les messages */
 			resRequeteToGetMessages = statement.executeQuery(requestMessage);
-
+			
 			while(resRequeteToGetMessages.next()) {
 				String idMessage = resRequeteToGetMessages.getString("id");
 				String id_sender = resRequeteToGetMessages.getString("id_sender");
 				String message = resRequeteToGetMessages.getString("message");
+				
+				message = message.replace("'", "''");
 				message = StringEscapeUtils.unescapeHtml4(message);
+				message = message.replaceAll("\"&\"", "&");
 				
 				String date = resRequeteToGetMessages.getString("date_send");
 				String isRead = resRequeteToGetMessages.getString(("is_read"));
@@ -75,7 +87,7 @@ public class SeenMessageService {
 				jObj.put("login", pseudoSender);
 				jObj.put("message", message);
 				jObj.put("date_send", date);
-				if(id_sender.equals(userId)) // On indique si le destinataire a lu le message ou non
+				if(id_sender.equals(userId)) // On indique si le destinataire a read le message ou non
 					jObj.put("isRead", isRead);
 				jsonResult.put(jObj);
 			}

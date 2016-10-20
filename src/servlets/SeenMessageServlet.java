@@ -18,14 +18,14 @@ public class SeenMessageServlet extends HttpServlet {
 		@SuppressWarnings("unchecked")
 		Map<String, String> params = req.getParameterMap();
 
-		if(params.containsKey("pseudo_user") && params.containsKey("pseudo_other")) {
-			String userLogin = req.getParameter("pseudo_user");
+		if(params.containsKey("id_session") && params.containsKey("pseudo_other")) {
+			String idSession = req.getParameter("id_session");
 			String friendLogin = req.getParameter("pseudo_other");
-			String response = SeenMessageService.getMessages(userLogin, friendLogin);
+			String response = SeenMessageService.getMessages(idSession, friendLogin);
 			resp.getWriter().write(response);
 		}
 		else { // Gerer cas erreur
-			resp.getWriter().write("{ \"Erreur\" : \"Argument 'pseudo_user' ou 'pseudo_other' n'existe pas\" }");
+			resp.getWriter().write("{ \"Erreur\" : \"Argument 'id_session' ou 'pseudo_other' n'existe pas\" }");
 		}
 	}
 
