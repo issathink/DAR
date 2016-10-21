@@ -49,10 +49,14 @@ function responseSetCommentsAndNote(rep, adresse) {
 	console.log(rep.moyenne[0]);
 	document.getElementById("h3NomContact").innerHTML = "<b>"+adresse+"</b>";
 	var myDiv = document.getElementById("idDivMessages");
-	var note = document.getElementById("moyenne");;
-	note.innerHTML = "Note moyenne : <span id='rateYo2'></span> <script type='text/javascript'>" +
-		"$(function() { $('#rateYo2').rateYo({ rating : "+ rep.moyenne[0].toString() + ", readOnly : true, spacing : '10px' });" +
-		"}); </script>";
+	var note = document.getElementById("moyenne");
+	note.innerHTML = "Note moyenne : <span id='rateYo2'></span> <script type='text/javascript'>";
+	
+	document.getElementById("moyenne").style.visibility = "visible";
+	$(function() { 
+		$('#rateYo2').rateYo({ rating : rep.moyenne[0].toString() , readOnly : true, spacing : '10px' });
+	}); 
+	
 	while (myDiv.hasChildNodes()) // Remove l'ancien affichage
 		myDiv.removeChild(myDiv.lastChild);
 	for(var i=0 ; i<rep.login.length ; i++) {
@@ -75,12 +79,21 @@ function errorFunction(resultatXHR, statut, erreur, fctName) {
 	console.log("Error loading commentsAndNote");
 }
 
+
+function initialize() {
+	var input = document.getElementById('searchTextField');
+	var autocomplete = new google.maps.places.Autocomplete(input);
+}
+
+
 function initMap() {
     var paris = {lat: 48.866667, lng: 2.333333};
     var map = new google.maps.Map(document.getElementById('maps'), {
         zoom: 8,
         center: paris
     });
+
+    google.maps.event.addDomListener(window, 'load', initialize);
     /*var marker = new google.maps.Marker({
         position: paris,
         map: map
