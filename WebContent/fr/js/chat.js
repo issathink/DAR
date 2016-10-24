@@ -107,7 +107,6 @@ function responseSetContact(rep, id_user_session) {
 		var newBaliseLi = document.createElement("li");
 		newBaliseLi.className = "list-group-item";
 		newBaliseLi.appendChild(newBaliseA);
-		
 		myListeContact.appendChild(newBaliseLi);
 	}
 }
