@@ -28,7 +28,7 @@ function responseIsConnected(response) {
 				$('#rateYo').rateYo({ rating : '50%', spacing : '10px', halfStar : true }).on("rateyo.set", function (e, data) {
 					note = data.rating/20;
 					console.log("Vaut : "+note);
-					rate(this);
+					rate(note);
 				});
 			}); 
 		}
@@ -117,7 +117,7 @@ function comment(rep) {
 	var adr = get_ParamGET("adresse");
 	var comment = document.getElementById('commentText').value;
 	var session_id = getCookie(C_NAME);
-	console.log("adr : " + adr + " , com : " + " , session : " + session_id);
+	console.log("adr : " + adr + " , com : " + comment + " , session : " + session_id);
 	if(session_id == null || session_id == undefined)
 		console.log("Pas d'identifiant de session");
 	else {
@@ -151,10 +151,10 @@ function responsePostComment(rep) {
 	}
 }
 
-function rate(rep) {
+function rate(note) {
 	var adr = get_ParamGET("adresse");
 	var session_id = getCookie(C_NAME);
-	console.log("adr : " + adr + " , com : " + " , session : " + session_id);
+	console.log("adr : " + adr + " , session : " + session_id + " , note : " + note);
 	if(session_id == null || session_id == undefined)
 		console.log("Pas d'identifiant de session");
 	else {
@@ -170,5 +170,14 @@ function rate(rep) {
 				errorFunction(resultatXHR, statut, erreur, "postRate");
 			}
 		});
+	}
+}
+
+function responsePostRate(rep) {
+	if(rep.erreur != undefined) {
+		console.log("ERROR");
+	} else {
+		console.log("SUCCEED");
+		getCommentsAndNote(adresse);
 	}
 }
