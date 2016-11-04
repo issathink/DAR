@@ -6,18 +6,20 @@ import org.json.JSONObject;
 import tools.Tools;
 
 
-class EtablissementScolaireAPI {
+class EtablissementScolairePreBacAPI {
 
-	private String dataSet = "les_etablissements_d_enseignement_des_1er_et_2d_degres_en_idf";
 	private String lang = "fr";
 	private String start = "0";
-	private String geofilter_distance;
+	protected String geofilter_distance;
 	private String timeZone = "Europe/Paris";
 	private String pretty_print = "true";
 
 	private String debUrl = "https://data.iledefrance.fr/api/records/1.0/search/?";
 
-	private String [] facettes = 
+	
+	protected String dataSet = "les_etablissements_d_enseignement_des_1er_et_2d_degres_en_idf";
+	
+	protected String [] facettes = 
 		{ 
 				"denomination_principale_uai"
 		};
@@ -31,10 +33,10 @@ class EtablissementScolaireAPI {
 		};
 
 
-	private EtablissementScolaireAPI() {}
+	protected EtablissementScolairePreBacAPI() {}
 
 	public static JSONArray getEtablissementScolaireJSON(double latitude, double longitude, double distance) throws JSONException, Exception{
-		EtablissementScolaireAPI t = new EtablissementScolaireAPI();
+		EtablissementScolairePreBacAPI t = new EtablissementScolairePreBacAPI();
 		t.geofilter_distance = latitude+","+longitude+","+distance;
 		JSONArray res = new JSONArray();
 		String URL = t.getUrl();
@@ -47,7 +49,7 @@ class EtablissementScolaireAPI {
 	}
 
 
-	private String getUrl() {
+	protected String getUrl() {
 		return debUrl+getArgs();
 	}
 
@@ -64,7 +66,7 @@ class EtablissementScolaireAPI {
 	}
 
 
-	private String getExclude() {
+	protected String getExclude() {
 		String res = "";
 
 		for(String s : excludesDenoPrincipales) {
@@ -117,7 +119,7 @@ class EtablissementScolaireAPI {
 	}
 
 
-	private JSONObject getMyJsonObjectFromRecord(JSONObject record) throws JSONException {
+	protected JSONObject getMyJsonObjectFromRecord(JSONObject record) throws JSONException {
 		JSONObject fields = record.getJSONObject("fields");
 		JSONObject geometry = record.getJSONObject("geometry");
 
@@ -132,8 +134,6 @@ class EtablissementScolaireAPI {
 		res.put("patronyme", patronyme);
 		res.put("latitude", latitude);
 		res.put("longitude", longitude);
-		//res.put("type", "a");
-		
 		
 		return res;
 	}

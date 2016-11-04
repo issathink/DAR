@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import services.GetLoginBeginByService;
-import services.SeenMessageService;
 
 public class GetLoginBeginByServlet extends HttpServlet {
 
