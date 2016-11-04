@@ -1,3 +1,4 @@
+package api;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -5,20 +6,16 @@ import org.json.JSONObject;
 import tools.Tools;
 
 
-public class TestAPI {
+class EtablissementScolaireAPI {
 
 	private String dataSet = "les_etablissements_d_enseignement_des_1er_et_2d_degres_en_idf";
 	private String lang = "fr";
 	private String start = "0";
-	private String geofilter_distance = "48.8469029,2.3428312999999434,800";
+	private String geofilter_distance;
 	private String timeZone = "Europe/Paris";
 	private String pretty_print = "true";
 
 	private String debUrl = "https://data.iledefrance.fr/api/records/1.0/search/?";
-
-	private String tmp = "https://data.iledefrance.fr/api/records/1.0/search/?dataset=secteurs-scolaires&lang=fr&start=0&geofilter.distance=48.8469029%2C2.3428312999999434%2C800&timezone=Europe%2FParis";
-
-
 
 	private String [] facettes = 
 		{ 
@@ -33,11 +30,28 @@ public class TestAPI {
 				"École secondaire générale privée"
 		};
 
-	public String getUrl() {
+
+	private EtablissementScolaireAPI() {}
+
+	public static JSONArray getEtablissementScolaireJSON(double latitude, double longitude, double distance) throws JSONException, Exception{
+		EtablissementScolaireAPI t = new EtablissementScolaireAPI();
+		t.geofilter_distance = latitude+","+longitude+","+distance;
+		JSONArray res = new JSONArray();
+		String URL = t.getUrl();
+		JSONArray records = Tools.sendGet(URL).getJSONArray("records");
+
+		for(int i=0 ; i<records.length() ; i++) 
+			res.put(t.getMyJsonObjectFromRecord(records.getJSONObject(i)));
+
+		return res;
+	}
+
+
+	private String getUrl() {
 		return debUrl+getArgs();
 	}
 
-	public String getArgs() {
+	private String getArgs() {
 		String res = getDataSet()+getLang()+getStart()+getGeofilter()+
 				getTimezone()+getFacette()+getExclude()+getPretty();
 		if(res.charAt(res.length()-1) == '&')
@@ -92,36 +106,17 @@ public class TestAPI {
 		return "geofilter.distance="+geofilter_distance+"&";
 	}
 
-	
+
 	private String getLang() {
 		return "lang="+lang+"&";
 	}
 
-	
+
 	private String getDataSet() {
 		return "dataset="+dataSet+"&";
 	}
 
-	
-	public static void main(String[] args) throws Exception {
-		TestAPI t = new TestAPI();
-		System.out.println(t.getUrl());
-		//JSONObject j = Tools.sendGet(t.getUrl());
-		//System.out.println(j.toString());
 
-	}
-
-	public JSONArray getJSON() throws Exception {
-		JSONArray res = new JSONArray();
-		String URL = getUrl();
-		JSONArray records = Tools.sendGet(URL).getJSONArray("records");
-
-		for(int i=0 ; i<records.length() ; i++) 
-			res.put(getMyJsonObjectFromRecord(records.getJSONObject(i)));
-
-		return res;
-
-	}
 	private JSONObject getMyJsonObjectFromRecord(JSONObject record) throws JSONException {
 		JSONObject fields = record.getJSONObject("fields");
 		JSONObject geometry = record.getJSONObject("geometry");
@@ -137,14 +132,14 @@ public class TestAPI {
 		res.put("patronyme", patronyme);
 		res.put("latitude", latitude);
 		res.put("longitude", longitude);
+		//res.put("type", "a");
+		
+		
 		return res;
 	}
 
 
 
-	public static JSONArray getEtablissementsScolaire() {
-		return null;
-	}
 
 
 }
