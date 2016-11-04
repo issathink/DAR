@@ -4,9 +4,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+<<<<<<< HEAD
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
+=======
+>>>>>>> 0c333148fff5447bff74ed336adb5a4a66b524fd
 import org.json.JSONObject;
 
 import tools.Tools;
@@ -14,7 +17,11 @@ import tools.Tools;
 
 public class TestAPI {
 
+<<<<<<< HEAD
 	private String dataSet = "les_etablissements_d_enseignement_des_1er_et_2d_degres_en_idf";
+=======
+	private String dataSet = "secteurs-scolaires";
+>>>>>>> 0c333148fff5447bff74ed336adb5a4a66b524fd
 	private String lang = "fr";
 	private String start = "0";
 	private String geofilter_distance = "48.8469029,2.3428312999999434,800";
@@ -27,6 +34,7 @@ public class TestAPI {
 
 
 
+<<<<<<< HEAD
 	private String [] facettes = 
 		{ 
 			"denomination_principale_uai"
@@ -40,20 +48,29 @@ public class TestAPI {
 			"École secondaire générale privée"
 		};
 
+=======
+>>>>>>> 0c333148fff5447bff74ed336adb5a4a66b524fd
 	public String getUrl() {
 		return debUrl+getArgs();
 	}
 	public String getArgs() {
+<<<<<<< HEAD
 		String res = getDataSet()+getLang()+getStart()+getGeofilter()+
 				getTimezone()+getFacette()+getExclude()+getPretty();
 		if(res.charAt(res.length()-1) == '&')
 			res = res.substring(0, res.length()-1);
 		
 		//res = StringEscapeUtils.escapeHtml4(res);
+=======
+		String res = getDataSet()+getLang()+getStart()+getGeofilter()+getTimezone()+getPretty();
+		if(res.charAt(res.length()-1) == '&')
+			res = res.substring(0, res.length()-1);
+>>>>>>> 0c333148fff5447bff74ed336adb5a4a66b524fd
 		res = protectURL(res);
 		return res;
 	}
 
+<<<<<<< HEAD
 
 	private String getExclude() {
 		String res = "";
@@ -72,6 +89,8 @@ public class TestAPI {
 		return res;
 	}
 
+=======
+>>>>>>> 0c333148fff5447bff74ed336adb5a4a66b524fd
 	private String getPretty() {
 		return "pretty_print="+pretty_print+"&";
 	}
@@ -102,12 +121,21 @@ public class TestAPI {
 		return "lang="+lang+"&";
 	}
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+>>>>>>> 0c333148fff5447bff74ed336adb5a4a66b524fd
 	private String getDataSet() {
 		return "dataset="+dataSet+"&";
 	}
 
 	public static void main(String[] args) throws Exception {
 		TestAPI t = new TestAPI();
+<<<<<<< HEAD
 		System.out.println(t.getUrl());
 		//JSONObject j = Tools.sendGet(t.getUrl());
 		//System.out.println(j.toString());
@@ -149,5 +177,14 @@ public class TestAPI {
 		return null;
 	}
 
+=======
+		JSONObject j = Tools.sendGet(t.getUrl());
+		System.out.println(j.toString());
+
+	}
+
+
+
+>>>>>>> 0c333148fff5447bff74ed336adb5a4a66b524fd
 
 }
