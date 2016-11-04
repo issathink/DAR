@@ -32,6 +32,7 @@ public class Tools {
 	public static String erreurJSON = "{ \"erreur\" : \"Une erreur inattendue s'est produite(JSON). Veuillez verifier et reessayer.\" }";
 	public static String erreurParam = "{ \"erreur\": \"Erreur parametres. Veuillez verifier et reessayer.\" }";
 	public static String ok = "{ \"ok\" : \"ok\" }";
+	public final static String MAPS_KEY = "AIzaSyB3YD2YqV03p3NETfHUfW6f0CoUuP4Au6o";
 	public static double LatParisOuest = 48.852159;
 	public static double LonParisOuest = 2.251419;
 	public static double LatParisEst = 48.85206549830757;
@@ -365,6 +366,37 @@ public class Tools {
 		}
 		// HttpClient httpClient =
 		return s;
+	}
+	
+	public static JSONObject sendGet(String url) throws Exception {
+
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+		// optional default is GET
+		con.setRequestMethod("GET");
+
+		//add request header
+		// con.setRequestProperty("User-Agent", USER_AGENT);
+
+		int responseCode = con.getResponseCode();
+		System.out.println("\nSending 'GET' request to URL : " + url);
+		System.out.println("Response Code : " + responseCode);
+
+		BufferedReader in = new BufferedReader(
+		        new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+		con.disconnect();
+
+		//print result
+		// System.out.println(response.toString());
+		return new JSONObject(response.toString());
 	}
 
 }

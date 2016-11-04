@@ -32,11 +32,21 @@ public class SearchService {
 				result.put("erreur", "Unknown or expired session.");
 				return result.toString();
 			}*/
+			
+			
+			String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + adresse + "&key=" + Tools.MAPS_KEY;
+			JSONObject rep = Tools.sendGet(url.replace(" ", "%20"));
+			if(true)
+				return rep.toString();
+			
+			
 		} catch (SQLException e1) {
 			return Tools.erreurSQL;
 		} catch (JSONException e) {
 			return Tools.erreurJSON;
-		}
+		} catch (Exception e) {
+			return Tools.erreur + e.getMessage();
+		} 
 
 		try {
 			if (statement != null)
@@ -46,7 +56,15 @@ public class SearchService {
 		} catch (SQLException e) {
 		}
 
+		// try {
+		// return Tools.sendGet("http://date.jsontest.com/").toString();
+		// } catch (Exception e) {
+		//
+		// e.printStackTrace();
+		// }
 		return result.toString();
 	}
+	
+	
 
 }
