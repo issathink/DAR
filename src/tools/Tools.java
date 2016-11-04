@@ -298,7 +298,7 @@ public class Tools {
 					return String.valueOf(listOfUsers.getString("user_id"));
 			return null;
 		} catch (SQLException e) {
-			return "Exception: " + e.getMessage();
+			return null;
 		}
 	}
 
@@ -331,6 +331,40 @@ public class Tools {
 		}
 		// HttpClient httpClient =
 		return true;
+	}
+	
+	public static String getLatLng(String adresse) {
+		String s = "";
+		
+		try {
+			URL url = new URL(adresse);
+			HttpURLConnection connexion = (HttpURLConnection) url
+					.openConnection();
+			connexion.setDoOutput(true);
+			connexion.setDoInput(true);
+			connexion.setRequestProperty("Content-Type", "application/json");
+			connexion.setRequestProperty("Accept", "application/json");
+			connexion.setRequestMethod("GET");
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					(connexion.getInputStream())));
+
+			String output;
+			System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				System.out.println(output);
+				s += output;
+			}
+
+			connexion.disconnect();
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// HttpClient httpClient =
+		return s;
 	}
 
 }

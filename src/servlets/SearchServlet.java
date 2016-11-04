@@ -34,6 +34,7 @@ public class SearchServlet extends HttpServlet {
 			resp.getWriter().write(SearchService.search(session_id, adresse));
 		} else {
 			resp.getWriter().write(Tools.erreurParam);
+			resp.getWriter().write("rien");
 		}
 	}
 
