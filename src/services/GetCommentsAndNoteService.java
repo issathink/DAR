@@ -61,7 +61,7 @@ public class GetCommentsAndNoteService {
 			}
 
 		} catch (SQLException e1) {
-			return Tools.erreurSQL;
+			return Tools.erreurSQL + e1.getMessage();
 		} catch (JSONException e) {
 			return Tools.erreurJSON;
 		}

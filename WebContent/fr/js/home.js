@@ -15,28 +15,18 @@ function responseIsConnected(response) {
 		"<button type='button' class='btn btn-default btn-md'>" +
 		"<a class='glyphicon glyphicon-user' aria-hidden='true'></a> </button>";
 
-		if(adresse != undefined){
-			document.getElementById("connected").innerHTML = "<div class='input-group'> <input type='text' class='form-control'" +
-			"placeholder='Type your message ...' name='comment' id='commentText'> <span class='input-group-btn'>" +
-			"<button class='btn btn-default' type='submit'>Send</button> </span> </div>";
-
-			var note = document.getElementById("donner_note");
-			note.innerHTML = "Noter : <span id='rateYo'></span> <script type='text/javascript'>";
-
-			document.getElementById("donner_note").style.visibility = "visible";
-			$(function() { 
-				$('#rateYo').rateYo({ rating : '50%', spacing : '10px', halfStar : true }).on("rateyo.set", function (e, data) {
-					note = data.rating/20;
-					console.log("Vaut : "+note);
-					rate(note);
-				});
-			}); 
-		}
 	} else {
-		console.log("Noppppppp!");
 		document.getElementById("top_button").innerHTML = "<div class='depl_haut'> <a href='signin.html'>Se connecter</a></div>";
 	}
 }
+
+
+function changePage() {
+	addr = document.getElementById("searchTextField").value;
+	if(addr.length > 0)
+		window.location.href = "home.html?adresse=" + addr;
+}
+
 
 function getCommentsAndNote(adresse) {
 	if(adresse != undefined){
@@ -57,29 +47,60 @@ function getCommentsAndNote(adresse) {
 
 
 function responseSetCommentsAndNote(rep, adresse) {
-	console.log(rep.login[0]);
-	console.log(rep.comment[0]);
-	console.log(rep.moyenne[0]);
-	document.getElementById("h3NomContact").innerHTML = "<b>"+adresse+"</b>";
-	var myDiv = document.getElementById("idDivMessages");
-	var note = document.getElementById("moyenne");
-	note.innerHTML = "Note moyenne : <span id='rateYo2'></span> <script type='text/javascript'>";
+	if(rep.erreur != undefined) {
+		if(rep.erreur.indexOf("Invalid address") !== -1) {
+			//setVisible(choose another adress)
+			console.log("Not in Paris or its suburban");
+		}
+		else
+			console.log("Noppp unknown error!");
+	}
+	else {
+		adresse = decodeURI(adresse)
 
-	document.getElementById("moyenne").style.visibility = "visible";
-	$(function() { 
-		$('#rateYo2').rateYo({ rating : rep.moyenne[0].toString() , readOnly : true, spacing : '10px' });
-	}); 
+		document.getElementById("connected").innerHTML = "<div class='input-group'> <input type='text' class='form-control'" +
+		"placeholder='Type your message ...' name='comment' id='commentText'> <span class='input-group-btn'>" +
+		"<button class='btn btn-default' type='submit'>Send</button> </span> </div>";
 
-	while (myDiv.hasChildNodes()) // Remove l'ancien affichage
-		myDiv.removeChild(myDiv.lastChild);
-	for(var i=0 ; i<rep.login.length ; i++) {
-		var login = rep.login[i];
-		var message = rep.comment[i];
-		var newBalise = document.createElement("p");
-		//var num = (login === pseudo_friend) ? 2 : 1;
-		newBalise.innerHTML = login + " : " + message;
-		newBalise.className ="m m"+1;
-		myDiv.appendChild(newBalise);
+		var note = document.getElementById("donner_note");
+		note.innerHTML = "Noter : <span id='rateYo'></span> <script type='text/javascript'>";
+
+		document.getElementById("donner_note").style.visibility = "visible";
+		$(function() { 
+			$('#rateYo').rateYo({ rating : '50%', spacing : '10px', halfStar : true }).on("rateyo.set", function (e, data) {
+				note = data.rating/20;
+				console.log("Vaut : "+note);
+				rate(note);
+			});
+		}); 
+
+		document.getElementById("h3NomContact").innerHTML = "<b>"+adresse+"</b>";
+		var myDiv = document.getElementById("idDivMessages");
+		document.getElementById("com").style.visibility = "visible"
+		var note = document.getElementById("moyenne");
+		note.innerHTML = "Note moyenne : <span id='rateYo2'></span> <script type='text/javascript'>";
+
+		if(rep.moyenne != undefined) {
+			document.getElementById("moyenne").style.visibility = "visible";
+			$(function() { 
+				$('#rateYo2').rateYo({ rating : rep.moyenne[0].toString() , readOnly : true, spacing : '10px' });
+			}); 
+		}
+
+		while (myDiv.hasChildNodes()) // Remove l'ancien affichage
+			myDiv.removeChild(myDiv.lastChild);
+
+		if(rep.login != undefined) {
+			for(var i=0 ; i<rep.login.length ; i++) {
+				var login = rep.login[i];
+				var message = rep.comment[i];
+				var newBalise = document.createElement("p");
+				//var num = (login === pseudo_friend) ? 2 : 1;
+				newBalise.innerHTML = login + " : " + message;
+				newBalise.className ="m m"+1;
+				myDiv.appendChild(newBalise);
+			}
+		}
 	}
 }
 
