@@ -3,6 +3,7 @@ type =
 	pharmacie | centre_de_soin | etablissement_hospitalier // Pour sante
 	sport // Pour sport
 	comissariat // Pour securite
+	transport // Pour transport
 	
 latitude, longitude // No comment
 
