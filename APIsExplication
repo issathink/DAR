@@ -13,5 +13,5 @@ descrption // Une description de la structure peut valoir "". Souvent relatif au
 
 
 Y a parfois des champs en plus ignorez les.
-C'était pour gérer les cas où y a plusieurs structure 
-dans un même endroit.
+C'etait pour gerer les cas où y a plusieurs structure 
+dans un meme endroit.
