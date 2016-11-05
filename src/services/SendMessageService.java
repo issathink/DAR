@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
