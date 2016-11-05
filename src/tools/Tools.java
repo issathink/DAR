@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.UUID;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -399,6 +400,16 @@ public class Tools {
 		return new JSONObject(response.toString());
 	}
 
+	public static JSONArray concatArray(JSONArray... arrs)
+	        throws JSONException {
+	    JSONArray result = new JSONArray();
+	    for (JSONArray arr : arrs) {
+	        for (int i = 0; i < arr.length(); i++) {
+	            result.put(arr.get(i));
+	        }
+	    }
+	    return result;
+	}
 }
 
 /*
