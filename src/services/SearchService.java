@@ -37,9 +37,10 @@ public class SearchService {
 			String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + adresse + "&key=" + Tools.MAPS_KEY;
 			
 			
-			JSONObject rep = Tools.sendGet(Tools.replace(url));
-			if(true)
-				return ((JSONObject) rep.getJSONArray("results").get(0)).getJSONObject("geometry").getJSONObject("location").toString();
+			// JSONObject rep = Tools.sendGet(Tools.replace(url));
+			// if(true)
+			// return ((JSONObject)
+			// rep.getJSONArray("results").get(0)).getJSONObject("geometry").getJSONObject("location").toString();
 			
 			
 		} catch (SQLException e) {
@@ -58,12 +59,6 @@ public class SearchService {
 		} catch (SQLException e) {
 		}
 
-		// try {
-		// return Tools.sendGet("http://date.jsontest.com/").toString();
-		// } catch (Exception e) {
-		//
-		// e.printStackTrace();
-		// }
 		return result.toString();
 	}
 

@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.UUID;
 
@@ -48,27 +47,27 @@ public class Tools {
 		double d2r = Math.PI / 180.0;
 		double dLong = (long2 - long1) * d2r;
 		double dLat = (lat2 - lat1) * d2r;
-		double a = Math.pow(Math.sin(dLat / 2.0), 2) + Math.cos(lat1 * d2r)
-				* Math.cos(lat2 * d2r) * Math.pow(Math.sin(dLong / 2.0), 2);
+		double a = Math.pow(Math.sin(dLat / 2.0), 2)
+				+ Math.cos(lat1 * d2r) * Math.cos(lat2 * d2r) * Math.pow(Math.sin(dLong / 2.0), 2);
 		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 		double d = 6367 * c;
 
 		return d;
 	}
-	
+
 	public static double haversineInKM(double lat1, double long1, double lat2, double long2) {
 		double _eQuatorialEarthRadius = 6378.1370D;
-	    double _d2r = (Math.PI / 180D);
+		double _d2r = (Math.PI / 180D);
 
-        double dlong = (long2 - long1) * _d2r;
-        double dlat = (lat2 - lat1) * _d2r;
-        double a = Math.pow(Math.sin(dlat / 2D), 2D) + Math.cos(lat1 * _d2r) * Math.cos(lat2 * _d2r)
-                * Math.pow(Math.sin(dlong / 2D), 2D);
-        double c = 2D * Math.atan2(Math.sqrt(a), Math.sqrt(1D - a));
-        double d = _eQuatorialEarthRadius * c;
+		double dlong = (long2 - long1) * _d2r;
+		double dlat = (lat2 - lat1) * _d2r;
+		double a = Math.pow(Math.sin(dlat / 2D), 2D)
+				+ Math.cos(lat1 * _d2r) * Math.cos(lat2 * _d2r) * Math.pow(Math.sin(dlong / 2D), 2D);
+		double c = 2D * Math.atan2(Math.sqrt(a), Math.sqrt(1D - a));
+		double d = _eQuatorialEarthRadius * c;
 
-        return d;
-    }
+		return d;
+	}
 
 	public static String getSessionKey() {
 		UUID uid = UUID.randomUUID();
@@ -102,164 +101,6 @@ public class Tools {
 		}
 	}
 
-	public static int getId(String login) {
-		int id = -1;
-		ResultSet res = null;
-		Connection conn = null;
-
-		Statement statement = null;
-
-		try {
-			conn = DBStatic.getMySQLConnection();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
-		String query = "select id from " + DBStatic.mysql_db
-				+ ".users where login='" + login + "'";
-
-		try {
-			statement = (Statement) conn.createStatement();
-		} catch (SQLException e1) {
-			e1.getStackTrace();
-			return -1;
-		}
-
-		try {
-			res = statement.executeQuery(query);
-			while (res.next()) {
-				id = Integer.parseInt(res.getString("id"));
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			return -1;
-		}
-
-		try {
-			if (statement != null) // On ferme la connection
-				statement.close();
-			if (conn != null)
-				conn.close();
-		} catch (SQLException e) {
-			return -1;
-		}
-
-		return id;
-	}
-
-	public static ArrayList<String> getFriendsLogin(String login) {
-		ArrayList<String> amis = new ArrayList<String>();
-		amis.add(login);
-
-		ResultSet res = null;
-		Connection conn = null;
-
-		Statement statement = null;
-
-		try {
-			conn = DBStatic.getMySQLConnection();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
-		String query = "select followed from " + DBStatic.mysql_db
-				+ ".friends where follower='" + login + "'";
-
-		try {
-			statement = (Statement) conn.createStatement();
-		} catch (SQLException e1) {
-			e1.getStackTrace();
-			return null;
-		}
-
-		try {
-			res = statement.executeQuery(query);
-			while (res.next()) {
-				amis.add(res.getString("followed"));
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			return null;
-		}
-
-		try {
-			if (statement != null)
-				statement.close();
-			if (conn != null)
-				conn.close();
-		} catch (SQLException e) {
-			return null;
-		}
-
-		return amis;
-	}
-
-	public static long getDate(String key) {
-		ResultSet keyToDate = null;
-		long date = -1;
-		Connection conn = null;
-
-		Statement statement = null;
-
-		try {
-			conn = DBStatic.getMySQLConnection();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
-		String query = "select date from " + DBStatic.mysql_db
-				+ ".sessions where session_id='" + key + "'";
-
-		try {
-			statement = (Statement) conn.createStatement();
-		} catch (SQLException e1) {
-			e1.getStackTrace();
-		}
-
-		try {
-			keyToDate = statement.executeQuery(query);
-
-			while (keyToDate.next()) {
-				date = Long.parseLong(keyToDate.getString("date"));
-			}
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
-		try {
-			if (statement != null)
-				statement.close();
-			if (conn != null)
-				conn.close();
-		} catch (SQLException e) {
-			return -1;
-		}
-
-		return date;
-	}
-
-	public static void removeOldConnexion(String id, String key)
-			throws SQLException {
-		Connection conn = null;
-		Statement statement = null;
-
-		conn = DBStatic.getMySQLConnection();
-		String query = "DELETE FROM " + DBStatic.mysql_db
-				+ ".sessions WHERE user_id='" + Integer.valueOf(id)
-				+ "' and session_id!='" + key + "'";
-		statement = (Statement) conn.createStatement();
-		statement.executeUpdate(query);
-
-		try {
-			if (statement != null)
-				statement.close();
-			if (conn != null)
-				conn.close();
-		} catch (SQLException e) {
-		}
-	}
-
 	public static boolean extendSession(String id) {
 		Connection conn = null;
 		Statement statement = null;
@@ -267,8 +108,7 @@ public class Tools {
 		try {
 			conn = DBStatic.getMySQLConnection();
 			statement = (Statement) conn.createStatement();
-			String update = "UPDATE " + DBStatic.mysql_db
-					+ ".sessions SET start = '" + Tools.getNowMillis()
+			String update = "UPDATE " + DBStatic.mysql_db + ".sessions SET start = '" + Tools.getNowMillis()
 					+ "' where session_id = '" + id + "'";
 			statement.executeUpdate(update);
 		} catch (SQLException e1) {
@@ -289,15 +129,14 @@ public class Tools {
 
 	public static String getUserId(String sessionId, Statement statement) {
 		ResultSet listOfUsers = null;
-		String query = "select user_id, start from " + DBStatic.mysql_db
-				+ ".sessions where session_id='" + sessionId + "'";
+		String query = "select user_id, start from " + DBStatic.mysql_db + ".sessions where session_id='" + sessionId
+				+ "'";
 
 		try {
 			listOfUsers = statement.executeQuery(query);
 
 			if (listOfUsers.next())
-				if (!Tools.moreThan30Min(Long.parseLong(listOfUsers
-						.getString("start"))))
+				if (!Tools.moreThan30Min(Long.parseLong(listOfUsers.getString("start"))))
 					return String.valueOf(listOfUsers.getString("user_id"));
 			return null;
 		} catch (SQLException e) {
@@ -307,24 +146,26 @@ public class Tools {
 
 	public static boolean isValidAddress(String adresse) {
 		LatLng latLng;
-		if((latLng = getLatLng(adresse)) == null)
+		if ((latLng = getLatLng(adresse)) == null)
 			return false;
 		return isInParis(latLng.lat, latLng.lng);
 	}
-	
+
 	public static LatLng getLatLng(String adresse) {
 		try {
-			JSONObject jOb = sendGet(replace(adresse));
-			JSONObject obj = ((JSONObject) jOb.getJSONArray("results").get(0)).getJSONObject("geometry").getJSONObject("location");
+			String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + adresse + "&key=" + Tools.MAPS_KEY;
+			JSONObject jOb = sendGet(replace(url));
+			JSONObject obj = ((JSONObject) jOb.getJSONArray("results").get(0)).getJSONObject("geometry")
+					.getJSONObject("location");
 			double lat = obj.getDouble("lat");
 			double lng = obj.getDouble("lng");
-			
+
 			return new LatLng(lat, lng);
 		} catch (Exception e) {
 			return null;
 		}
 	}
-	
+
 	public static JSONObject sendGet(String url) throws Exception {
 
 		URL obj = new URL(url);
@@ -333,15 +174,14 @@ public class Tools {
 		// optional default is GET
 		con.setRequestMethod("GET");
 
-		//add request header
+		// add request header
 		// con.setRequestProperty("User-Agent", USER_AGENT);
 
 		int responseCode = con.getResponseCode();
 		System.out.println("\nSending 'GET' request to URL : " + url);
 		System.out.println("Response Code : " + responseCode);
 
-		BufferedReader in = new BufferedReader(
-		        new InputStreamReader(con.getInputStream()));
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
 
@@ -351,46 +191,44 @@ public class Tools {
 		in.close();
 		con.disconnect();
 
-		//print result
+		// print result
 		// System.out.println(response.toString());
 		return new JSONObject(response.toString());
 	}
-	
-	
+
 	public static String replace(String str) {
-	    String[] words = str.split(" ");
-	    StringBuilder sentence = new StringBuilder(words[0]);
+		String[] words = str.split(" ");
+		StringBuilder sentence = new StringBuilder(words[0]);
 
-	    for (int i = 1; i < words.length; ++i) {
-	        sentence.append("%20");
-	        sentence.append(words[i]);
-	    }
+		for (int i = 1; i < words.length; ++i) {
+			sentence.append("%20");
+			sentence.append(words[i]);
+		}
 
-	    return sentence.toString();
+		return sentence.toString();
 	}
-	
-	public static JSONArray concatArray(JSONArray... arrs)
-	        throws JSONException {
-	    JSONArray result = new JSONArray();
-	    for (JSONArray arr : arrs) {
-	        for (int i = 0; i < arr.length(); i++) {
-	            result.put(arr.get(i));
-	        }
-	    }
-	    return result;
+
+	public static JSONArray concatArray(JSONArray... arrs) throws JSONException {
+		JSONArray result = new JSONArray();
+		for (JSONArray arr : arrs) {
+			for (int i = 0; i < arr.length(); i++) {
+				result.put(arr.get(i));
+			}
+		}
+		return result;
 	}
-	
+
 	public static boolean isInParis(double lat, double lon) {
 		return haversineInKM(LatParisCenter, LonParisCenter, lat, lon) <= ParisRadius;
 	}
-	
+
 	public static LatLng vector(LatLng p1, LatLng p2) {
 		LatLng t = new LatLng(p2.lat - p1.lat, p2.lng - p1.lng);
 		return t;
 	}
-	
+
 	public static double dot(LatLng u, LatLng v) {
-		return u.lat * v.lat + u.lng * v.lng; 
+		return u.lat * v.lat + u.lng * v.lng;
 	}
 
 }
