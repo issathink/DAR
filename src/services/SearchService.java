@@ -1,62 +1,41 @@
 package services;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tools.DBStatic;
+import api.APIs;
+import tools.LatLng;
 import tools.Tools;
 
 public class SearchService {
 
-	public static String search(String sessionId, String adresse) {
-		Connection conn = null;
-		ResultSet listOfComments = null;
-		Statement statement = null;
+	public static String search(String adresse) {
+		double distanceAround = 500;
 		JSONObject result = new JSONObject();
-		String userId = null;
+		LatLng position = Tools.getLatLng(adresse);
+
 		try {
-			conn = DBStatic.getMySQLConnection();
-			statement = (Statement) conn.createStatement();
-			result.put("ok", true);
-			
-			result.put("ret", Tools.getLatLng(adresse));
+			if (Tools.isInParis(position.lat, position.lng)) {
+				JSONArray ecoles = APIs.getEducationJSON(position.lat, position.lng, distanceAround);
+				JSONArray soins = APIs.getSanteJSON(position.lat, position.lng, distanceAround);
+				JSONArray sports = APIs.getSportJSON(position.lat, position.lng, distanceAround);
+				JSONArray police = APIs.getSecuriteJSON(position.lat, position.lng, distanceAround);
 
-			/*if ((userId = Tools.getUserId(sessionId, statement)) != null) {
-
-			} else {
-				result.put("erreur", "Unknown or expired session.");
-				return result.toString();
-			}*/
-			
-			
-			String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + adresse + "&key=" + Tools.MAPS_KEY;
-			
-			
-			// JSONObject rep = Tools.sendGet(Tools.replace(url));
-			// if(true)
-			// return ((JSONObject)
-			// rep.getJSONArray("results").get(0)).getJSONObject("geometry").getJSONObject("location").toString();
-			
-			
+				result.put("ecoles", ecoles);
+				result.put("soins", soins);
+				result.put("sports", sports);
+				result.put("police", police);
+				result.put("ok", true);
+			}
 		} catch (SQLException e) {
 			return Tools.erreurSQL + e.getMessage();
 		} catch (JSONException e) {
 			return Tools.erreurJSON + e.getMessage();
 		} catch (Exception e) {
 			return Tools.erreur + e.getMessage();
-		} 
-
-		try {
-			if (statement != null)
-				statement.close();
-			if (conn != null)
-				conn.close();
-		} catch (SQLException e) {
 		}
 
 		return result.toString();

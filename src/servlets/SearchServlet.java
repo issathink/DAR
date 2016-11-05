@@ -20,18 +20,11 @@ public class SearchServlet extends HttpServlet {
 			throws ServletException, IOException {
 		@SuppressWarnings("unchecked")
 		Map<String, String> params = req.getParameterMap();
-		String session_id = null;
 		String adresse = null;
 
-		if (params.containsKey("session_id") && params.containsKey("adresse")) {
-			session_id = req.getParameter("session_id");
+		if(params.containsKey("adresse")) {
 			adresse = req.getParameter("adresse");
-
-			resp.getWriter().write(SearchService.search(session_id, adresse));
-
-		} else if(params.containsKey("adresse")) {
-			session_id = req.getParameter("session_id");
-			resp.getWriter().write(SearchService.search(session_id, adresse));
+			resp.getWriter().write(SearchService.search(adresse));
 		} else {
 			resp.getWriter().write(Tools.erreurParam);
 			resp.getWriter().write("rien");
