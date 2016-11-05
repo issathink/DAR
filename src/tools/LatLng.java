@@ -2,7 +2,7 @@ package tools;
 
 public class LatLng {
 	
-	private double lat, lng;
+	public double lat, lng;
 	
 	public LatLng(double lat, double lng) {
 		this.lat = lat;
