@@ -40,11 +40,17 @@ public class TransportAPI extends RequeteApiIleDeFrancePattern {
 			String lat = record.getJSONObject("geometry").getJSONArray("coordinates").get(1).toString();
 			String type_de_transport = record.getJSONObject("fields").getString("c_nature");
 			String nomLieu = record.getJSONObject("fields").getString("l_station");
+			//String ligne = record.getJSONObject("fields").getString("c_numligne");
+			
 			o.put("latitude", lat);
 			o.put("longitude", lon);
 			o.put("type", "transport");
+			o.put("nom", letterToWord(type_de_transport)+", Station "+nomLieu);
+			o.put("description", ""/*"Ligne "+ligne*/);
+			
+			
 			o.put("type_de_transport", type_de_transport);
-			o.put("nom_lieu", nomLieu);
+			
 			return o;
 	}
 	
@@ -59,6 +65,20 @@ public class TransportAPI extends RequeteApiIleDeFrancePattern {
 			res.put(tmp);
 		}
 		return res;
+	}
+	
+	private String letterToWord(String s) {
+		
+		s = s.toUpperCase();
+		if(s.equals("M"))
+			return "Metro";
+		else if(s.equals("R"))
+			return "RER";
+		else if(s.equals("T"))
+			return "Tramway";
+		else
+			return s;
+	
 	}
 
 }
