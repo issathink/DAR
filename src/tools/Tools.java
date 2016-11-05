@@ -1,10 +1,8 @@
 package tools;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -42,8 +40,9 @@ public class Tools {
 	public static double LonParisSud = 2.346954345703125;
 	public static double LatParisNord = 48.90535146044804;
 	public static double LonParisNord = 2.35107421875;
-	// public static double LatParisCenter = ;
-	// public static double LonParisCenter = ;
+	public static double LatParisCenter = 48.859652;
+	public static double LonParisCenter = 2.332711;
+	public static double ParisRadius = 6.0;
 
 	double haversineKM(double lat1, double long1, double lat2, double long2) {
 		double d2r = Math.PI / 180.0;
@@ -307,52 +306,23 @@ public class Tools {
 	}
 
 	public static boolean isValidAddress(String adresse) {
+		LatLng latLng;
+		if((latLng = getLatLng(adresse)) == null)
+			return false;
+		return isInParis(latLng.lat, latLng.lng);
+	}
+	
+	public static LatLng getLatLng(String adresse) {
 		try {
 			JSONObject jOb = sendGet(replace(adresse));
 			JSONObject obj = ((JSONObject) jOb.getJSONArray("results").get(0)).getJSONObject("geometry").getJSONObject("location");
 			double lat = obj.getDouble("lat");
 			double lng = obj.getDouble("lng");
 			
-			// if(haversineInKM(lat, lng, lat2, long2))
+			return new LatLng(lat, lng);
 		} catch (Exception e) {
-			return false;
+			return null;
 		}
-		
-		return true;
-	}
-	
-	public static String getLatLng(String adresse) {
-		String s = "";
-		
-		try {
-			URL url = new URL(adresse);
-			HttpURLConnection connexion = (HttpURLConnection) url
-					.openConnection();
-			connexion.setDoOutput(true);
-			connexion.setDoInput(true);
-			connexion.setRequestProperty("Content-Type", "application/json");
-			connexion.setRequestProperty("Accept", "application/json");
-			connexion.setRequestMethod("GET");
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					(connexion.getInputStream())));
-
-			String output;
-			System.out.println("Output from Server .... \n");
-			while ((output = br.readLine()) != null) {
-				System.out.println(output);
-				s += output;
-			}
-
-			connexion.disconnect();
-
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		// HttpClient httpClient =
-		return s;
 	}
 	
 	public static JSONObject sendGet(String url) throws Exception {
@@ -408,6 +378,19 @@ public class Tools {
 	        }
 	    }
 	    return result;
+	}
+	
+	public static boolean isInParis(double lat, double lon) {
+		return haversineInKM(LatParisCenter, LonParisCenter, lat, lon) <= ParisRadius;
+	}
+	
+	public static LatLng vector(LatLng p1, LatLng p2) {
+		LatLng t = new LatLng(p2.lat - p1.lat, p2.lng - p1.lng);
+		return t;
+	}
+	
+	public static double dot(LatLng u, LatLng v) {
+		return u.lat * v.lat + u.lng * v.lng; 
 	}
 
 }
