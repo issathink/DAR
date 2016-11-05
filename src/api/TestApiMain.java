@@ -14,14 +14,20 @@ public class TestApiMain {
 
 		JSONArray j = APIs.getEducationJSON(latitude, longitude, distance);
 		JSONArray j2 = APIs.getSanteJSON(latitude, longitude, distance);
+		JSONArray j3 = APIs.getSportJSON(latitude, longitude, distance);
 		
-		for(int i=0 ; i<j.length() ; i++) {
-			JSONObject o = j.getJSONObject(i);
-			System.out.println(o.toString());
-		}
+//		for(int i=0 ; i<j.length() ; i++) {
+//			JSONObject o = j.getJSONObject(i);
+//			System.out.println(o.toString());
+//		}
+//		
+//		for(int i=0 ; i<j2.length() ; i++) {
+//			JSONObject o = j2.getJSONObject(i);
+//			System.out.println(o.toString());
+//		}
 		
-		for(int i=0 ; i<j2.length() ; i++) {
-			JSONObject o = j2.getJSONObject(i);
+		for(int i=0 ; i<j3.length() ; i++) {
+			JSONObject o = j3.getJSONObject(i);
 			System.out.println(o.toString());
 		}
 
