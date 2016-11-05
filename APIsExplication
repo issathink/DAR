@@ -15,3 +15,6 @@ descrption // Une description de la structure peut valoir "". Souvent relatif au
 Y a parfois des champs en plus ignorez les.
 C'etait pour gerer les cas où y a plusieurs structure 
 dans un meme endroit.
+
+
+===> Pour utiliser les APIs utilisez la classe APIs qui contient les methodes static necessaires
