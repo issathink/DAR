@@ -22,7 +22,7 @@ public class APIs {
 	}
 
 	public static JSONArray getSportJSON(double latitude, double longitude, double distance) throws Exception {
-		return SportsGearAPI.getSportsGear(latitude, longitude, distance);
+		return SportAPI.getSportJSON(latitude, longitude, distance);
 	}
 
 
