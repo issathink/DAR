@@ -10,12 +10,13 @@ public class TestApiMain {
 		// 48.8426979,2.3521379000000024,500
 		double latitude = 48.8426979;
 		double longitude = 2.3521379000000024;
-		double distance = 10000000;
+		double distance = 100;
 
 		//	   JSONArray j = APIs.getEducationJSON(latitude, longitude, distance);
 		//	   JSONArray j2 = APIs.getSanteJSON(latitude, longitude, distance);
 		//     JSONArray j3 = APIs.getSportJSON(latitude, longitude, distance);
 		//	   JSONArray j4 = APIs.getSecuriteJSON(latitude, longitude, distance);
+		JSONArray j5 = APIs.getTransportJSON(latitude, longitude, distance);
 
 
 		//		for(int i=0 ; i<j.length() ; i++) {
@@ -37,6 +38,11 @@ public class TestApiMain {
 		//			JSONObject o = j4.getJSONObject(i);
 		//			System.out.println(o.toString());
 		//		}
+
+		for(int i=0 ; i<j5.length() ; i++) {
+			JSONObject o = j5.getJSONObject(i);
+			System.out.println(o.toString());
+		}
 
 	}
 

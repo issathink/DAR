@@ -29,5 +29,10 @@ public class APIs {
 		JSONArray j2 = ComissariatPetiteCouronneAPI.getComissariatPetiteCouronneJSON(latitude, longitude, distance);
 		return Tools.concatArray(j1, j2);
 	}
+	
+	public static JSONArray getTransportJSON(double latitude, double longitude, double distance) throws Exception {
+		return TransportAPI.getTransportJSON(latitude, longitude, distance);
+	}
+
 
 }
