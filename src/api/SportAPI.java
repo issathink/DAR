@@ -37,12 +37,12 @@ public class SportAPI extends RequeteApiIleDeFrancePattern {
 			JSONObject o = new JSONObject();
 			String lon = record.getJSONObject("geometry").getJSONArray("coordinates").get(0).toString();
 			String lat = record.getJSONObject("geometry").getJSONArray("coordinates").get(1).toString();
-			String type = record.getJSONObject("fields").getString("eqt_type");
+			String type_de_sport = record.getJSONObject("fields").getString("eqt_type");
 			String nomLieu = record.getJSONObject("fields").getString("ins_nom");
 			o.put("latitude", lat);
 			o.put("longitude", lon);
 			o.put("type", "sport");
-			o.put("type_de_sport", type);
+			o.put("type_de_sport", type_de_sport);
 			o.put("nom_lieu", nomLieu);
 			return o;
 	}

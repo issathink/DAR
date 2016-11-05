@@ -25,5 +25,10 @@ public class APIs {
 		return SportAPI.getSportJSON(latitude, longitude, distance);
 	}
 
+	public static JSONArray getSecuriteJSON(double latitude, double longitude, double distance) throws JSONException, Exception {
+		JSONArray j1 = ComissariatParisAPI.getComissariatParisJSON(latitude, longitude, distance);
+		JSONArray j2 = ComissariatPetiteCouronneAPI.getComissariatPetiteCouronneJSON(latitude, longitude, distance);
+		return Tools.concatArray(j1, j2);
+	}
 
 }
