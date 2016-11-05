@@ -3,7 +3,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TestMain {
+public class TestApiMain {
 
 	public static void main(String[] args) throws JSONException, Exception {
 
