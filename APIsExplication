@@ -1,0 +1,17 @@
+type = 
+	pre_bac | post_bac // Pour education
+	pharmacie | centre_de_soin | etablissement_hospitalier // Pour sante
+	sport // Pour sport
+	comissariat // Pour securite
+	
+latitude, longitude // No comment
+
+nom // Nom de la structure
+
+descrption // Une description de la structure peut valoir "". Souvent relatif au nom
+
+
+
+Y a parfois des champs en plus ignorez les.
+C'était pour gérer les cas où y a plusieurs structure 
+dans un même endroit.
