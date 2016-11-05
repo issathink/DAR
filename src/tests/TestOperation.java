@@ -7,12 +7,10 @@ import java.sql.Statement;
 
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
+
 import org.json.JSONException;
 
-import services.LogoutService;
-import services.SeenMessageService;
 import tools.DBStatic;
-import tools.NameOfTables;
 
 
 /**

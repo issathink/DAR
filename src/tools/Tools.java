@@ -32,7 +32,7 @@ public class Tools {
 	public static String erreurJSON = "{ \"erreur\" : \"Une erreur inattendue s'est produite(JSON). Veuillez verifier et reessayer.\" }";
 	public static String erreurParam = "{ \"erreur\": \"Erreur parametres. Veuillez verifier et reessayer.\" }";
 	public static String ok = "{ \"ok\" : \"ok\" }";
-	public final static String MAPS_KEY = "AIzaSyB3YD2YqV03p3NETfHUfW6f0CoUuP4Au6o";
+	public final static String MAPS_KEY = "AIzaSyDZv1TYlMIMxAPIV1ZuspwPD5zZEjylW28";
 	public static double LatParisOuest = 48.852159;
 	public static double LonParisOuest = 2.251419;
 	public static double LatParisEst = 48.85206549830757;
@@ -41,6 +41,8 @@ public class Tools {
 	public static double LonParisSud = 2.346954345703125;
 	public static double LatParisNord = 48.90535146044804;
 	public static double LonParisNord = 2.35107421875;
+	// public static double LatParisCenter = ;
+	// public static double LonParisCenter = ;
 
 	double haversineKM(double lat1, double long1, double lat2, double long2) {
 		double d2r = Math.PI / 180.0;
@@ -305,32 +307,16 @@ public class Tools {
 
 	public static boolean isValidAddress(String adresse) {
 		try {
-			URL url = new URL(adresse);
-			HttpURLConnection connexion = (HttpURLConnection) url
-					.openConnection();
-			connexion.setDoOutput(true);
-			connexion.setDoInput(true);
-			connexion.setRequestProperty("Content-Type", "application/json");
-			connexion.setRequestProperty("Accept", "application/json");
-			connexion.setRequestMethod("GET");
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					(connexion.getInputStream())));
-
-			String output;
-			System.out.println("Output from Server .... \n");
-			while ((output = br.readLine()) != null) {
-				System.out.println(output);
-			}
-
-			connexion.disconnect();
-
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			JSONObject jOb = sendGet(replace(adresse));
+			JSONObject obj = ((JSONObject) jOb.getJSONArray("results").get(0)).getJSONObject("geometry").getJSONObject("location");
+			double lat = obj.getDouble("lat");
+			double lng = obj.getDouble("lng");
+			
+			// if(haversineInKM(lat, lng, lat2, long2))
+		} catch (Exception e) {
+			return false;
 		}
-		// HttpClient httpClient =
+		
 		return true;
 	}
 	
@@ -398,7 +384,20 @@ public class Tools {
 		// System.out.println(response.toString());
 		return new JSONObject(response.toString());
 	}
+	
+	
+	public static String replace(String str) {
+	    String[] words = str.split(" ");
+	    StringBuilder sentence = new StringBuilder(words[0]);
 
+	    for (int i = 1; i < words.length; ++i) {
+	        sentence.append("%20");
+	        sentence.append(words[i]);
+	    }
+
+	    return sentence.toString();
+	}
+	
 }
 
 /*
