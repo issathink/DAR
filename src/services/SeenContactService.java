@@ -37,7 +37,16 @@ public class SeenContactService {
 			// Get user id from session
 			String requestUserId = "SELECT user_id FROM "+tableSession+
 					" WHERE session_id='"+idSession+"'";
-			(resRequest= statement.executeQuery(requestUserId)).next();
+			if((resRequest= statement.executeQuery(requestUserId)).next() == false) {
+				if(statement != null)
+					statement.close();
+				if(connexion != null)
+					connexion.close();
+				JSONObject res = new JSONObject();
+				res.put("Error :", "La connexion n'existe pas");
+				return res.toString();
+			}
+		
 			String userId = resRequest.getString("user_id");
 
 			// Get Contact

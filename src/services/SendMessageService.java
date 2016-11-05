@@ -24,12 +24,12 @@ public class SendMessageService {
 		message = message.replaceAll("&", "\"&\"");
 		message = StringEscapeUtils.escapeHtml4(message);
 		message = message.replace("'", "''"); // Pour l'ajout dans la bdd
-		
+
 		try {
 			/* Connexion BD et reglage ... */
 			connexion = DBStatic.getMySQLConnection();
 			statement = connexion.createStatement();
-			
+
 			// get id sender/receiver
 			String tableUsers = DBStatic.mysql_db + "." + NameOfTables.users;
 			String tableSession = DBStatic.mysql_db + "." + NameOfTables.sessions;
@@ -38,22 +38,31 @@ public class SendMessageService {
 			String requestReceiverId = "SELECT id FROM "+tableUsers+
 					" WHERE login='"+receiver+"'";
 
-			(resRequestToGetId = statement.executeQuery(requestSenderId)).next();
+			if((resRequestToGetId = statement.executeQuery(requestSenderId)).next() == false) {
+				if(statement != null)
+					statement.close();
+				if(connexion != null)
+					connexion.close();
+				JSONObject res = new JSONObject();
+				res.put("Error :", "La connexion n'existe pas");
+				return res.toString();
+			}
+
 			String senderId = resRequestToGetId.getString("user_id");
 			(resRequestToGetId = statement.executeQuery(requestReceiverId)).next();
 			String receiverId = resRequestToGetId.getString("id");
-			
+
 			// Inscription du message dans la BDD
 			String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
 			String requestSendMessage = "INSERT INTO "+tableMessage+" (id_sender, id_receiver, message) VALUES ("+
-			senderId+","+receiverId+",'"+message+"')";
-			
+					senderId+","+receiverId+",'"+message+"')";
+
 			int ret  = statement.executeUpdate(requestSendMessage);
 			if(ret == 1)
 				jsonResult.put("ValAddOnBD", "Message Add to BDD");
 			else
 				jsonResult.put("ValAddOnBD", "An error occured during insert message");
-			
+
 			if(statement != null)
 				statement.close();
 			if(connexion != null)

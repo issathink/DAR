@@ -35,25 +35,37 @@ public class SeenMessageService {
 			// TODO , faire une union pour faire qu'une seul requete a la bd
 			String tableUsers = DBStatic.mysql_db + "." + NameOfTables.users;
 			String tableSession = DBStatic.mysql_db + "." + NameOfTables.sessions;
-			
+
 			String requestUserId = "SELECT user_id FROM "+tableSession+
 					" WHERE session_id='"+idSession+"'";
 			String requestFriendId = "SELECT id FROM "+tableUsers+
 					" WHERE login='"+friendLogin+"'";
-			
 
-			(resRequestToGetName = statement.executeQuery(requestUserId)).next();
+
+			if((resRequestToGetName = statement.executeQuery(requestUserId)).next() == false) {
+				if(statement != null)
+					statement.close();
+				if(connexion != null)
+					connexion.close();
+				JSONObject res = new JSONObject();
+				res.put("Error :", "La connexion n'existe pas");
+				return res.toString();
+			}
+
 			String userId = resRequestToGetName.getString("user_id");
+
+
+
 			(resRequestToGetName = statement.executeQuery(requestFriendId)).next();
 			String friendId = resRequestToGetName.getString("id");
 
-			
+
 			String requestUserLogin = "SELECT login FROM "+tableUsers +
 					" WHERE id='"+userId+"'";
 			(resRequestToGetName = statement.executeQuery(requestUserLogin)).next();
 			String userLogin= resRequestToGetName.getString("login");
 
-			
+
 			///////////////////:
 			String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
 			String requestMessage = "SELECT id, id_sender, message, date_send, is_read FROM "+tableMessage+
@@ -63,16 +75,16 @@ public class SeenMessageService {
 
 			/* Requete sql vers la base pour recuperer les messages */
 			resRequeteToGetMessages = statement.executeQuery(requestMessage);
-			
+
 			while(resRequeteToGetMessages.next()) {
 				String idMessage = resRequeteToGetMessages.getString("id");
 				String id_sender = resRequeteToGetMessages.getString("id_sender");
 				String message = resRequeteToGetMessages.getString("message");
-				
+
 				message = message.replace("'", "''");
 				message = StringEscapeUtils.unescapeHtml4(message);
 				message = message.replaceAll("\"&\"", "&");
-				
+
 				String date = resRequeteToGetMessages.getString("date_send");
 				String isRead = resRequeteToGetMessages.getString(("is_read"));
 				String pseudoSender = id_sender.equals(userId) ? userLogin : friendLogin;
