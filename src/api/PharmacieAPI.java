@@ -45,14 +45,17 @@ public class PharmacieAPI extends RequeteApiIleDeFrancePattern {
 		res.put("longitude", longitude);
 
 		
-		if(fields.has("telephone"))
-			res.put("telephone", fields.getString("telephone"));
+//		if(fields.has("telephone"))
+//			res.put("telephone", fields.getString("telephone"));
 
 		String nom = fields.has("rslongue") ? fields.getString("rslongue") : fields.getString("rs");
-		res.put("nom", nom);
-		if(fields.has("numvoie"))
-			res.put(("numvoie"), fields.getString("numvoie"));
+		res.put("nom", nom.replaceAll("^PHARM ", "PHARMACIE "));
+//		if(fields.has("numvoie"))
+//			res.put(("numvoie"), fields.getString("numvoie"));
+		res.put("description", "");
 		res.put("type", "pharmacie");
+		
+		
 		return res;
 	}
 

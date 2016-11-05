@@ -48,12 +48,16 @@ public class EtablissementScolairePostBacAPI extends RequeteApiIleDeFrancePatter
 
 		JSONObject res = new JSONObject();
 		res.put("type", "post_bac");
-		res.put("denomination", denominationPrincipale);
-		res.put("patronyme", patronyme);
+		res.put("nom", patronyme);
 		res.put("latitude", latitude);
 		res.put("longitude", longitude);
-		res.put("adresse", adresse);
-
+		res.put("description",denominationPrincipale);
+		
+		
+		// Just let this args here please!
+		res.put("adresse", adresse); // Juste pour quand y en a plusieurs au meme endroits
+		res.put("patronyme", patronyme); // Idem
+		
 		return res;
 	}
 

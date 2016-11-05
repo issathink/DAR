@@ -13,7 +13,6 @@ public class APIs {
 		return Tools.concatArray(j1, j2);
 	}
 
-
 	public static JSONArray getSanteJSON(double latitude, double longitude, double distance) throws JSONException, Exception {
 		JSONArray j1 = PharmacieAPI.getPharmacieJSON(latitude, longitude, distance);
 		JSONArray j2 = CentreDeSoinAPI.getCentreDeSoinJSON(latitude, longitude, distance);

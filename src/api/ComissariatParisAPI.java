@@ -22,26 +22,23 @@ public class ComissariatParisAPI extends RequeteApiIleDeFrancePattern {
 		String service = fields.getString("service");
 		o.put("latitude", lat);
 		o.put("longitude", lon);
-		o.put("service", service);
+		o.put("nom", service);
+		o.put("description", "");
+		
+//		if(fields.has("telephone")) {
+//			String telephone = fields.getString("telephone");
+//			o.put("telephone", telephone);
+//		}
 
-		if(fields.has("telephone")) {
-			String telephone = fields.getString("telephone");
-			o.put("telephone", telephone);
-		}
+//		if(fields.has("horaires")) {
+//			String horaires = fields.getString("horaires");
+//			o.put("horaires", horaires);
+//		}
 
-		if(fields.has("horaires")) {
-			String horaires = fields.getString("horaires");
-			o.put("horaires", horaires);
-		}
-
-		if(fields.has("accessibilite")) {
-			String accHandi = fields.getString("accessibilite");
-			o.put("acces_handicape", accHandi);
-		}
-
-
-
-
+//		if(fields.has("accessibilite")) {
+//			String accHandi = fields.getString("accessibilite");
+//			o.put("acces_handicape", accHandi);
+//		}
 
 		o.put("type", "comissariat");
 		return o;

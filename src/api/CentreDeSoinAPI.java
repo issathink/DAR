@@ -43,12 +43,12 @@ public class CentreDeSoinAPI extends RequeteApiIleDeFrancePattern {
 		res.put("latitude", latitude);
 		res.put("longitude", longitude);
 
-		res.put("adresse", fields.getString("adresse"));
-		res.put("categorie", fields.getString("categorie_de_l_etablissement"));
+		//res.put("adresse", fields.getString("adresse"));
+		//res.put("categorie", fields.getString("categorie_de_l_etablissement"));
 		res.put("nom", fields.getString("raison_sociale").replaceAll("^CTRE ", "CENTRE "));
-		
-		if(fields.has("num_tel"))
-			res.put("telephone", fields.getString("num_tel"));
+		res.put("description",fields.getString("categorie_de_l_etablissement"));
+//		if(fields.has("num_tel"))
+//			res.put("telephone", fields.getString("num_tel"));
 		
 		res.put("type", "centre_de_soin");
 		return res;

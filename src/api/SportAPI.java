@@ -42,8 +42,8 @@ public class SportAPI extends RequeteApiIleDeFrancePattern {
 			o.put("latitude", lat);
 			o.put("longitude", lon);
 			o.put("type", "sport");
-			o.put("type_de_sport", type_de_sport);
-			o.put("nom_lieu", nomLieu);
+			o.put("description", type_de_sport);
+			o.put("nom", nomLieu);
 			return o;
 	}
 	

@@ -50,7 +50,7 @@ class EtablissementScolairePreBacAPI extends RequeteApiIleDeFrancePattern {
 		res.put("nom", denominationPrincipale);
 		res.put("latitude", latitude);
 		res.put("longitude", longitude);
-		res.put("nature", nature);
+		res.put("description", nature);
 
 		return res;
 	}

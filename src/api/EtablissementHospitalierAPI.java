@@ -43,16 +43,17 @@ public class EtablissementHospitalierAPI extends RequeteApiIleDeFrancePattern {
 		res.put("latitude", latitude);
 		res.put("longitude", longitude);
 
-		res.put("categorie", fields.getString("categorie_de_l_etablissement"));
+		//res.put("categorie", fields.getString("categorie_de_l_etablissement"));
 
-		if(fields.has("num_voie"))
-			res.put("num_voie", fields.getString("num_voie"));
+//		if(fields.has("num_voie"))
+//			res.put("num_voie", fields.getString("num_voie"));
 
 		String nom = fields.has("raison_sociale_entite_juridique") ? fields.getString("raison_sociale_entite_juridique") : fields.getString("raison_sociale");
 		res.put("nom", nom);
+		res.put("description", fields.getString("categorie_de_l_etablissement"));
 
-		if(fields.has("num_tel"))
-			res.put("telephone", fields.getString("num_tel"));
+//		if(fields.has("num_tel"))
+//			res.put("telephone", fields.getString("num_tel"));
 
 
 		res.put("type", "etablissement_hospitalier");

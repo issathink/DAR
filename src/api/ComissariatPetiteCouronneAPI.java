@@ -24,7 +24,8 @@ public class ComissariatPetiteCouronneAPI extends RequeteApiIleDeFrancePattern {
 
 		o.put("latitude", lat);
 		o.put("longitude", lon);
-		o.put("service", description+" "+name);
+		o.put("nom", description);
+		o.put("description", name);
 		o.put("type", "comissariat");
 		
 		return o;
