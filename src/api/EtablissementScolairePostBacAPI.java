@@ -15,10 +15,8 @@ public class EtablissementScolairePostBacAPI extends RequeteApiIleDeFrancePatter
 
 	private String [] refineTypeEtabl = new String [] { /*"Unité de formation et de recherche"*/ };
 
-	private EtablissementScolairePostBacAPI() {
-		super();
-		super.dataSet = "etablissements-denseignement-superieur";
-		super.facettes = new String [] { "statut", "type_d_etablissement"};
+	private EtablissementScolairePostBacAPI(double latitude, double longitude, double distance) {
+		super(latitude, longitude, distance);
 	}
 
 	@Override
@@ -60,8 +58,7 @@ public class EtablissementScolairePostBacAPI extends RequeteApiIleDeFrancePatter
 	}
 
 	public static JSONArray getEtablissementScolaireJSON(double latitude, double longitude, double distance) throws JSONException, Exception{
-		EtablissementScolairePostBacAPI t = new EtablissementScolairePostBacAPI();
-		t.geofilter_distance = latitude+","+longitude+","+distance;
+		EtablissementScolairePostBacAPI t = new EtablissementScolairePostBacAPI(latitude, longitude, distance);
 		JSONArray res = new JSONArray();
 		String URL = t.getUrl();
 		System.out.println(URL);
@@ -85,6 +82,16 @@ public class EtablissementScolairePostBacAPI extends RequeteApiIleDeFrancePatter
 				res.put(o);
 		}
 		return res;
+	}
+	
+	@Override
+	protected String[] getArrayOfFacettes() {
+		return  new String [] { "statut", "type_d_etablissement"};
+	}
+
+	@Override
+	protected String getDataSetName() {
+		return "etablissements-denseignement-superieur";
 	}
 
 }

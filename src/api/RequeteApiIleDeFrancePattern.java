@@ -8,16 +8,14 @@ public abstract class RequeteApiIleDeFrancePattern {
 	private String nbRow = "200";
 	private String lang = "fr";
 	private String start = "0";
-	protected String geofilter_distance;
+	private String geofilter_distance;
 	private String timeZone = "Europe/Paris";
 	private String pretty_print = "true";
 	private String debUrl = "https://data.iledefrance.fr/api/records/1.0/search/?";
 
-	protected String dataSet;
-	protected String [] facettes = {};
-
-
-	protected RequeteApiIleDeFrancePattern() {}
+	protected RequeteApiIleDeFrancePattern(double latitude, double longitude, double distance) {
+		geofilter_distance = latitude+","+longitude+","+distance;
+	}
 
 	protected String getUrl() {
 		return debUrl+getArgs();
@@ -34,8 +32,10 @@ public abstract class RequeteApiIleDeFrancePattern {
 
 	private String getFacette() {
 		String res = "";
-		for(String s : facettes) 
-			res += "facet="+s+"&";
+		String [] tmp = getArrayOfFacettes();
+		if(tmp != null)
+			for(String s : tmp) 
+				res += "facet="+s+"&";
 		return res;
 	}
 
@@ -65,34 +65,36 @@ public abstract class RequeteApiIleDeFrancePattern {
 	}
 
 	private String getDataSet() {
-		return "dataset="+dataSet+"&";
+		return "dataset="+getDataSetName()+"&";
 	}
 
 	private String getNbRow() {
 		return "rows="+nbRow+"&";
 	}
 
-	
+
 	// Pas sur de la laisser dans l'abstract celle la
 	protected abstract JSONObject getMyJsonObjectFromRecord(JSONObject record) throws JSONException;
-	
-	protected abstract String getExclude();
-	
-	protected abstract String getRefine();
-	
-	
 
-//	public static JSONArray getEtablissementScolaireJSON(double latitude, double longitude, double distance) throws JSONException, Exception{
-//		EtablissementScolairePreBacAPI t = new EtablissementScolairePreBacAPI();
-//		t.geofilter_distance = latitude+","+longitude+","+distance;
-//		JSONArray res = new JSONArray();
-//		String URL = t.getUrl();
-//		JSONArray records = Tools.sendGet(URL).getJSONArray("records");
-//
-//		for(int i=0 ; i<records.length() ; i++) 
-//			res.put(t.getMyJsonObjectFromRecord(records.getJSONObject(i)));
-//
-//		return res;
-//	}
+	protected abstract String getExclude();
+
+	protected abstract String getRefine();
+
+	protected abstract String [] getArrayOfFacettes();
+
+	protected abstract String getDataSetName();
+
+	//	public static JSONArray getEtablissementScolaireJSON(double latitude, double longitude, double distance) throws JSONException, Exception{
+	//		EtablissementScolairePreBacAPI t = new EtablissementScolairePreBacAPI();
+	//		t.geofilter_distance = latitude+","+longitude+","+distance;
+	//		JSONArray res = new JSONArray();
+	//		String URL = t.getUrl();
+	//		JSONArray records = Tools.sendGet(URL).getJSONArray("records");
+	//
+	//		for(int i=0 ; i<records.length() ; i++) 
+	//			res.put(t.getMyJsonObjectFromRecord(records.getJSONObject(i)));
+	//
+	//		return res;
+	//	}
 
 }

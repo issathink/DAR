@@ -7,6 +7,7 @@ public class TestApiMain {
 
 	public static void main(String[] args) throws JSONException, Exception {
 
+		// 48.8426979,2.3521379000000024,500
 		double latitude = 48.8426979;
 		double longitude = 2.3521379000000024;
 		double distance = 500;

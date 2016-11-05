@@ -17,9 +17,8 @@ class EtablissementScolairePreBacAPI extends RequeteApiIleDeFrancePattern {
 		};
 
 
-	private EtablissementScolairePreBacAPI() {
-		super.dataSet = "les_etablissements_d_enseignement_des_1er_et_2d_degres_en_idf";
-		super.facettes = new String [] { "denomination_principale_uai" };
+	private EtablissementScolairePreBacAPI(double latitude, double longitude, double distance) {
+		super(latitude, longitude, distance);
 	}
 
 	@Override
@@ -58,8 +57,7 @@ class EtablissementScolairePreBacAPI extends RequeteApiIleDeFrancePattern {
 
 
 	public static JSONArray getEtablissementScolaireJSON(double latitude, double longitude, double distance) throws JSONException, Exception{
-		EtablissementScolairePreBacAPI t = new EtablissementScolairePreBacAPI();
-		t.geofilter_distance = latitude+","+longitude+","+distance;
+		EtablissementScolairePreBacAPI t = new EtablissementScolairePreBacAPI(latitude, longitude, distance);
 		JSONArray res = new JSONArray();
 		String URL = t.getUrl();
 		JSONArray records = Tools.sendGet(URL).getJSONArray("records");
@@ -68,6 +66,16 @@ class EtablissementScolairePreBacAPI extends RequeteApiIleDeFrancePattern {
 			res.put(t.getMyJsonObjectFromRecord(records.getJSONObject(i)));
 
 		return res;
+	}
+
+	@Override
+	protected String[] getArrayOfFacettes() {
+		return new String [] { "denomination_principale_uai" };
+	}
+
+	@Override
+	protected String getDataSetName() {
+		return "les_etablissements_d_enseignement_des_1er_et_2d_degres_en_idf";
 	}
 
 
