@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 public abstract class RequeteApiIleDeFrancePattern {
 
-	private String nbRow = "200";
+	private String nbRow = "2000";
 	private String lang = "fr";
 	private String start = "0";
 	private String geofilter_distance;

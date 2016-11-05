@@ -39,18 +39,18 @@ class EtablissementScolairePreBacAPI extends RequeteApiIleDeFrancePattern {
 		JSONObject fields = record.getJSONObject("fields");
 		JSONObject geometry = record.getJSONObject("geometry");
 
-		String denominationPrincipale = fields.getString("denomination_principale_uai");
-		String patronyme = fields.getString("patronyme_uai");
+		String denominationPrincipale = fields.getString("appellation_officielle_uai");
+		String nature = fields.getString("lib_nature");
 		// Ou l'inverse
 		String latitude = geometry.getJSONArray("coordinates").getString(0);
 		String longitude = geometry.getJSONArray("coordinates").getString(1);
 
 		JSONObject res = new JSONObject();
-		res.put("type", "preBac");
-		res.put("denomination", denominationPrincipale);
-		res.put("patronyme", patronyme);
+		res.put("type", "pre_bac");
+		res.put("nom", denominationPrincipale);
 		res.put("latitude", latitude);
 		res.put("longitude", longitude);
+		res.put("nature", nature);
 
 		return res;
 	}

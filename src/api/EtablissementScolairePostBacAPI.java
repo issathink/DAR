@@ -47,7 +47,7 @@ public class EtablissementScolairePostBacAPI extends RequeteApiIleDeFrancePatter
 		String longitude = geometry.getJSONArray("coordinates").getString(1);
 
 		JSONObject res = new JSONObject();
-		res.put("type", "postBac");
+		res.put("type", "post_bac");
 		res.put("denomination", denominationPrincipale);
 		res.put("patronyme", patronyme);
 		res.put("latitude", latitude);

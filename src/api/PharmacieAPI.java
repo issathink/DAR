@@ -32,10 +32,7 @@ public class PharmacieAPI extends RequeteApiIleDeFrancePattern {
 	protected String getDataSetName() {
 		return "carte-des-pharmacies-dile-de-france";
 	}
-	
-	
-	
-	
+
 	@Override
 	protected JSONObject getMyJsonObjectFromRecord(JSONObject record) throws JSONException {
 		JSONObject res = new JSONObject();
@@ -46,29 +43,43 @@ public class PharmacieAPI extends RequeteApiIleDeFrancePattern {
 		String longitude = geometry.getJSONArray("coordinates").getString(1);
 		res.put("latitude", latitude);
 		res.put("longitude", longitude);
+
 		
-		
+		if(fields.has("telephone"))
+			res.put("telephone", fields.getString("telephone"));
 
-//		String denominationPrincipale = fields.getString("denomination_principale_uai");
-//		String patronyme = fields.getString("patronyme_uai");
-//		res.put("type", "preBac");
-//		res.put("denomination", denominationPrincipale);
-//		res.put("patronyme", patronyme);
-
-
+		String nom = fields.has("rslongue") ? fields.getString("rslongue") : fields.getString("rs");
+		res.put("nom", nom);
+		if(fields.has("numvoie"))
+			res.put(("numvoie"), fields.getString("numvoie"));
+		res.put("type", "pharmacie");
 		return res;
 	}
-	
+
 
 	public static JSONArray getPharmacieJSON(double latitude, double longitude, double distance) throws JSONException, Exception{
 		PharmacieAPI p = new PharmacieAPI(latitude, longitude, distance);
 		JSONArray res = new JSONArray();
 		String URL = p.getUrl();
 		JSONArray records = Tools.sendGet(URL).getJSONArray("records");
+		//Map<String, JSONObject> map = new HashMap<>();
 
-		for(int i=0 ; i<records.length() ; i++) 
-			res.put(p.getMyJsonObjectFromRecord(records.getJSONObject(i)));
 
+		for(int i=0 ; i<records.length() ; i++) {
+			JSONObject tmp = p.getMyJsonObjectFromRecord(records.getJSONObject(i));
+			res.put(tmp);
+		}
+			
+		// Le code en bas permet d'eviter les doublons d'adresse (je sais pas si y en a) mais il faut 
+		// commenter la boucle for juste en haut et la map aussi
+//		for(int i=0 ; i<records.length() ; i++) {
+//			JSONObject tmp = p.getMyJsonObjectFromRecord(records.getJSONObject(i));
+//			map.put((tmp.getString("latitude")+tmp.getString("longitude")), tmp);
+//		}
+//
+//		for(JSONObject j : map.values())
+//			res.put(j);
+		
 		return res;
 	}
 
