@@ -5,11 +5,11 @@ function responseIsConnected(response) {
 
     if(response.ok != undefined) {
         // alert("Already logged in: " + getCookie(C_NAME));
-        document.getElementById("index_signin_message").innerHTML = "<button type='button'" 
+        document.getElementById("index_signin").innerHTML = "<button type='button'" 
             + " class='btn btn-default btn-md'><a class='glyphicon glyphicon-envelope'" 
             + " aria-hidden='true' href='chat.html'></a></button>";
         
-        document.getElementById("index_signup_profile").innerHTML = "<button type='button'" 
+        document.getElementById("index_signup").innerHTML = "<button type='button'" 
             + " class='btn btn-default btn-md' href='profile.html'>"
             + "<a class='glyphicon glyphicon-user' aria-hidden='true'></a></button>";
     } else {

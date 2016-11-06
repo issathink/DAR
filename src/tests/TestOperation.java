@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import org.json.JSONException;
 
 import tools.DBStatic;
+import tools.Tools;
 
 
 /**
@@ -25,6 +26,7 @@ public class TestOperation {
 
 		// testCreate();
 		//testJDBC();
+		System.out.println(Tools.isValidAddress("japon"));
 	}
 
 	public static void testCreate() throws JSONException {
