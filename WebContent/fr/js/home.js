@@ -1,5 +1,6 @@
 var adresse = window.location.href.split('=')[1];
 var note;
+var dist = 500;  //default val of the distance
 isConnected(responseIsConnected);
 getCommentsAndNote(adresse);
 
@@ -27,6 +28,13 @@ function changePage() {
 		window.location.href = "home.html?adresse=" + addr;
 }
 
+
+function changeDist(rep) {
+	var d = document.getElementById("dist").value;
+	console.log("distance : " + d);
+	dist = d;
+	document.getElementById("dist").value = '';
+}
 
 function getCommentsAndNote(adresse) {
 	if(adresse != undefined){
@@ -77,7 +85,7 @@ function responseSetCommentsAndNote(rep, adresse) {
 		document.getElementById("h3NomContact").innerHTML = "<b>"+adresse+"</b>";
 		var myDiv = document.getElementById("idDivMessages");
 		document.getElementById("com").style.visibility = "visible"
-		var note = document.getElementById("moyenne");
+			var note = document.getElementById("moyenne");
 		note.innerHTML = "Note moyenne : <span id='rateYo2'></span> <script type='text/javascript'>";
 
 		if(rep.moyenne != undefined) {
@@ -200,5 +208,120 @@ function responsePostRate(rep) {
 	} else {
 		console.log("SUCCEED");
 		getCommentsAndNote(adresse);
+	}
+}
+
+
+function transport(box) {
+	if(box.checked){
+		if(adresse != undefined){
+			adress = decodeURI(adresse);
+			console.log(adresse);
+			$.ajax({
+				url : "http://vps197081.ovh.net:8080/DAR/search?",
+				type : "GET",
+				data : "adresse=" + adresse + "&apiname=transport&dist=" + dist,
+				dataType : "json",
+				success : function(rep) {
+					responseSetAPI(rep, adresse);
+				}, 
+				error : function(resultatXHR, statut, erreur) {
+					errorFunction(resultatXHR, statut, erreur, "setTransport");
+				}
+			});
+		}
+	}
+}
+
+function sport(box) {
+	if(box.checked){
+		if(adresse != undefined){
+			adress = decodeURI(adresse);
+			console.log(adresse);
+			$.ajax({
+				url : "http://vps197081.ovh.net:8080/DAR/search?",
+				type : "GET",
+				data : "adresse=" + adresse + "&apiname=sport&dist=" + dist,
+				dataType : "json",
+				success : function(rep) {
+					responseSetAPI(rep, adresse);
+				}, 
+				error : function(resultatXHR, statut, erreur) {
+					errorFunction(resultatXHR, statut, erreur, "setSport");
+				}
+			});
+		}
+	}
+}
+
+function sante(box) {
+	if(box.checked){
+		if(adresse != undefined){
+			adress = decodeURI(adresse);
+			console.log(adresse);
+			$.ajax({
+				url : "http://vps197081.ovh.net:8080/DAR/search?",
+				type : "GET",
+				data : "adresse=" + adresse + "&apiname=sante&dist=" + dist,
+				dataType : "json",
+				success : function(rep) {
+					responseSetAPI(rep, adresse);
+				}, 
+				error : function(resultatXHR, statut, erreur) {
+					errorFunction(resultatXHR, statut, erreur, "setSante");
+				}
+			});
+		}
+	}
+}
+
+function education(box) {
+	if(box.checked){
+		if(adresse != undefined){
+			adress = decodeURI(adresse);
+			console.log(adresse);
+			$.ajax({
+				url : "http://vps197081.ovh.net:8080/DAR/search?",
+				type : "GET",
+				data : "adresse=" + adresse + "&apiname=education&dist=" + dist,
+				dataType : "json",
+				success : function(rep) {
+					responseSetAPI(rep, adresse);
+				}, 
+				error : function(resultatXHR, statut, erreur) {
+					errorFunction(resultatXHR, statut, erreur, "setEducation");
+				}
+			});
+		}
+	}
+}
+
+function securite(box) {
+	if(box.checked){
+		if(adresse != undefined){
+			adress = decodeURI(adresse);
+			console.log(adresse);
+			$.ajax({
+				url : "http://vps197081.ovh.net:8080/DAR/search?",
+				type : "GET",
+				data : "adresse=" + adresse + "&apiname=securite&dist=" + dist,
+				dataType : "json",
+				success : function(rep) {
+					responseSetAPI(rep, adresse);
+				}, 
+				error : function(resultatXHR, statut, erreur) {
+					errorFunction(resultatXHR, statut, erreur, "setSecurite");
+				}
+			});
+		}
+	}
+}
+
+function responseSetAPI(rep, adresse) {
+	if(rep.erreur != undefined) {
+		console.log("ERROR");
+	} else {
+		console.log("SUCCEED API");
+		console.log(rep);
 	}
 }

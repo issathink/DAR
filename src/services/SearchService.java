@@ -12,23 +12,41 @@ import tools.Tools;
 
 public class SearchService {
 
-	public static String search(String adresse) {
-		double distanceAround = 500;
+	public static String search(String adresse, String apiname, double dist) {
+		double distanceAround = dist;
 		JSONObject result = new JSONObject();
 		LatLng position = Tools.getLatLng(adresse);
+		boolean trouve = true;
 
 		try {
 			if (Tools.isInParis(position.lat, position.lng)) {
-				JSONArray ecoles = APIs.getEducationJSON(position.lat, position.lng, distanceAround);
-				JSONArray soins = APIs.getSanteJSON(position.lat, position.lng, distanceAround);
-				JSONArray sports = APIs.getSportJSON(position.lat, position.lng, distanceAround);
-				JSONArray police = APIs.getSecuriteJSON(position.lat, position.lng, distanceAround);
-
-				result.put("ecoles", ecoles);
-				result.put("soins", soins);
-				result.put("sports", sports);
-				result.put("police", police);
-				result.put("ok", true);
+				if(apiname.equals("education")){
+					JSONArray ecoles = APIs.getEducationJSON(position.lat, position.lng, distanceAround);
+					result.put("ecoles", ecoles);
+				}
+				else if(apiname.equals("sante")){
+					JSONArray soins = APIs.getSanteJSON(position.lat, position.lng, distanceAround);
+					result.put("soins", soins);
+				}
+				else if(apiname.equals("sport")){
+					JSONArray sports = APIs.getSportJSON(position.lat, position.lng, distanceAround);
+					result.put("sports", sports);
+				}
+				else if(apiname.equals("securite")){
+					JSONArray police = APIs.getSecuriteJSON(position.lat, position.lng, distanceAround);
+					result.put("police", police);
+				}
+				else if(apiname.equals("transport")){
+					JSONArray transport = APIs.getTransportJSON(position.lat, position.lng, distanceAround);
+					result.put("transport", transport);
+				}
+				else{
+					result.put("erreur", "Invalid api '" + apiname + "'");
+					trouve = false;
+				}
+				if(trouve)
+					result.put("ok", true);
+				
 			}
 		} catch (SQLException e) {
 			return Tools.erreurSQL + e.getMessage();

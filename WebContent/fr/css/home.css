@@ -1,16 +1,26 @@
 .blog-masthead {
-    background-color: #e6e6e6;
-    -webkit-box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
-    box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
+	background-color: #e6e6e6;
+	-webkit-box-shadow: inset 0 -2px 5px rgba(0, 0, 0, .1);
+	box-shadow: inset 0 -2px 5px rgba(0, 0, 0, .1);
 }
 
 .blog-nav .active {
-    color: #fff;
+	color: #fff;
 }
 
-.depl_haut{
+.depl_haut {
 	margin-top: 5px;
 	margin-left: 25px
+}
+
+#distance {
+	margin-top: 15px;
+	margin-left: 10px;
+}
+
+#dist {
+	height: 35px;
+	width: 200px;
 }
 
 #search_bar {
@@ -31,14 +41,15 @@
 }
 
 .parent {
-  display: flex;
+	display: flex;
 }
+
 .enfant {
-  margin: auto;
+	margin: auto;
 }
 
 #top_check_box1 {
-	margin-top: 25px;
+	margin-top: 10px;
 	margin-left: 10px;
 }
 
@@ -54,45 +65,47 @@
 #se {
 	border: 1px solid #ddd;
 	max-height: 700px;
-	overflow-y:auto;
+	overflow-y: auto;
 }
 
 .stars {
-    overflow: hidden;
-    margin-left: 10px;
+	overflow: hidden;
+	margin-left: 10px;
 }
 
 .aligncenter, div.aligncenter {
-    overflow: hidden;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+	overflow: hidden;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 
-.ui-stars-star-disabled, .ui-stars-star-disabled a, .ui-stars-cancel-disabled a {
-    cursor: default !important;
+.ui-stars-star-disabled, .ui-stars-star-disabled a,
+	.ui-stars-cancel-disabled a {
+	cursor: default !important;
 }
+
 .ui-stars-star, .ui-stars-cancel {
-    float: left;
-    display: block;
-    overflow: hidden;
-    text-indent: -999em;
-    cursor: pointer;
+	float: left;
+	display: block;
+	overflow: hidden;
+	text-indent: -999em;
+	cursor: pointer;
 }
 
 #donner_note {
-  color: #333;
-  font-size: 25px;
-  font-weight: bold;
-  margin-top: 35px;
-  margin-left: 20px;
-  font-family: "New Century Schoolbook", serif;
+	color: #333;
+	font-size: 25px;
+	font-weight: bold;
+	margin-top: 35px;
+	margin-left: 20px;
+	font-family: "New Century Schoolbook", serif;
 }
 
 #moyenne {
-  color: #333;
-  margin-top: 15px;
-  font-size: 25px;
-  font-weight: bold;
-  font-family: "New Century Schoolbook", serif;
+	color: #333;
+	margin-top: 15px;
+	font-size: 25px;
+	font-weight: bold;
+	font-family: "New Century Schoolbook", serif;
 }

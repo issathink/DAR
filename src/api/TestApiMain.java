@@ -10,7 +10,7 @@ public class TestApiMain {
 		// 48.8426979,2.3521379000000024,500
 		double latitude = 48.8426979;
 		double longitude = 2.3521379000000024;
-		double distance = 100000;
+		double distance = 100;
 
 		//	   JSONArray j = APIs.getEducationJSON(latitude, longitude, distance);
 		//	   JSONArray j2 = APIs.getSanteJSON(latitude, longitude, distance);

@@ -21,10 +21,14 @@ public class SearchServlet extends HttpServlet {
 		@SuppressWarnings("unchecked")
 		Map<String, String> params = req.getParameterMap();
 		String adresse = null;
+		String apiname = null;
+		double dist;
 
-		if(params.containsKey("adresse")) {
+		if(params.containsKey("adresse") && params.containsKey("apiname") && params.containsKey("dist")) {
 			adresse = req.getParameter("adresse");
-			resp.getWriter().write(SearchService.search(adresse));
+			apiname = req.getParameter("apiname");
+			dist = Double.valueOf(req.getParameter("dist"));
+			resp.getWriter().write(SearchService.search(adresse, apiname, dist));
 		} else {
 			resp.getWriter().write(Tools.erreurParam);
 			resp.getWriter().write("rien");

@@ -51,12 +51,6 @@
 					</div>
 
 					<div class="col-lg-2 col-md-2 col-xs-12" id="top_button">
-						<!--  <button type='button' class='btn btn-default btn-md'>
-							<a class='glyphicon glyphicon-envelope' aria-hidden='true'></a>
-						</button>
-						<button type='button' class='btn btn-default btn-md'>
-							<a class='glyphicon glyphicon-user' aria-hidden='true'></a>
-						</button>-->
 					</div>
 				</nav>
 			</div>
@@ -66,12 +60,19 @@
 
 	<div class="row">
 		<div class="col-lg-3">
-			<!--<div id="se">-->
 			<ul class="list-group">
+			
+			<li>
+			<div id="distance" >
+				<input type="number" placeholder="Select a surronding distance" id="dist">
+				<button class="btn btn-default" type="button" onClick="changeDist(this);">Select</button>
+			</div>
+			</li>
+			
 				<li>
 					<div class="input-group" id="top_check_box1">
 						<span class="input-group-addon"> <input type="checkbox"
-							 onchange="transport()" aria-label="...">
+							 onchange="transport(this)" aria-label="...">
 						</span>
 						<div class="col-xs-2 col-sm-5"
 							style="background-color: #d9d9d9; height: 30px;">Transport</div>
@@ -81,7 +82,7 @@
 				<li>
 					<div class="input-group" id="top_check_box2">
 						<span class="input-group-addon"> <input type="checkbox"
-							 onchange="sport()" aria-label="...">
+							 onchange="sport(this)" aria-label="...">
 						</span>
 						<div class="col-xs-2 col-sm-5"
 							style="background-color: #d9d9d9; height: 30px;">Sport</div>
@@ -91,7 +92,7 @@
 				<li>
 					<div class="input-group" id="top_check_box2">
 						<span class="input-group-addon"> <input type="checkbox"
-							 onchange="sante()" aria-label="...">
+							 onchange="sante(this)" aria-label="...">
 						</span>
 						<div class="col-xs-2 col-sm-5"
 							style="background-color: #d9d9d9; height: 30px;">Sant&eacute;</div>
@@ -101,12 +102,23 @@
 				<li>
 					<div class="input-group" id="top_check_box2">
 						<span class="input-group-addon"> <input type="checkbox"
-							 onchange="education()" aria-label="...">
+							 onchange="education(this)" aria-label="...">
 						</span>
 						<div class="col-xs-2 col-sm-5"
 							style="background-color: #d9d9d9; height: 30px;">Education</div>
 					</div>
 				</li>
+				
+				<li>
+					<div class="input-group" id="top_check_box2">
+						<span class="input-group-addon"> <input type="checkbox"
+							 onchange="securite(this)" aria-label="...">
+						</span>
+						<div class="col-xs-2 col-sm-5"
+							style="background-color: #d9d9d9; height: 30px;">Securite</div>
+					</div>
+				</li>
+				
 				<!-- <li id="donner_note"></li>
 				<li id="etoiles"></li> -->
 				<div id="donner_note" style="visibility: hidden">
