@@ -3,6 +3,7 @@ var note;
 var map;
 var dist = 500;  //default val of the distance
 isConnected(responseIsConnected);
+
 getCommentsAndNote(adresse);
 
 // topBar("Wouah test", true); true : error
@@ -49,7 +50,7 @@ function changeDist(rep) {
 function getCommentsAndNote(adresse) {
 	if(adresse != undefined){
 		$.ajax({
-			url : "http://vps197081.ovh.net:8080/DAR/getCommentsAndNote?",
+			url : "../getCommentsAndNote?",
 			type : "GET",
 			data : "adresse=" + adresse,
 			dataType : "json",
@@ -57,7 +58,7 @@ function getCommentsAndNote(adresse) {
 				responseSetCommentsAndNote(rep, adresse);
 			}, 
 			error : function(resultatXHR, statut, erreur) {
-				errorFunction(resultatXHR, statut, erreur, "setContact");
+				errorFunction(resultatXHR, statut, erreur, "getCommentsAndNote");
 			}
 		});
 	}
@@ -134,7 +135,7 @@ function errorFunction(resultatXHR, statut, erreur, fctName) {
 	alert("XHR = "+resultatXHR.responseText);
 	alert("Statut = "+ statut);*/
 	console.log("Error(" + status + ") : " + resultatXHR.responseText);
-	console.log("Error loading commentsAndNote");
+	console.log("Error loading "+fctName);
 }
 
 
@@ -147,7 +148,7 @@ function initialize() {
 function initMap() {
 	var paris = {lat: 48.866667, lng: 2.333333};
 	map = new google.maps.Map(document.getElementById('maps'), {
-		zoom: 8,
+		zoom: 10,
 		center: paris
 	});
 
@@ -167,7 +168,7 @@ function comment(rep) {
 		console.log("Pas d'identifiant de session");
 	else {
 		$.ajax({
-			url : "http://vps197081.ovh.net:8080/DAR/comment?",
+			url : "../comment?",
 			type : "GET",
 			data : "session_id=" + session_id + "&adresse=" + adr + "&comment=" + comment,
 			dataType : "json",
@@ -204,7 +205,7 @@ function rate(note) {
 		console.log("Pas d'identifiant de session");
 	else {
 		$.ajax({
-			url : "http://vps197081.ovh.net:8080/DAR/rate?",
+			url : "../rate?",
 			type : "GET",
 			data : "session_id=" + session_id + "&adresse=" + adr + "&note=" + note,
 			dataType : "json",
@@ -234,7 +235,7 @@ function transport(box) {
 			adress = decodeURI(adresse);
 			console.log(adresse);
 			$.ajax({
-				url : "http://vps197081.ovh.net:8080/DAR/search?",
+				url : "../search?",
 				type : "GET",
 				data : "adresse=" + adresse + "&apiname=transport&dist=" + dist,
 				dataType : "json",
@@ -255,7 +256,7 @@ function sport(box) {
 			adress = decodeURI(adresse);
 			console.log(adresse);
 			$.ajax({
-				url : "http://vps197081.ovh.net:8080/DAR/search?",
+				url : "../search?",
 				type : "GET",
 				data : "adresse=" + adresse + "&apiname=sport&dist=" + dist,
 				dataType : "json",
@@ -276,7 +277,7 @@ function sante(box) {
 			adress = decodeURI(adresse);
 			console.log(adresse);
 			$.ajax({
-				url : "http://vps197081.ovh.net:8080/DAR/search?",
+				url : "../search?",
 				type : "GET",
 				data : "adresse=" + adresse + "&apiname=sante&dist=" + dist,
 				dataType : "json",
@@ -297,7 +298,7 @@ function education(box) {
 			adress = decodeURI(adresse);
 			console.log(adresse);
 			$.ajax({
-				url : "http://vps197081.ovh.net:8080/DAR/search?",
+				url : "../search?",
 				type : "GET",
 				data : "adresse=" + adresse + "&apiname=education&dist=" + dist,
 				dataType : "json",
@@ -318,7 +319,7 @@ function securite(box) {
 			adress = decodeURI(adresse);
 			console.log(adresse);
 			$.ajax({
-				url : "http://vps197081.ovh.net:8080/DAR/search?",
+				url : "../search?",
 				type : "GET",
 				data : "adresse=" + adresse + "&apiname=securite&dist=" + dist,
 				dataType : "json",
@@ -334,12 +335,7 @@ function securite(box) {
 }
 
 function responseSetAPI(repp, adresse) {
-	if(repp.erreur != undefined) {
-		console.log("ERROR");
-	} else {
-		console.log("SUCCEED API");
-		console.log(repp);
-	}
+	console.log("Dans responseSetAPI !!");
 
 	var rep = repp.res;
 	console.log("deb: " + rep.length);
@@ -348,7 +344,8 @@ function responseSetAPI(repp, adresse) {
 		var type = rep[i].type;
 		var latitude = rep[i].latitude;
 		var longitude = rep[i].longitude;
-		var location = {lat: latitude, lng: longitude};
+		var location = new google.maps.LatLng(latitude, longitude);
+		console.log("Location = "+location);
 		var nom = rep[i].nom;
 		var description = rep[i].description;
 		var image = getImageFromType(type);
@@ -386,13 +383,11 @@ function topBar(message, err) {
 
 
 function setMarkers(myMap, location, image) {
-
-	console.log("set marker: " + i);
  
   var image = {
     url: image,
     // This marker is 20 pixels wide by 32 pixels high.
-    size: new google.maps.Size(20, 32),
+    size: new google.maps.Size(50, 50),
     // The origin for this image is (0, 0).
     origin: new google.maps.Point(0, 0),
     // The anchor for this image is the base of the flagpole at (0, 32).
@@ -405,4 +400,13 @@ function setMarkers(myMap, location, image) {
       map: myMap,
       icon: image
     });
+}
+
+function setMarkerBasique(myMap, location) {}
+
+	var optionsMarqueur = {
+		position: location,
+		map: myMap
+	};
+	var marqueur = new google.maps.Marker(optionsMarqueur);
 }
