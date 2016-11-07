@@ -12,6 +12,8 @@ var imageSecurite = 'images/securite.png';
 var imageEducation = 'images/education.png';
 var imageTransport = 'images/transport.png';
 
+
+
 function responseIsConnected(response) {
 	console.log(response);
 	console.log(adresse);
