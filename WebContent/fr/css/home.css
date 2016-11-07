@@ -109,3 +109,23 @@
 	font-weight: bold;
 	font-family: "New Century Schoolbook", serif;
 }
+
+.erreur_topbar { 
+    background: #EF4836; 
+    border-bottom: solid 2px #EEE; 
+    padding: 5px 0; 
+    text-align: center; 
+    font-weight: bold;
+    color: white;
+    font-size: 1.2em;
+}
+
+.ok_topbar { 
+    background: #14b84e; 
+    border-bottom: solid 2px #EEE; 
+    padding: 5px 0; 
+    text-align: center; 
+    font-weight: bold;
+    color: white;
+    font-size: 1.2em;
+}

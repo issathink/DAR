@@ -4,6 +4,8 @@ var dist = 500;  //default val of the distance
 isConnected(responseIsConnected);
 getCommentsAndNote(adresse);
 
+// topBar("Wouah test", true); true : error
+
 
 function responseIsConnected(response) {
 	console.log(response);
@@ -324,4 +326,14 @@ function responseSetAPI(rep, adresse) {
 		console.log("SUCCEED API");
 		console.log(rep);
 	}
+}
+
+
+function topBar(message, err) {
+	if(err)
+    	$("<div />", { class: 'erreur_topbar', text: message }).hide().prependTo("body")
+      	.slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
+    else
+    	$("<div />", { class: 'ok_topbar', text: message }).hide().prependTo("body")
+      	.slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
 }
