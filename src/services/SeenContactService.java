@@ -4,7 +4,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -77,14 +84,43 @@ public class SeenContactService {
 
 			cpt = 0;
 			JSONObject jObj;
+			List<JSONObject> l = new ArrayList<JSONObject>(myMap.keySet().size());
 			for(String loginFriend : myMap.keySet()) {
 				jObj = new JSONObject();
 				jObj.put("loginFriend", loginFriend);
 				jObj.put("connected", isConnected(myMap.get(loginFriend)));
 				jObj.put("nbMessageNotRead", nbMessageNotRead(userId, myMap.get(loginFriend)));
-				jsonResult.put(jObj);
+				jObj.put("dateLastMessage", dateLastMessage(userId));
+				l.add(jObj);
+				//jsonResult.put(jObj);
 			}
 
+			
+			Collections.sort(l, new Comparator<JSONObject>() {
+				@Override
+				public int compare(JSONObject o1, JSONObject o2) {
+					try {
+						String d1 = o1.getString("dateLastMessage");
+						String d2 = o2.getString("dateLastMessage");
+						
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						Date date1 = sdf.parse(d1);
+						Date date2 = sdf.parse(d2);
+						
+						return date1.compareTo(date2);
+						
+					} catch (JSONException e) {
+						e.printStackTrace(); // TODO
+					} catch (ParseException e) {
+						e.printStackTrace();
+					} 				
+					return 0;
+				}
+			});
+			
+			for(JSONObject j : l)
+				jsonResult.put(j);
+			
 			if(statement != null)
 				statement.close();
 			if(connexion != null)
@@ -122,6 +158,17 @@ public class SeenContactService {
 		return res;
 	}
 
+	private static String dateLastMessage(String userId) throws SQLException {
+		String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
+		String request = "SELECT date_send FROM "+tableMessage+
+				" WHERE id_sender=" +userId+" OR id_receiver="+userId+" ORDER BY date_send DESC LIMIT 1";
+		// SELECT date_send FROM `messages` WHERE `id_sender`=9 OR `id_receiver`=9 ORDER BY date_send DESC LIMIT 1
+		Statement statement = connexion.createStatement();
+		ResultSet resRequest = statement.executeQuery(request);
+		resRequest.next();
+		String res = resRequest.getString("date_send");
+		return res.substring(0, res.length()-2);
+	}
 
 
 }

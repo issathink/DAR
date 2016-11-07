@@ -6,6 +6,11 @@ getCommentsAndNote(adresse);
 
 // topBar("Wouah test", true); true : error
 
+var imageSante = 'images/sante.png';
+var imageSport = 'images/sport.png';
+var imageSecurite = 'images/securite.png';
+var imageEducation = 'images/education.png';
+var imageTransport = 'images/transport.png';
 
 function responseIsConnected(response) {
 	console.log(response);
@@ -337,4 +342,30 @@ function topBar(message, err) {
     else
     	$("<div />", { class: 'ok_topbar', text: message }).hide().prependTo("body")
       	.slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
+}
+
+
+
+
+
+
+function setMarkers(map, location, image) {
+ 
+  var image = {
+    url: image,
+    // This marker is 20 pixels wide by 32 pixels high.
+    size: new google.maps.Size(20, 32),
+    // The origin for this image is (0, 0).
+    origin: new google.maps.Point(0, 0),
+    // The anchor for this image is the base of the flagpole at (0, 32).
+    anchor: new google.maps.Point(0, 32)
+  };
+ 
+
+    var marker = new google.maps.Marker({
+      position: location,
+      map: map,
+      icon: image
+    });
+  }
 }
