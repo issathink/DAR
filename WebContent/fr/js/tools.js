@@ -114,23 +114,3 @@ function get_ParamGET(param) {
 }
 
 
-function adressToLatLng(adress) {
-    var req = 
-
-    $.ajax({
-        url : "http://maps.googleapis.com/maps/api/geocode/json?",
-        type : "GET",
-        data : "address="+adress+"&key="+MAPS_KEY;
-        dataType : "json",
-        success : function(rep) {
-            responseSetAPI(rep, adresse);
-        }, 
-        error : function(resultatXHR, statut, erreur) {
-            errorFunction(resultatXHR, statut, erreur, "setTransport");
-        }
-    });
-}
-
-function escapeAdress(adress) {
-
-}
