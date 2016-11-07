@@ -7,11 +7,11 @@ getCommentsAndNote(adresse);
 
 // topBar("Wouah test", true); true : error
 
-var imageSante = 'images/sante.png';
-var imageSport = 'images/sport.png';
-var imageSecurite = 'images/securite.png';
-var imageEducation = 'images/education.png';
-var imageTransport = 'images/transport.png';
+var imageSante = 'img/sante.png';
+var imageSport = 'img/sport.png';
+var imageSecurite = 'img/securite.png';
+var imageEducation = 'img/education.png';
+var imageTransport = 'img/transport.png';
 
 
 
@@ -84,7 +84,7 @@ function responseSetCommentsAndNote(rep, adresse) {
 		var note = document.getElementById("donner_note");
 		note.innerHTML = "Noter : <span id='rateYo'></span> <script type='text/javascript'>";
 
-		document.getElementById("donner_note").style.visibility = "visible";
+		// document.getElementById("donner_note").style.visibility = "visible";
 		$(function() { 
 			$('#rateYo').rateYo({ rating : '50%', spacing : '10px', halfStar : true }).on("rateyo.set", function (e, data) {
 				note = data.rating/20;
@@ -113,10 +113,15 @@ function responseSetCommentsAndNote(rep, adresse) {
 			for(var i=0 ; i<rep.login.length ; i++) {
 				var login = rep.login[i];
 				var message = rep.comment[i];
-				var newBalise = document.createElement("p");
-				//var num = (login === pseudo_friend) ? 2 : 1;
-				newBalise.innerHTML = login + " : " + message;
-				newBalise.className ="m m"+1;
+				var newBalise = document.createElement("div");
+				newBalise.innerHTML = '<div class="row"><div class="col-sm-1"><div class="thumbnail">'
+						 + '<img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">'
+						 + '</div><!-- /thumbnail --></div><!-- /col-sm-1 --><div class="col-sm-10"><div class="panel panel-default"><div class="panel-heading"><strong>'
+						 + login + '</strong></div><div class="panel-body">'
+						 + message + '</div><!-- /panel-body --></div><!-- /panel panel-default --></div><!-- /col-sm-5 --></div>';
+				// var num = (login === pseudo_friend) ? 2 : 1;
+				// newBalise.innerHTML = login + " : " + message;
+				// newBalise.className ="m m"+1;
 				myDiv.appendChild(newBalise);
 			}
 		}
@@ -336,11 +341,13 @@ function responseSetAPI(rep, adresse) {
 		console.log(rep);
 	}
 
+	console.log("deb: " + rep.length);
 	for(var i=0 ; i<rep.length ; i++) {
+		console.log("ouahg: " + i);
 		var type = rep[i].type;
 		var latitude = rep[i].latitude;
 		var longitude = rep[i].longitude;
-		var lcoation = {lat: latitude, lng: longitude};
+		var location = {lat: latitude, lng: longitude};
 		var nom = rep[i].nom;
 		var description = rep[i].description;
 		var image = getImageFromType(type);
@@ -378,6 +385,8 @@ function topBar(message, err) {
 
 
 function setMarkers(myMap, location, image) {
+
+	console.log("set marker: " + i);
  
   var image = {
     url: image,
@@ -392,8 +401,7 @@ function setMarkers(myMap, location, image) {
 
     var marker = new google.maps.Marker({
       position: location,
-      map: map,
+      map: myMap,
       icon: image
     });
-  }
 }
