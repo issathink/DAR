@@ -411,9 +411,9 @@ function setMarkers(myMap, location, image, categorie) {
 
 function setMarkerBasique(myMap, location) {}
 
-var optionsMarqueur = {
+/*var optionsMarqueur = {
 	position: location,
 	map: myMap
 };
 var marqueur = new google.maps.Marker(optionsMarqueur);
-}
+}*/
