@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import tools.DBStatic;
+import tools.LatLng;
 import tools.Tools;
 
 public class GetCommentsAndNoteService {
@@ -27,24 +28,36 @@ public class GetCommentsAndNoteService {
 		int cpt = 0;
 		double note_moyenne = 0;
 		String my_adress = "";
+		boolean vide = true;
 
 		try {
 			if(Tools.isValidAddress(adresse)) {
 				conn = DBStatic.getMySQLConnection();
 				statement = (Statement) conn.createStatement();
-				String query = "select adresse from " + DBStatic.mysql_db 
+				String query = "select lat, lng from " + DBStatic.mysql_db 
 						+  ".comments";
-				Set<String> listAdress = new HashSet<>();
+				Set<LatLng> listAdress = new HashSet<>();
 
 				listOfAdress = statement.executeQuery(query);
-				//double latitu
+				double latitude = Tools.getLatLng(adresse).getLat();
+				double longitude = Tools.getLatLng(adresse).getLng();
+				double lat_cur, long_cur;
+				
 				while(listOfAdress.next()){
-					//if(Tools.haversineInKM(lat1, long1, lat2, long2))
-					listAdress.add(listOfAdress.getString("adresse"));
+					vide = false;
+					lat_cur = Double.valueOf(listOfAdress.getString("lat"));
+					long_cur = Double.valueOf(listOfAdress.getString("lng"));
+					if(Tools.haversineInKM(latitude, longitude, lat_cur, long_cur) <= Tools.Circonference)
+						listAdress.add(new LatLng(lat_cur, long_cur));
+				}
+				
+				if(vide){
+					result.put("No comments", adresse);
+					return result.toString();
 				}
 
-				for(String ad : listAdress){
-					my_adress += "adresse = '" + ad + "' OR ";
+				for(LatLng ad : listAdress){
+					my_adress += "lat = '" + ad.getLat() + "' AND lng = '" + ad.getLng() + "' OR ";
 				}
 				
 				my_adress = my_adress.substring(0, my_adress.length()-4);
