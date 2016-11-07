@@ -97,7 +97,7 @@ function responseSetCommentsAndNote(rep, adresse) {
 		document.getElementById("h3NomContact").innerHTML = "<b>"+adresse+"</b>";
 		var myDiv = document.getElementById("idDivMessages");
 		document.getElementById("com").style.visibility = "visible"
-			var note = document.getElementById("moyenne");
+		var note = document.getElementById("moyenne");
 		note.innerHTML = "Note moyenne : <span id='rateYo2'></span> <script type='text/javascript'>";
 
 		if(rep.moyenne != undefined) {
@@ -116,10 +116,10 @@ function responseSetCommentsAndNote(rep, adresse) {
 				var message = rep.comment[i];
 				var newBalise = document.createElement("div");
 				newBalise.innerHTML = '<div class="row"><div class="col-sm-1"><div class="thumbnail">'
-						 + '<img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">'
-						 + '</div><!-- /thumbnail --></div><!-- /col-sm-1 --><div class="col-sm-10"><div class="panel panel-default"><div class="panel-heading"><strong>'
-						 + login + '</strong></div><div class="panel-body">'
-						 + message + '</div><!-- /panel-body --></div><!-- /panel panel-default --></div><!-- /col-sm-5 --></div>';
+				+ '<img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">'
+				+ '</div><!-- /thumbnail --></div><!-- /col-sm-1 --><div class="col-sm-10"><div class="panel panel-default"><div class="panel-heading"><strong>'
+				+ login + '</strong></div><div class="panel-body">'
+				+ message + '</div><!-- /panel-body --></div><!-- /panel panel-default --></div><!-- /col-sm-5 --></div>';
 				// var num = (login === pseudo_friend) ? 2 : 1;
 				// newBalise.innerHTML = login + " : " + message;
 				// newBalise.className ="m m"+1;
@@ -334,13 +334,17 @@ function securite(box) {
 	}
 }
 
+
+
+var mapCategorie;
+
 function responseSetAPI(repp, adresse) {
 	console.log("Dans responseSetAPI !!");
-
 	var rep = repp.res;
 	console.log("deb: " + rep.length);
 	for(var i=0 ; i<rep.length ; i++) {
 		console.log("ouahg: " + i);
+		var categorie = rep[i].categorie;
 		var type = rep[i].type;
 		var latitude = rep[i].latitude;
 		var longitude = rep[i].longitude;
@@ -349,7 +353,7 @@ function responseSetAPI(repp, adresse) {
 		var nom = rep[i].nom;
 		var description = rep[i].description;
 		var image = getImageFromType(type);
-		setMarkers(map, location, image)
+		setMarkers(map, location, image, categorie)
 	}
 }
 
@@ -370,11 +374,11 @@ function getImageFromType(type) {
 
 function topBar(message, err) {
 	if(err)
-    	$("<div />", { class: 'erreur_topbar', text: message }).hide().prependTo("body")
-      	.slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
-    else
-    	$("<div />", { class: 'ok_topbar', text: message }).hide().prependTo("body")
-      	.slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
+		$("<div />", { class: 'erreur_topbar', text: message }).hide().prependTo("body")
+	.slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
+	else
+		$("<div />", { class: 'ok_topbar', text: message }).hide().prependTo("body")
+	.slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
 }
 
 
@@ -382,31 +386,34 @@ function topBar(message, err) {
 
 
 
-function setMarkers(myMap, location, image) {
- 
-  var image = {
-    url: image,
+function setMarkers(myMap, location, image, categorie) {
+
+	var image = {
+		url: image,
     // This marker is 20 pixels wide by 32 pixels high.
-    size: new google.maps.Size(50, 50),
+    size: new google.maps.Size(20, 32),
     // The origin for this image is (0, 0).
     origin: new google.maps.Point(0, 0),
     // The anchor for this image is the base of the flagpole at (0, 32).
     anchor: new google.maps.Point(0, 32)
-  };
- 
+};
 
-    var marker = new google.maps.Marker({
-      position: location,
-      map: myMap,
-      icon: image
-    });
+
+	var marker = new google.maps.Marker({
+		position: location,
+		map: myMap,
+		icon: image
+	});
+
+	mapCategorie[categorie][mapCategorie[categorie].length] = marker;
+
 }
 
 function setMarkerBasique(myMap, location) {}
 
-	var optionsMarqueur = {
-		position: location,
-		map: myMap
-	};
-	var marqueur = new google.maps.Marker(optionsMarqueur);
+var optionsMarqueur = {
+	position: location,
+	map: myMap
+};
+var marqueur = new google.maps.Marker(optionsMarqueur);
 }

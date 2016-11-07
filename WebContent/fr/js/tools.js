@@ -1,4 +1,5 @@
 var C_NAME   = "fyf_ident";
+var MAPS_KEY = "AIzaSyDZv1TYlMIMxAPIV1ZuspwPD5zZEjylW28"
 
 /************************ Cookie mnam mnam mnam ***********************/
 function setCookie(cname, cvalue, minutes) {
@@ -85,13 +86,13 @@ function logout() {
 /* Display banner messages */
 function topBar(message) {
     $("<div />", { class: 'erreur_topbar', text: message }).hide().prependTo("body")
-      .slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
+    .slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
 }
 
 
 function okBar(message) {
     $("<div />", { class: 'ok_topbar', text: message }).hide().prependTo("body")
-      .slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
+    .slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
 }
 
 
@@ -110,4 +111,26 @@ function get_ParamGET(param) {
 	if ( param )
 		return vars[param] ? vars[param] : null;	
 	return vars;
+}
+
+
+function adressToLatLng(adress) {
+    var req = 
+
+    $.ajax({
+        url : "http://maps.googleapis.com/maps/api/geocode/json?",
+        type : "GET",
+        data : "address="+adress+"&key="+MAPS_KEY;
+        dataType : "json",
+        success : function(rep) {
+            responseSetAPI(rep, adresse);
+        }, 
+        error : function(resultatXHR, statut, erreur) {
+            errorFunction(resultatXHR, statut, erreur, "setTransport");
+        }
+    });
+}
+
+function escapeAdress(adress) {
+
 }
