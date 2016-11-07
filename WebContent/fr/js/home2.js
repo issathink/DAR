@@ -333,13 +333,21 @@ function topBar(message, err) {
 
 ///////////////////////////////////////////////
 
-var listeMarkerEducation;
+var adressMarker;
+
 var listeMarkerSante;
 var listeMarkerSport;
 var listeMarkerSecurite;
+var listeMarkerEducation;
 var listeMarkerTransport;
 
-var markers;
+var markers = [];
+markers["sante"] = [];
+markers["sport"] = [];
+markers["securite"] = [];
+markers["education"] = [];
+markers["transport"] = [];
+
 
 var imageSante = 'img/sante2.png';
 var imageSport = 'img/sport2.png';
@@ -348,7 +356,20 @@ var imageEducation = 'img/education2.png';
 var imageTransport = 'img/transport2.png';
 
 
-function setMarker(categorie, myMap) {
+// Ajoute le marker pour l'adresse et centre la map dessus
+function setMakerOfAdress(latlng, myMap) {
+	myMap.zoom(4);
+	myMap.center(myLatLng);
+	adressMarker = new google.maps.Marker({
+		position: myLatLng,
+		map: myMap,
+		title: 'Hello World!' // Mettre l'adresse peut etre
+	});
+
+}
+
+
+function setMarkerCategorie(categorie, myMap) {
 	if(markers[categorie] != undefined) {
 		for(var i = 0; i < markers[categorie].length; i++) {
 			markers[categorie][i].setMap(myMap);
@@ -369,41 +390,53 @@ function unsetMarker(categorie) {
 }
 
 
-function responseSetAPI(repp, adresse) {
-	console.log("Dans responseSetAPI !!");
+function responseSetAPI(repp) {
+	console.log("Dans responseSetAPI !! " + repp);
 	var rep = repp.res;
-	console.log("deb: " + rep.length);
+	var categorie = repp.category;
+	console.log("nbElem: " + rep.length);
 	for(var i=0 ; i<rep.length ; i++) {
-		console.log("ouahg: " + i);
-		var categorie = rep[i].category;
+		console.log("Debut de boucle "+i);
 		var type = rep[i].type;
 		var latitude = rep[i].latitude;
 		var longitude = rep[i].longitude;
 		var location = new google.maps.LatLng(latitude, longitude);
-		console.log("Location = "+location);
 		var nom = rep[i].nom;
 		var description = rep[i].description;
+		console.log("Location = "+location);
+		console.log("categorie = "+categorie);
+		console.log("nom = "+nom);
+		console.log("description = "+description);
 		var image = getImageFromType(type);
 		addMarkerPerso(map, location, image, categorie)
+		console.log("Fin de boucle "+i);
+		console.log("------------------------");
 	}
 }
 
 // Ajoute un marqueur sur la map
 function addMarkerPerso(myMap, location, image, categorie) {
-	var image = {
-		url: image,
-		size: new google.maps.Size(20, 32),
-		origin: new google.maps.Point(0, 0),
-		anchor: new google.maps.Point(0, 32)
-	};
+
 	var marker = new google.maps.Marker({
 		position: location,
 		title: categorie,
 		icon: image
 	});
 
+	console.log("Ajout du maker categorie = "+categorie+" image = "+image);
 	marker.setMap(myMap);
-	markers[categorie].push(marker);
+
+	if(categorie === "education")
+		markers["education"].push(marker);
+	else if(categorie === "sante")
+		markers["sante"].push(marker);
+	else if(categorie === "sport")
+		markers["sport"].push(marker);
+	else if(categorie === "securite")
+		markers["securite"].push(marker);
+	else if(categorie === "transport")
+		markers["transport"].push(marker);
+
 }
 
 function setMarkerBasique(myMap, location) {
@@ -421,13 +454,13 @@ function setMarkerBasique(myMap, location) {
 function getImageFromType(type) {
 	if(type === "pre_bac" || type === "post_bac")
 		return imageEducation;
-	else if("pharmacie" || "centre_de_soin" || "etablissement_hospitalier")
+	else if(type === "pharmacie" || type === "centre_de_soin" || type === "etablissement_hospitalier")
 		return imageSante;
 	else if(type === "sport")
 		return imageSport;
 	else if(type === "comissariat")
 		return imageSecurite;
-	else if(type === "transport")
+	else //if(type === "transport")
 		return imageTransport;
 }
 
