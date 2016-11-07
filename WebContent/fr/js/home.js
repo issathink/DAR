@@ -1,5 +1,6 @@
 var adresse = window.location.href.split('=')[1];
 var note;
+var map;
 var dist = 500;  //default val of the distance
 isConnected(responseIsConnected);
 getCommentsAndNote(adresse);
@@ -140,7 +141,7 @@ function initialize() {
 
 function initMap() {
 	var paris = {lat: 48.866667, lng: 2.333333};
-	var map = new google.maps.Map(document.getElementById('maps'), {
+	map = new google.maps.Map(document.getElementById('maps'), {
 		zoom: 8,
 		center: paris
 	});
@@ -334,7 +335,32 @@ function responseSetAPI(rep, adresse) {
 		console.log("SUCCEED API");
 		console.log(rep);
 	}
+
+	for(var i=0 ; i<rep.length ; i++) {
+		var type = rep[i].type;
+		var latitude = rep[i].latitude;
+		var longitude = rep[i].longitude;
+		var lcoation = {lat: latitude, lng: longitude};
+		var nom = rep[i].nom;
+		var description = rep[i].description;
+		var image = getImageFromType(type);
+		setMarkers(map, location, image)
+	}
 }
+
+function getImageFromType(type) {
+	if(type === "pre_bac" || type === "post_bac")
+		return imageEducation;
+	else if("pharmacie" || "centre_de_soin" || "etablissement_hospitalier")
+		return imageSante;
+	else if(type === "sport")
+		return imageSport;
+	else if(type === "comissariat")
+		return imageSecurite;
+	else if(type === "transport")
+		return imageTransport;
+}
+
 
 
 function topBar(message, err) {
@@ -351,7 +377,7 @@ function topBar(message, err) {
 
 
 
-function setMarkers(map, location, image) {
+function setMarkers(myMap, location, image) {
  
   var image = {
     url: image,

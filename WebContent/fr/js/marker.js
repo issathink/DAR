@@ -1,9 +1,9 @@
-
 var imageSante = 'images/sante.png';
 var imageSport = 'images/sport.png';
 var imageSecurite = 'images/securite.png';
 var imageEducation = 'images/education.png';
 var imageTransport = 'images/transport.png';
+
 
 
 function setMarkers(map, location, image) {
