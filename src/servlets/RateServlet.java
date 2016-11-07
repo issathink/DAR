@@ -29,11 +29,15 @@ public class RateServlet extends HttpServlet {
 			sessionId = req.getParameter("session_id");
 			adresse = req.getParameter("adresse");
 			LatLng latLng = Tools.getLatLng(adresse);
-			lat = latLng.lat;
-			lng = latLng.lng;
-			note = req.getParameter("note");
-			
-			resp.getWriter().write(CommentRateService.commentRate(sessionId, lat, lng, note, false));
+			if(latLng != null) {
+				lat = latLng.lat;
+				lng = latLng.lng;
+				note = req.getParameter("note");
+				
+				resp.getWriter().write(CommentRateService.commentRate(sessionId, lat, lng, note, false));
+			} else {
+				resp.getWriter().write(Tools.erreur);
+			}
 			
 		} else {
 			resp.getWriter().write(Tools.erreurParam);

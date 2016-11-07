@@ -40,7 +40,7 @@ function validate() {
 function signin(login, pwd) {
 
 	$.ajax({
-		url : "http://vps197081.ovh.net:8080/Issa/signin",
+		url : "../signin",
 		type : "get",
 		data : "format=json" + "&login=" + login + "&pw=" + pwd,
 		dataType : "json",
