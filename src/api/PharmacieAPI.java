@@ -39,8 +39,8 @@ public class PharmacieAPI extends RequeteApiIleDeFrancePattern {
 		JSONObject fields = record.getJSONObject("fields");
 
 		JSONObject geometry = record.getJSONObject("geometry");
-		String latitude = geometry.getJSONArray("coordinates").getString(0);
-		String longitude = geometry.getJSONArray("coordinates").getString(1);
+		String longitude = geometry.getJSONArray("coordinates").getString(0);
+		String latitude = geometry.getJSONArray("coordinates").getString(1);
 		res.put("latitude", latitude);
 		res.put("longitude", longitude);
 

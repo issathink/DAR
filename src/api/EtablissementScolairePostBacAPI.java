@@ -43,8 +43,8 @@ public class EtablissementScolairePostBacAPI extends RequeteApiIleDeFrancePatter
 		String patronyme = fields.has("universite") ? fields.getString("universite") : fields.getString("nom");
 		String adresse = fields.getString("adresse");
 		// Ou l'inverse
-		String latitude = geometry.getJSONArray("coordinates").getString(0);
-		String longitude = geometry.getJSONArray("coordinates").getString(1);
+		String longitude = geometry.getJSONArray("coordinates").getString(0);
+		String latitude = geometry.getJSONArray("coordinates").getString(1);
 
 		JSONObject res = new JSONObject();
 		res.put("type", "post_bac");

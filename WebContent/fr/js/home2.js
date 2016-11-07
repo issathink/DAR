@@ -418,13 +418,14 @@ function responseSetAPI(repp) {
 function addMarkerPerso(myMap, location, image, categorie) {
 
 	var marker = new google.maps.Marker({
-		position: location,
 		title: categorie,
 		icon: image
 	});
+	marker.setPosition(location);
+	marker.setMap(map);
+	marker.setMap(myMap);
 
 	console.log("Ajout du maker categorie = "+categorie+" image = "+image);
-	marker.setMap(myMap);
 
 	if(categorie === "education")
 		markers["education"].push(marker);
