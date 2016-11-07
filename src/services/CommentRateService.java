@@ -13,7 +13,7 @@ import tools.Tools;
 
 public class CommentRateService {
 	
-	public static String commentRate(String sessionId, String adresse, String commentNote, boolean comment) {
+	public static String commentRate(String sessionId, double lat, double lng, String commentNote, boolean comment) {
 		Connection conn = null;
 		ResultSet listOfComments = null;
 		Statement statement = null;
@@ -25,20 +25,20 @@ public class CommentRateService {
 			statement = (Statement) conn.createStatement();
 			userId = Tools.getUserId(sessionId, statement);
 			String query = "select id, comment, note from " + DBStatic.mysql_db 
-					+  ".comments where user_id='" + userId + "' AND adresse='" + adresse + "'";
+					+  ".comments where user_id='" + userId + "' AND lat='" + lat + "' AND lng='" + lng + "'";
 			
 			if(userId != null) {
-				if(Tools.isValidAddress(adresse)) {
+				if(Tools.isInParis(lat, lng)) {
 					listOfComments = statement.executeQuery(query);
 					
 					if(listOfComments.next()) {
 						String update;
 						if(comment) {
 							update = "UPDATE " + DBStatic.mysql_db +  ".comments SET comment='"
-									+ commentNote + "' where user_id='" + userId + "' AND adresse='" + adresse + "'";
+									+ commentNote + "' where user_id='" + userId + "' AND lat='" + lat + "' AND lng='" + lng + "'";
 						} else {
 							update = "UPDATE " + DBStatic.mysql_db +  ".comments SET note='"
-								+ commentNote + "' where user_id='" + userId + "' AND adresse='" + adresse + "'";
+								+ commentNote + "' where user_id='" + userId + "' AND  lat='" + lat + "' AND lng='" + lng + "'";
 						}
 						if(statement.executeUpdate(update) > 0) 
 							result.put("ok", "Thanks for participating.");
@@ -48,10 +48,10 @@ public class CommentRateService {
 						String insert;
 						if(comment) {
 							insert = "INSERT INTO " + DBStatic.mysql_db +  ".comments values (NULL,'" + userId
-									+ "','" + adresse + "','" + commentNote + "', NULL)";
+									+ "','" + commentNote + "', NULL, '" + lat + "','" + lng  + "')";
 						} else {
 							insert = "INSERT INTO " + DBStatic.mysql_db +  ".comments values (NULL,'" + userId
-								+ "','" + adresse + "', NULL, '" + commentNote + "')";
+								+ "', NULL, '" + commentNote + "','" + lat + "','" + lng  +  "')";
 						}
 						if(statement.executeUpdate(insert) > 0) 
 							result.put("ok", "Thanks for participating.");
@@ -59,7 +59,7 @@ public class CommentRateService {
 							result.put("erreur", "Unexpected error please try again later");
 					}
 				} else {
-					result.put("erreur", "Invalid address '" + adresse + "'");
+					result.put("erreur", "Invalid address.");
 				}
 			} else {
 				result.put("erreur", "Invalid session id.");

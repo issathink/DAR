@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import services.CommentRateService;
+import tools.LatLng;
 import tools.Tools;
 
 public class CommentServlet extends HttpServlet {
@@ -20,14 +21,19 @@ public class CommentServlet extends HttpServlet {
 			throws ServletException, IOException {
 		@SuppressWarnings("unchecked")
 		Map<String, String> params = req.getParameterMap();
-		String sessionId, adresse, comment;
+		String sessionId, comment;
+		String adresse;
+		double lat, lng;
 		
 		if (params.containsKey("session_id") && params.containsKey("adresse") && params.containsKey("comment")) {
 			sessionId = req.getParameter("session_id");
 			adresse = req.getParameter("adresse");
+			LatLng latLng = Tools.getLatLng(adresse);
+			lat = latLng.lat;
+			lng = latLng.lng;
 			comment = req.getParameter("comment");
 			
-			resp.getWriter().write(CommentRateService.commentRate(sessionId, adresse, comment, true));
+			resp.getWriter().write(CommentRateService.commentRate(sessionId, lat, lng, comment, true));
 			
 		} else {
 			resp.getWriter().write(Tools.erreurParam);
