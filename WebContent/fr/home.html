@@ -63,16 +63,9 @@
 			<ul class="list-group">
 			
 			<li>
-			<div id="distance" >
-				<input type="number" placeholder="Select a surronding distance" id="dist">
-				<button class="btn btn-default" type="button" onClick="changeDist(this);">Select</button>
-			</div>
-			</li>
-			
-				<li>
 					<div class="input-group" id="top_check_box1">
 						<span class="input-group-addon"> <input type="checkbox"
-							 onchange="transport(this)" aria-label="...">
+							 onchange="apiCall(this,'transport')" aria-label="...">
 						</span>
 						<div class="col-xs-2 col-sm-5"
 							style="background-color: #d9d9d9; height: 30px;">Transport</div>
@@ -82,7 +75,7 @@
 				<li>
 					<div class="input-group" id="top_check_box2">
 						<span class="input-group-addon"> <input type="checkbox"
-							 onchange="sport(this)" aria-label="...">
+							 onchange="apiCall(this,'sport')" aria-label="...">
 						</span>
 						<div class="col-xs-2 col-sm-5"
 							style="background-color: #d9d9d9; height: 30px;">Sport</div>
@@ -92,7 +85,7 @@
 				<li>
 					<div class="input-group" id="top_check_box2">
 						<span class="input-group-addon"> <input type="checkbox"
-							 onchange="sante(this)" aria-label="...">
+							 onchange="apiCall(this,'sante')" aria-label="...">
 						</span>
 						<div class="col-xs-2 col-sm-5"
 							style="background-color: #d9d9d9; height: 30px;">Sant&eacute;</div>
@@ -102,7 +95,7 @@
 				<li>
 					<div class="input-group" id="top_check_box2">
 						<span class="input-group-addon"> <input type="checkbox"
-							 onchange="education(this)" aria-label="...">
+							 onchange="apiCall(this,'education')" aria-label="...">
 						</span>
 						<div class="col-xs-2 col-sm-5"
 							style="background-color: #d9d9d9; height: 30px;">Education</div>
@@ -112,7 +105,7 @@
 				<li>
 					<div class="input-group" id="top_check_box2">
 						<span class="input-group-addon"> <input type="checkbox"
-							 onchange="securite(this)" aria-label="...">
+							 onchange="apiCall(this,'securite')" aria-label="...">
 						</span>
 						<div class="col-xs-2 col-sm-5"
 							style="background-color: #d9d9d9; height: 30px;">Securite</div>
@@ -157,7 +150,7 @@
 			style="margin-top: 5px; margin-bottom: 10px;"></div>
 	</form>
 
-	<script type="text/javascript" src="./js/home2.js"></script>
+	<script type="text/javascript" src="./js/home.js"></script>
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3YD2YqV03p3NETfHUfW6f0CoUuP4Au6o&libraries=places&callback=initMap"></script>
 
 </body>

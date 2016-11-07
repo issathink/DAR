@@ -1,5 +1,5 @@
 var C_NAME   = "fyf_ident";
-var MAPS_KEY = "AIzaSyDZv1TYlMIMxAPIV1ZuspwPD5zZEjylW28"
+var MAPS_KEY = "AIzaSyDZv1TYlMIMxAPIV1ZuspwPD5zZEjylW28";
 
 /************************ Cookie mnam mnam mnam ***********************/
 function setCookie(cname, cvalue, minutes) {

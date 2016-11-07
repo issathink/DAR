@@ -32,6 +32,23 @@ function responseIsConnected(response) {
 	}
 }
 
+function setFieldsToComment(rep){
+	if(rep.ok != undefined){
+		document.getElementById("connected").innerHTML = "<div class='input-group'> <input type='text' class='form-control'" +
+		"placeholder='Type your message ...' name='comment' id='commentText'> <span class='input-group-btn'>" +
+		"<button class='btn btn-default' type='submit'>Send</button> </span> </div>";
+		var note = document.getElementById("donner_note");
+		note.style.visibility = "visible";
+		note.innerHTML = "Noter : <span id='rateYo'></span> <script type='text/javascript'>";
+		$(function() { 
+			$('#rateYo').rateYo({ rating : '50%', spacing : '10px', halfStar : true }).on("rateyo.set", function (e, data) {
+				note = data.rating/20;
+				console.log("Vaut : "+note);
+				rate(note);
+			});
+		}); 
+	}
+}
 
 function changePage() {
 	addr = document.getElementById("searchTextField").value;
@@ -78,21 +95,7 @@ function responseSetCommentsAndNote(rep, adresse) {
 	else {
 		adresse = decodeURI(adresse)
 
-		document.getElementById("connected").innerHTML = "<div class='input-group'> <input type='text' class='form-control'" +
-		"placeholder='Type your message ...' name='comment' id='commentText'> <span class='input-group-btn'>" +
-		"<button class='btn btn-default' type='submit'>Send</button> </span> </div>";
-
-		var note = document.getElementById("donner_note");
-		note.innerHTML = "Noter : <span id='rateYo'></span> <script type='text/javascript'>";
-
-		// document.getElementById("donner_note").style.visibility = "visible";
-		$(function() { 
-			$('#rateYo').rateYo({ rating : '50%', spacing : '10px', halfStar : true }).on("rateyo.set", function (e, data) {
-				note = data.rating/20;
-				console.log("Vaut : "+note);
-				rate(note);
-			});
-		}); 
+		isConnected(setFieldsToComment);
 
 		document.getElementById("h3NomContact").innerHTML = "<b>"+adresse+"</b>";
 		var myDiv = document.getElementById("idDivMessages");
@@ -187,7 +190,7 @@ function comment(rep) {
 
 function responsePostComment(rep) {
 	if(rep.erreur != undefined) {
-		console.log("ERROR");
+		console.log(rep.erreur);
 		$('#error_caractere').hide();
 		$('#error_caractere').fadeIn('fast');
 	} else {
@@ -229,7 +232,7 @@ function responsePostRate(rep) {
 }
 
 
-function transport(box) {
+function apiCall(box, name_api) {
 	if(box.checked){
 		if(adresse != undefined){
 			adress = decodeURI(adresse);
@@ -237,97 +240,13 @@ function transport(box) {
 			$.ajax({
 				url : "../search?",
 				type : "GET",
-				data : "adresse=" + adresse + "&apiname=transport&dist=" + dist,
+				data : "adresse=" + adresse + "&apiname=" + name_api + "&dist=" + dist,
 				dataType : "json",
 				success : function(rep) {
 					responseSetAPI(rep, adresse);
 				}, 
 				error : function(resultatXHR, statut, erreur) {
-					errorFunction(resultatXHR, statut, erreur, "setTransport");
-				}
-			});
-		}
-	}
-}
-
-function sport(box) {
-	if(box.checked){
-		if(adresse != undefined){
-			adress = decodeURI(adresse);
-			console.log(adresse);
-			$.ajax({
-				url : "../search?",
-				type : "GET",
-				data : "adresse=" + adresse + "&apiname=sport&dist=" + dist,
-				dataType : "json",
-				success : function(rep) {
-					responseSetAPI(rep, adresse);
-				}, 
-				error : function(resultatXHR, statut, erreur) {
-					errorFunction(resultatXHR, statut, erreur, "setSport");
-				}
-			});
-		}
-	}
-}
-
-function sante(box) {
-	if(box.checked){
-		if(adresse != undefined){
-			adress = decodeURI(adresse);
-			console.log(adresse);
-			$.ajax({
-				url : "../search?",
-				type : "GET",
-				data : "adresse=" + adresse + "&apiname=sante&dist=" + dist,
-				dataType : "json",
-				success : function(rep) {
-					responseSetAPI(rep, adresse);
-				}, 
-				error : function(resultatXHR, statut, erreur) {
-					errorFunction(resultatXHR, statut, erreur, "setSante");
-				}
-			});
-		}
-	}
-}
-
-function education(box) {
-	if(box.checked){
-		if(adresse != undefined){
-			adress = decodeURI(adresse);
-			console.log(adresse);
-			$.ajax({
-				url : "../search?",
-				type : "GET",
-				data : "adresse=" + adresse + "&apiname=education&dist=" + dist,
-				dataType : "json",
-				success : function(rep) {
-					responseSetAPI(rep, adresse);
-				}, 
-				error : function(resultatXHR, statut, erreur) {
-					errorFunction(resultatXHR, statut, erreur, "setEducation");
-				}
-			});
-		}
-	}
-}
-
-function securite(box) {
-	if(box.checked){
-		if(adresse != undefined){
-			adress = decodeURI(adresse);
-			console.log(adresse);
-			$.ajax({
-				url : "../search?",
-				type : "GET",
-				data : "adresse=" + adresse + "&apiname=securite&dist=" + dist,
-				dataType : "json",
-				success : function(rep) {
-					responseSetAPI(rep, adresse);
-				}, 
-				error : function(resultatXHR, statut, erreur) {
-					errorFunction(resultatXHR, statut, erreur, "setSecurite");
+					errorFunction(resultatXHR, statut, erreur, name_api);
 				}
 			});
 		}
@@ -339,6 +258,7 @@ function securite(box) {
 var mapCategorie;
 
 function responseSetAPI(repp, adresse) {
+	console.log(repp);
 	console.log("Dans responseSetAPI !!");
 	var rep = repp.res;
 	console.log("deb: " + rep.length);
