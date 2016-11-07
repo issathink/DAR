@@ -61,9 +61,10 @@ function responseSetCommentsAndNote(rep, adresse) {
 		if(rep.erreur.indexOf("Invalid address") !== -1) {
 			//setVisible(choose another adress)
 			console.log("Not in Paris or its suburban");
+			topBar("Not in Paris or its suburban", true);
 		}
 		else
-			console.log("Noppp unknown error!");
+			console.log("SetCommentsAndNote error!");
 	}
 	else {
 		adresse = decodeURI(adresse)

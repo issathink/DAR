@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +18,7 @@ public class GetCommentsAndNoteService {
 
 	public static String getComments(String adresse) {
 		Connection conn = null;
+		ResultSet listOfAdress = null;
 		ResultSet listOfComments = null;
 		ResultSet listOfUsers = null;
 		Statement statement = null;
@@ -23,15 +26,33 @@ public class GetCommentsAndNoteService {
 		ArrayList<String> usersId = new ArrayList<>();
 		int cpt = 0;
 		double note_moyenne = 0;
+		String my_adress = "";
 
 		try {
-			conn = DBStatic.getMySQLConnection();
-			statement = (Statement) conn.createStatement();
-			String query = "select comment, note, user_id from " + DBStatic.mysql_db 
-					+  ".comments where adresse='" + adresse + "'";
-
 			if(Tools.isValidAddress(adresse)) {
-				listOfComments = statement.executeQuery(query);
+				conn = DBStatic.getMySQLConnection();
+				statement = (Statement) conn.createStatement();
+				String query = "select adresse from " + DBStatic.mysql_db 
+						+  ".comments";
+				Set<String> listAdress = new HashSet<>();
+
+				listOfAdress = statement.executeQuery(query);
+				//double latitu
+				while(listOfAdress.next()){
+					//if(Tools.haversineInKM(lat1, long1, lat2, long2))
+					listAdress.add(listOfAdress.getString("adresse"));
+				}
+
+				for(String ad : listAdress){
+					my_adress += "adresse = '" + ad + "' OR ";
+				}
+				
+				my_adress = my_adress.substring(0, my_adress.length()-4);
+				
+				String query_get_comments = "select comment, note, user_id from " + DBStatic.mysql_db 
+						+  ".comments where " + my_adress;
+				listOfComments = statement.executeQuery(query_get_comments);
+				
 				while(listOfComments.next()) {
 					result.append("comment", listOfComments.getString("comment"));
 					usersId.add(listOfComments.getString("user_id"));

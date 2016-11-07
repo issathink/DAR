@@ -39,9 +39,9 @@ public class Tools {
 	public static double LonParisSud = 2.346954345703125;
 	public static double LatParisNord = 48.90535146044804;
 	public static double LonParisNord = 2.35107421875;
-	public static double LatParisCenter = 48.859652;
-	public static double LonParisCenter = 2.332711;
-	public static double ParisRadius = 6.0;
+	public static double LatParisCenter = 48.733809;
+	public static double LonParisCenter = 2.529981;
+	public static double ParisRadius = 75.0;
 
 	double haversineKM(double lat1, double long1, double lat2, double long2) {
 		double d2r = Math.PI / 180.0;
