@@ -22,23 +22,23 @@ public class SearchService {
 			if (Tools.isInParis(position.lat, position.lng)) {
 				if(apiname.equals("education")){
 					JSONArray ecoles = APIs.getEducationJSON(position.lat, position.lng, distanceAround);
-					result.put("ecoles", ecoles);
+					result.put("res", ecoles);
 				}
 				else if(apiname.equals("sante")){
 					JSONArray soins = APIs.getSanteJSON(position.lat, position.lng, distanceAround);
-					result.put("soins", soins);
+					result.put("res", soins);
 				}
 				else if(apiname.equals("sport")){
 					JSONArray sports = APIs.getSportJSON(position.lat, position.lng, distanceAround);
-					result.put("sports", sports);
+					result.put("res", sports);
 				}
 				else if(apiname.equals("securite")){
 					JSONArray police = APIs.getSecuriteJSON(position.lat, position.lng, distanceAround);
-					result.put("police", police);
+					result.put("res", police);
 				}
 				else if(apiname.equals("transport")){
 					JSONArray transport = APIs.getTransportJSON(position.lat, position.lng, distanceAround);
-					result.put("transport", transport);
+					result.put("res", transport);
 				}
 				else{
 					result.put("erreur", "Invalid api '" + apiname + "'");

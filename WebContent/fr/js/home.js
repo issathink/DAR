@@ -333,14 +333,15 @@ function securite(box) {
 	}
 }
 
-function responseSetAPI(rep, adresse) {
-	if(rep.erreur != undefined) {
+function responseSetAPI(repp, adresse) {
+	if(repp.erreur != undefined) {
 		console.log("ERROR");
 	} else {
 		console.log("SUCCEED API");
-		console.log(rep);
+		console.log(repp);
 	}
 
+	var rep = repp.res;
 	console.log("deb: " + rep.length);
 	for(var i=0 ; i<rep.length ; i++) {
 		console.log("ouahg: " + i);
