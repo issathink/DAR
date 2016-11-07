@@ -19,6 +19,7 @@ public class CommentRateService {
 		Statement statement = null;
 		JSONObject result = new JSONObject();
 		String userId = "";
+		String s = "";
 		
 		try {
 			conn = DBStatic.getMySQLConnection();
@@ -34,9 +35,11 @@ public class CommentRateService {
 					if(listOfComments.next()) {
 						String update;
 						if(comment) {
+							s += "1 ";
 							update = "UPDATE " + DBStatic.mysql_db +  ".comments SET comment='"
 									+ commentNote + "' where user_id='" + userId + "' AND lat='" + lat + "' AND lng='" + lng + "'";
 						} else {
+							s += "1else ";
 							update = "UPDATE " + DBStatic.mysql_db +  ".comments SET note='"
 								+ commentNote + "' where user_id='" + userId + "' AND  lat='" + lat + "' AND lng='" + lng + "'";
 						}
@@ -47,9 +50,11 @@ public class CommentRateService {
 					} else {
 						String insert;
 						if(comment) {
+							s += "2 ";
 							insert = "INSERT INTO " + DBStatic.mysql_db +  ".comments values (NULL,'" + userId
 									+ "','" + commentNote + "', NULL, '" + lat + "','" + lng  + "')";
 						} else {
+							s += "2else ";
 							insert = "INSERT INTO " + DBStatic.mysql_db +  ".comments values (NULL,'" + userId
 								+ "', NULL, '" + commentNote + "','" + lat + "','" + lng  +  "')";
 						}
@@ -64,8 +69,8 @@ public class CommentRateService {
 			} else {
 				result.put("erreur", "Invalid session id.");
 			}
-		} catch (SQLException e1) {
-			return Tools.erreurSQL;
+		} catch (SQLException e) {
+			return s + Tools.erreurSQL + e.getMessage();
 		} catch (JSONException e) {
 			return Tools.erreurJSON;
 		}
