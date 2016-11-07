@@ -27,7 +27,7 @@ public class SearchServlet extends HttpServlet {
 		String apiname = null;
 		double dist;
 
-		if(params.containsKey("lat") && params.containsKey("adresse") && params.containsKey("dist")) {
+		if(params.containsKey("adresse") && params.containsKey("dist")) {
 			adresse = req.getParameter("adresse");
 			LatLng latLng = Tools.getLatLng(adresse);
 			lat = latLng.lat;
