@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import services.SearchService;
+import tools.LatLng;
 import tools.Tools;
 
 public class SearchServlet extends HttpServlet {
@@ -20,15 +21,20 @@ public class SearchServlet extends HttpServlet {
 			throws ServletException, IOException {
 		@SuppressWarnings("unchecked")
 		Map<String, String> params = req.getParameterMap();
-		String adresse = null;
+		double lat;
+		double lng;
+		String adresse;
 		String apiname = null;
 		double dist;
 
-		if(params.containsKey("adresse") && params.containsKey("apiname") && params.containsKey("dist")) {
+		if(params.containsKey("lat") && params.containsKey("adresse") && params.containsKey("dist")) {
 			adresse = req.getParameter("adresse");
+			LatLng latLng = Tools.getLatLng(adresse);
+			lat = latLng.lat;
+			lng = latLng.lng;
 			apiname = req.getParameter("apiname");
 			dist = Double.valueOf(req.getParameter("dist"));
-			resp.getWriter().write(SearchService.search(adresse, apiname, dist));
+			resp.getWriter().write(SearchService.search(lat, lng, apiname, dist));
 		} else {
 			resp.getWriter().write(Tools.erreurParam);
 			resp.getWriter().write("rien");
