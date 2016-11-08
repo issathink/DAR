@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import services.ChangePwService;
 import tools.Tools;
 
-public class ChangePwdServlet extends HttpServlet {
+public class ChangePwServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,7 +25,7 @@ public class ChangePwdServlet extends HttpServlet {
 		if (params.containsKey("prec_pw") && params.containsKey("new_pw") && params.containsKey("session_id")) {
 			prec_pw = req.getParameter("prec_pw");
 			new_pw = req.getParameter("new_pw");
-			session_id = req.getParameter("sessionId");
+			session_id = req.getParameter("session_id");
 			resp.getWriter().write(ChangePwService.changePw(session_id, prec_pw, new_pw));
 		} else {
 			resp.getWriter().write(Tools.erreurParam);

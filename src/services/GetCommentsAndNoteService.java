@@ -26,9 +26,10 @@ public class GetCommentsAndNoteService {
 		JSONObject result = new JSONObject();
 		ArrayList<String> usersId = new ArrayList<>();
 		int cpt = 0;
-		double note_moyenne = 0;
+		double note_moyenne = -1;
 		String my_adress = "";
 		boolean vide = true;
+		boolean first = true;
 
 		try {
 			if(Tools.isValidAddress(adresse)) {
@@ -42,7 +43,7 @@ public class GetCommentsAndNoteService {
 				double latitude = Tools.getLatLng(adresse).getLat();
 				double longitude = Tools.getLatLng(adresse).getLng();
 				double lat_cur, long_cur;
-				
+
 				while(listOfAdress.next()){
 					vide = false;
 					lat_cur = Double.valueOf(listOfAdress.getString("lat"));
@@ -50,7 +51,7 @@ public class GetCommentsAndNoteService {
 					if(Tools.haversineInKM(latitude, longitude, lat_cur, long_cur) <= Tools.Circonference)
 						listAdress.add(new LatLng(lat_cur, long_cur));
 				}
-				
+
 				if(vide){
 					result.put("No comments", adresse);
 					return result.toString();
@@ -59,22 +60,28 @@ public class GetCommentsAndNoteService {
 				for(LatLng ad : listAdress){
 					my_adress += "lat = '" + ad.getLat() + "' AND lng = '" + ad.getLng() + "' OR ";
 				}
-				
+
 				my_adress = my_adress.substring(0, my_adress.length()-4);
-				
+
 				String query_get_comments = "select comment, note, user_id from " + DBStatic.mysql_db 
 						+  ".comments where " + my_adress;
 				listOfComments = statement.executeQuery(query_get_comments);
-				
+
 				while(listOfComments.next()) {
 					String c = listOfComments.getString("comment");
 					if(c != null)
 						result.append("comment", c);
 					usersId.add(listOfComments.getString("user_id"));
 					String n = listOfComments.getString("note");
-					if(n != null)
+					if(n != null){
+						if(first){
+							first = false;
+							note_moyenne = 0;
+						}
 						note_moyenne += Double.valueOf(n);
-					cpt++;
+						result.put("note"+note_moyenne, note_moyenne);
+						cpt++;
+					}
 				}
 				note_moyenne = note_moyenne/cpt;
 				note_moyenne = (double)((int)(note_moyenne*10))/10;

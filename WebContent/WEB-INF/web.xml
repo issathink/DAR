@@ -51,6 +51,10 @@
 		<servlet-name>GetLoginBeginByServlet</servlet-name>
 		<servlet-class>servlets.GetLoginBeginByServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>ChangePwServlet</servlet-name>
+		<servlet-class>servlets.ChangePwServlet</servlet-class>
+	</servlet>
 
 
 	<servlet-mapping>
@@ -100,6 +104,10 @@
 		<servlet-mapping>
 		<servlet-name>GetLoginBeginByServlet</servlet-name>
 		<url-pattern>/getloginbeginbyservlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ChangePwServlet</servlet-name>
+		<url-pattern>/changepw</url-pattern>
 	</servlet-mapping>
 
 	<resource-env-ref>

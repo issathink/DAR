@@ -24,11 +24,11 @@ public class ChangePwService {
 			conn = DBStatic.getMySQLConnection();
 			statement = (Statement) conn.createStatement();
 			userId = Tools.getUserId(sessionId, statement);
-			String query = "select pw from " + DBStatic.mysql_db +  ".users where id='" + userId;
+			String query = "select pw from " + DBStatic.mysql_db +  ".users where id='" + userId + "'";
 			if(userId != null) {
 				PrecPw = statement.executeQuery(query);
 				if(PrecPw.next()) {
-					if(prec_pw == PrecPw.getString("pw")){
+					if(prec_pw.equals(PrecPw.getString("pw"))){
 						String update = "UPDATE " + DBStatic.mysql_db +  ".users SET pw='"
 								+ new_pw + "' where id='" + userId + "'";
 						if(statement.executeUpdate(update) > 0) 
