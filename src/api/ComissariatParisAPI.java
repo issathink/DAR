@@ -1,5 +1,6 @@
 package api;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +20,7 @@ public class ComissariatParisAPI extends RequeteApiIleDeFrancePattern {
 		String latitude = fields.getJSONArray("wgs84").getString(0);
 		String longitude = fields.getJSONArray("wgs84").getString(1);
 
-		String service = fields.getString("service");
+		String service = StringEscapeUtils.escapeHtml4(fields.getString("service"));
 		o.put("latitude", latitude);
 		o.put("longitude", longitude);
 		o.put("nom", service);

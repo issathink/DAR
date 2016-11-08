@@ -58,7 +58,7 @@ public class SeenContactService {
 
 			// Get Contact
 			// Parcourt du resultat
-			int cpt = 0; // Pour les afficher dans l'ordre peut etre
+			//int cpt = 0; // Pour les afficher dans l'ordre peut etre
 			Map<String, String> myMap = new HashMap<String, String>();
 			ResultSet resRequest2;
 
@@ -82,7 +82,7 @@ public class SeenContactService {
 				myMap.put(friendLogin, ""+idFriend); // Reflechir la dessus .... pour garder un bonne ordre au niveau du dernier message
 			}
 
-			cpt = 0;
+			//cpt = 0;
 			JSONObject jObj;
 			List<JSONObject> l = new ArrayList<JSONObject>(myMap.keySet().size());
 			for(String loginFriend : myMap.keySet()) {

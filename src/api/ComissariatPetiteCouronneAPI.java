@@ -1,5 +1,6 @@
 package api;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,8 +20,8 @@ public class ComissariatPetiteCouronneAPI extends RequeteApiIleDeFrancePattern {
 		String latitude = fields.getJSONArray("geo_point_2d").getString(0);
 		String longitude = fields.getJSONArray("geo_point_2d").getString(1);
 
-		String description = fields.getString("description");
-		String name = fields.getString("name");
+		String description = StringEscapeUtils.escapeHtml4(fields.getString("description"));
+		String name = StringEscapeUtils.escapeHtml4(fields.getString("name"));
 
 		o.put("latitude", latitude);
 		o.put("longitude", longitude);

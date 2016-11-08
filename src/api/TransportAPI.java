@@ -1,5 +1,6 @@
 package api;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +47,7 @@ public class TransportAPI extends RequeteApiIleDeFrancePattern {
 			o.put("latitude", latitude);
 			o.put("longitude", longitude);
 			o.put("type", "transport");
-			o.put("nom", letterToWord(type_de_transport)+", Station "+nomLieu);
+			o.put("nom", StringEscapeUtils.escapeHtml4(letterToWord(type_de_transport)+", Station "+nomLieu));
 			o.put("description", ""/*"Ligne "+ligne*/);
 			
 			

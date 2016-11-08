@@ -8,8 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mysql.jdbc.EscapeTokenizer;
-
 import tools.Tools;
 
 public class EtablissementScolairePostBacAPI extends RequeteApiIleDeFrancePattern {

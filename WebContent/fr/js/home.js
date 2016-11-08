@@ -1,6 +1,7 @@
 var adresse = window.location.href.split('=')[1];
+var adresseDefault = "Place Jussieu, Paris, France";
 if(adresse == undefined) {
-	adresse = "Place Jussieu, Paris, France";
+	window.location.href = "home.html?adresse=" + adresseDefault;
 }
 
 var note;
