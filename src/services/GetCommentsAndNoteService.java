@@ -67,9 +67,13 @@ public class GetCommentsAndNoteService {
 				listOfComments = statement.executeQuery(query_get_comments);
 				
 				while(listOfComments.next()) {
-					result.append("comment", listOfComments.getString("comment"));
+					String c = listOfComments.getString("comment");
+					if(c != null)
+						result.append("comment", c);
 					usersId.add(listOfComments.getString("user_id"));
-					note_moyenne += Double.valueOf(listOfComments.getString("note"));
+					String n = listOfComments.getString("note");
+					if(n != null)
+						note_moyenne += Double.valueOf(n);
 					cpt++;
 				}
 				note_moyenne = note_moyenne/cpt;
