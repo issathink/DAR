@@ -57,29 +57,39 @@ function loadAllInfos(adress, distance) {
 }
 
 function responseSetAllAPI(rep) {
-	console.log("responseSetAPI debut");
+	console.log("responseSetAllAPI debut [Appel Ajax pour les Res OK!]");
 
-	var allJson = rep.category;
-	console.log("nbElem: " + rep.length);
+	var allJson = rep.res;
 
-	var soinJSON = (rep.soin).res;
-	var sportJSON = (rep.sport).res;
-	var securiteJSON = (rep.securite).res;
-	var transportJSON = (rep.transport).res;
-	var educationJSON = (rep.education).res;
 
-	setListMarker(location, image);
-	markers["sante"] = getListMarkerPerso(jsonArrayApi, imageSante);
-	markers["sport"] = getListMarkerPerso(jsonArrayApi, imageSport);
-	markers["securite"] = getListMarkerPerso(jsonArrayApi, imageSecurite);
-	markers["education"] = getListMarkerPerso(jsonArrayApi, imageEducation);
-	markers["transport"] = getListMarkerPerso(jsonArrayApi, imageTransport);
+	var soinJSON = allJson.soin;
+	var sportJSON = allJson.sport;
+	var securiteJSON = allJson.securite;
+	var transportJSON = allJson.transport;
+	var educationJSON = allJson.education;
+
+	//setListMarker(location, image);
+	markers["sante"] = getListMarkerPerso(soinJSON, imageSante);
+	console.log("nbElem sante: " + markers["sante"].length);
+
+	markers["sport"] = getListMarkerPerso(sportJSON, imageSport);
+	console.log("nbElem sport: " + markers["sport"].length);
+	
+	markers["securite"] = getListMarkerPerso(securiteJSON, imageSecurite);
+	console.log("nbElem securite: " + markers["securite"].length);
+	
+	markers["education"] = getListMarkerPerso(transportJSON, imageEducation);
+	console.log("nbElem education: " + markers["education"].length);
+	
+	markers["transport"] = getListMarkerPerso(transportJSON, imageTransport);
+	console.log("nbElem transport: " + markers["transport"].length);
 
 	markersSet = true;
-	console.log("responseSetAPI false");
+	console.log("responseSetAllAPI false");
 }
 
 function getListMarkerPerso(jsonArrayApi, image) {
+	console.log("DEBUT getListMarkerPerso ==> "+image+" sizeJSONArrayAPi "+jsonArrayApi.length);
 	var res = [];
 	for(var i=0 ; i<jsonArrayApi.length ; i++) {
 		var obj = jsonArrayApi[i];
@@ -90,12 +100,13 @@ function getListMarkerPerso(jsonArrayApi, image) {
 		var nom = obj.nom;
 		var description = obj.description;
 		var marker = new google.maps.Marker({
-			title: nom+" : "+categorie,
+			title: nom+" : "+description,
 			icon: image
 		});
 		marker.setPosition(location);
 		res.push(marker);
 	}
+	console.log("FIN getListMarkerPerso ==> "+image+" sizeRes "+res.length);
 	return res;
 }
 
@@ -109,6 +120,7 @@ function afficherListMarkerPerso(myMap, listeMarker) {
 	}
 }
 
+// Desaffiche les marqueurs sur la map
 function retirerListMarkerPerso(myMap, listeMarker) {
 	for(var i=0 ; i<listeMarker.length ; i++) {
 		var marker = listeMarker[i];
@@ -116,6 +128,7 @@ function retirerListMarkerPerso(myMap, listeMarker) {
 	}
 }
 
+// Methode appele lorsqu'on coche ou decoche une case, avec name_api la categoride
 function apiCall(box, name_api) {
 	console.log("apiCall 1");
 	if(!markersSet)
