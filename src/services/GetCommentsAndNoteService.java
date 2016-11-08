@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.json.JSONException;
@@ -26,8 +27,8 @@ public class GetCommentsAndNoteService {
 		JSONObject result = new JSONObject();
 		ArrayList<String> usersId = new ArrayList<>();
 		int cpt = 0;
-		double note_moyenne = -1;
-		String my_adress = "";
+		double moy = 0;
+		String add = "";
 		boolean vide = true;
 		boolean first = true;
 
@@ -35,71 +36,75 @@ public class GetCommentsAndNoteService {
 			if(Tools.isValidAddress(adresse)) {
 				conn = DBStatic.getMySQLConnection();
 				statement = (Statement) conn.createStatement();
-				String query = "select lat, lng from " + DBStatic.mysql_db 
-						+  ".comments";
+				String query = "select lat, lng from " + DBStatic.mysql_db + ".comments";
 				Set<LatLng> listAdress = new HashSet<>();
 
 				listOfAdress = statement.executeQuery(query);
-				double latitude = Tools.getLatLng(adresse).getLat();
-				double longitude = Tools.getLatLng(adresse).getLng();
-				double lat_cur, long_cur;
+				LatLng latLng = Tools.getLatLng(adresse);
+				
+				if(latLng != null) {
+					double latitude = latLng.getLat();
+					double longitude = latLng.getLng();
+					double latCur, longCur;
 
-				while(listOfAdress.next()){
-					vide = false;
-					lat_cur = Double.valueOf(listOfAdress.getString("lat"));
-					long_cur = Double.valueOf(listOfAdress.getString("lng"));
-					if(Tools.haversineInKM(latitude, longitude, lat_cur, long_cur) <= Tools.Circonference)
-						listAdress.add(new LatLng(lat_cur, long_cur));
-				}
-
-				if(vide){
-					result.put("No comments", adresse);
-					return result.toString();
-				}
-
-				for(LatLng ad : listAdress){
-					my_adress += "lat = '" + ad.getLat() + "' AND lng = '" + ad.getLng() + "' OR ";
-				}
-
-				my_adress = my_adress.substring(0, my_adress.length()-4);
-
-				String query_get_comments = "select comment, note, user_id from " + DBStatic.mysql_db 
-						+  ".comments where " + my_adress;
-				listOfComments = statement.executeQuery(query_get_comments);
-
-				while(listOfComments.next()) {
-					String c = listOfComments.getString("comment");
-					if(c != null)
-						result.append("comment", c);
-					usersId.add(listOfComments.getString("user_id"));
-					String n = listOfComments.getString("note");
-					if(n != null){
-						if(first){
-							first = false;
-							note_moyenne = 0;
-						}
-						note_moyenne += Double.valueOf(n);
-						result.put("note"+note_moyenne, note_moyenne);
-						cpt++;
+					while(listOfAdress.next()){
+						vide = false;
+						latCur = Double.valueOf(listOfAdress.getString("lat"));
+						longCur = Double.valueOf(listOfAdress.getString("lng"));
+						if(Tools.haversineInKM(latitude, longitude, latCur, longCur) <= Tools.Circonference)
+							listAdress.add(new LatLng(latCur, longCur));
 					}
-				}
-				note_moyenne = note_moyenne/cpt;
-				note_moyenne = (double)((int)(note_moyenne*10))/10;
-				result.append("moyenne", note_moyenne);
-				String s = "";
-				for(int i = 0; i < usersId.size(); i++){
-					if(i != usersId.size()-1)
-						s += "id=" + usersId.get(i) + " OR ";
-					else
-						s += "id=" + usersId.get(i);
-				}
 
-				String query_get_login = "select id, login from " + DBStatic.mysql_db 
-						+  ".users where " + s;
-
-				listOfUsers = statement.executeQuery(query_get_login);
-				while(listOfUsers.next()) {
-					result.append("login", listOfUsers.getString("login"));
+					if(vide) {
+						result.put("No comments", adresse);
+					} else {
+						for(LatLng ad : listAdress)
+							add += "lat = '" + ad.getLat() + "' AND lng = '" + ad.getLng() + "' OR ";	
+						add = add.substring(0, add.length()-4); // Nice one :)
+	
+						String queryGetComments = "select c.comment, c.note, u.login from " + DBStatic.mysql_db 
+								+  ".comments c," + DBStatic.mysql_db + ".users u where " + add + " AND c.user_id=u.id";
+						listOfComments = statement.executeQuery(queryGetComments);
+	
+						while(listOfComments.next()) {
+							String c = listOfComments.getString("comment");
+							// String 
+							if(c != null) {
+								result.append("comment", c);
+							}
+							// usersId.add(listOfComments.getString("user_id"));
+							String n = listOfComments.getString("note");
+							if(n != null){
+								moy += Double.valueOf(n);
+								cpt++;
+							}
+						}
+						
+						if(cpt > 0)
+							moy = moy / cpt;
+						else
+							moy = 0;
+						
+						result.append("moyenne", moy);
+						String s = "";
+						for(int i = 0; i < usersId.size(); i++){
+							if(i != usersId.size()-1)
+								s += "id=" + usersId.get(i) + " OR ";
+							else
+								s += "id=" + usersId.get(i);
+						}
+	
+						String query_get_login = "select id, login from " + DBStatic.mysql_db 
+								+  ".users where " + s;
+	
+						listOfUsers = statement.executeQuery(query_get_login);
+						while(listOfUsers.next()) {
+							result.append("login", listOfUsers.getString("login"));
+						}
+					}
+					
+				} else {
+					result.put("erreur", "Invalid address '" + adresse + "'");
 				}
 			} else {
 				result.put("erreur", "Invalid address '" + adresse + "'");
