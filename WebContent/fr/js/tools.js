@@ -58,7 +58,7 @@ function isConnected(callBack) {
     }
 
     $.ajax({
-        url : "http://vps197081.ovh.net:8080/Issa/isconnected?",
+        url : "../isconnected?",
         type : "get",
         crossDomain: false,
         data : "format=json" + "&session_id=" + genId,

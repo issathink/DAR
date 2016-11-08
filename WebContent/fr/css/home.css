@@ -159,3 +159,16 @@
   border-right-color:#ddd;
   border-width:8px;
 }
+
+.input-group-addon {
+    padding-top: 10px;
+    border: 0px;
+    background-color: #e6e6e6;
+}
+
+.top_check_box {
+    padding: 5px;
+    background-color: #e6e6e6;
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+}
