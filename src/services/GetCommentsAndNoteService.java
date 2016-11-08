@@ -86,12 +86,12 @@ public class GetCommentsAndNoteService {
 				note_moyenne = note_moyenne/cpt;
 				note_moyenne = (double)((int)(note_moyenne*10))/10;
 				result.append("moyenne", note_moyenne);
-				String s = " ";
-				for(String uId: usersId){
-					if(!uId.equals(usersId.get(usersId.size()-1)))
-						s += "id=" + uId + " OR ";
+				String s = "";
+				for(int i = 0; i < usersId.size(); i++){
+					if(i != usersId.size()-1)
+						s += "id=" + usersId.get(i) + " OR ";
 					else
-						s += "id=" + uId;
+						s += "id=" + usersId.get(i);
 				}
 
 				String query_get_login = "select id, login from " + DBStatic.mysql_db 
