@@ -61,7 +61,7 @@ function sendMessageText() {
 
 function sendMessageToServeur(id_user_session, pseudo_receiver, message) {
 	$.ajax({
-		url : "http://vps197081.ovh.net:8080/FindYourFlat/sendmessage?",
+		url : "../sendmessage?",
 		type : "POST",
 		data : "id_session=" + id_user_session + "&pseudo_receiver="+pseudo_receiver+"&message="+message,
 		dataType : "json",
@@ -76,7 +76,7 @@ function sendMessageToServeur(id_user_session, pseudo_receiver, message) {
 /* Gestion du bloc de contacts */
 function setContact(id_user_session) {
 	$.ajax({
-		url : "http://vps197081.ovh.net:8080/FindYourFlat/seencontact?",
+		url : "../seencontact?",
 		type : "GET",
 		data : "id_session=" + id_user_session,
 		dataType : "json",
@@ -114,7 +114,7 @@ function responseSetContact(rep, id_user_session) {
 /* Gestion du bloc de messages */
 function setMessages(id_user_session, friend_login) {
 	$.ajax({
-		url : "http://vps197081.ovh.net:8080/FindYourFlat/seenmessage?",
+		url : "../seenmessage?",
 		type : "GET",
 		data : "id_session=" + id_user_session + "&pseudo_other=" + friend_login,
 		dataType : "json",
@@ -188,7 +188,7 @@ function get_ParamGET(param) {
 $('#idSearchLogin').autocomplete({
 	source: function(requete, reponse){ 
 		$.ajax({
-			url : "http://vps197081.ovh.net:8080/FindYourFlat/getloginbeginbyservlet?",
+			url : "../getloginbeginbyservlet?",
 			type : "GET",
 			data : "begin_by=" + $('#idSearchLogin').val(),
 			dataType : "json",
