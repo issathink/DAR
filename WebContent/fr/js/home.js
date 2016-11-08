@@ -1,32 +1,3 @@
-
-Skip to content
-This repository
-
-    Pull requests
-    Issues
-    Gist
-
-    @FaissalCh
-
-3
-0
-
-    0
-
-issathink/DAR
-Code
-Issues 0
-Pull requests 0
-Projects 0
-Wiki
-Pulse
-Graphs
-DAR/WebContent/fr/js/home.js
-9eb6c4e 2 hours ago
-CHAWKI FAISSAL Add info Bulle to Markers
-@FaissalCh
-@issathink
-464 lines (389 sloc) 13.9 KB
 var adresse = window.location.href.split('=')[1];
 if(adresse == undefined) {
 	adresse = "Place Jussieu, Paris, France";
@@ -490,8 +461,3 @@ function myHTMLspecialhars(ch) {
 	console.log("Chaine sortie = "+ch);
 	return ch;
 }
-
-    Contact GitHub API Training Shop Blog About 
-
-    © 2016 GitHub, Inc. Terms Privacy Security Status Help 
-
