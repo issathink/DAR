@@ -4,9 +4,13 @@ var map;
 var dist = 500;  //default val of the distance
 isConnected(responseIsConnected);
 
-getCommentsAndNote(adresse);
+if(adresse != undefined) {
+	getCommentsAndNote(adresse, dist);
+	loadAllInfos(adress, distance)
+}
 
-///////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+
 var adressMarker;
 
 var listeMarkerSante;
@@ -28,6 +32,95 @@ var imageSport = 'img/sport2.png';
 var imageSecurite = 'img/securite2.png';
 var imageEducation = 'img/education2.png';
 var imageTransport = 'img/transport2.png';
+
+
+function loadAllInfos(adress, distance) {
+	adress = decodeURI(adress);
+	$.ajax({
+		url : "../search?",
+		type : "GET",
+		data : "adresse=" + adress + "&apiname=" + "all" + "&dist=" + distance,
+		dataType : "json",
+		success : function(rep) {
+			responseSetAllAPI(rep);
+		}, 
+		error : function(resultatXHR, statut, erreur) {
+			errorFunction(resultatXHR, statut, erreur, "loadAllInfos");
+		}
+	});
+}
+
+function responseSetAllAPI(rep) {
+	var allJson = rep.category;
+	console.log("nbElem: " + rep.length);
+
+	var soinJSON = (rep.soin).res;
+	var sportJSON = (rep.sport).res;
+	var securiteJSON = (rep.securite).res;
+	var transportJSON = (rep.transport).res;
+	var educationJSON = (rep.education).res;
+
+	setListMarker(location, image);
+	markers["sante"] = getListMarkerPerso(jsonArrayApi, imageSante);
+	markers["sport"] = getListMarkerPerso(jsonArrayApi, imageSport);
+	markers["securite"] = getListMarkerPerso(jsonArrayApi, imageSecurite);
+	markers["education"] = getListMarkerPerso(jsonArrayApi, imageEducation);
+	markers["transport"] = getListMarkerPerso(jsonArrayApi, imageTransport);
+}
+
+function getListMarkerPerso(jsonArrayApi, image) {
+	var res = [];
+	for(var i=0 ; i<jsonArrayApi.length ; i++) {
+		var obj = jsonArrayApi[i];
+		var type = obj.type;
+		var latitude = obj.latitude;
+		var longitude = obj.longitude;
+		var location = new google.maps.LatLng(latitude, longitude);
+		var nom = obj.nom;
+		var description = obj.description;
+		var marker = new google.maps.Marker({
+			title: nom+" : "+categorie,
+			icon: image
+		});
+		marker.setPosition(location);
+		res.push(marker);
+	}
+	return res;
+}
+
+// Ajoute un marqueur sur la map
+function afficherListMarkerPerso(myMap, listeMarker) {
+	for(var i=0 ; i<listeMarker.length ; i++) {
+		var marker = listeMarker[i];
+		marker.setMap(myMap);
+	}
+}
+
+function retirerListMarkerPerso(myMap, listeMarker) {
+	for(var i=0 ; i<listeMarker.length ; i++) {
+		var marker = listeMarker[i];
+		marker.setMap(null);
+	}
+}
+
+function apiCall(box, name_api) {
+
+	if(box.checked && adresse != undefined) {
+		if(name_api === "sport")
+			afficherListMarkerPerso(map, markers["sport"]);
+		else if(name_api === "sante")
+			afficherListMarkerPerso(map, markers["sante"]);
+		else if(name_api === "education")
+			afficherListMarkerPerso(map, markers["education"]);
+		else if(name_api === "securite")
+			afficherListMarkerPerso(map, markers["securite"]);
+		else if(name_api === "transport")
+			afficherListMarkerPerso(map, markers["transport"]);
+	}
+
+}
+
+
 ///////////////////////////////////////////////////
 
 
@@ -241,7 +334,7 @@ function responsePostRate(rep) {
 }
 
 
-function apiCall(box, name_api) {
+function apiCall2(box, name_api) {
 	if(box.checked){
 		if(adresse != undefined){
 			adress = decodeURI(adresse);
@@ -335,31 +428,7 @@ function responseSetAPI(repp) {
 	}
 }
 
-// Ajoute un marqueur sur la map
-function addMarkerPerso(myMap, location, image, categorie) {
 
-	var marker = new google.maps.Marker({
-		title: categorie,
-		icon: image
-	});
-	marker.setPosition(location);
-	marker.setMap(map);
-	marker.setMap(myMap);
-
-	console.log("Ajout du maker categorie = "+categorie+" image = "+image);
-
-	if(categorie === "education")
-		markers["education"].push(marker);
-	else if(categorie === "sante")
-		markers["sante"].push(marker);
-	else if(categorie === "sport")
-		markers["sport"].push(marker);
-	else if(categorie === "securite")
-		markers["securite"].push(marker);
-	else if(categorie === "transport")
-		markers["transport"].push(marker);
-
-}
 
 function setMarkerBasique(myMap, location) {
 

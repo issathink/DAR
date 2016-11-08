@@ -41,6 +41,24 @@ public class SearchService {
 					JSONArray transport = APIs.getTransportJSON(position.lat, position.lng, distanceAround);
 					result.put("category", "transport");
 					result.put("res", transport);
+				} else if (apiname.equals("all")) {
+					JSONObject all = new JSONObject();
+					
+					JSONArray ecoles = APIs.getEducationJSON(position.lat, position.lng, distanceAround);
+					JSONArray soins = APIs.getSanteJSON(position.lat, position.lng, distanceAround);
+					JSONArray sports = APIs.getSportJSON(position.lat, position.lng, distanceAround);
+					JSONArray police = APIs.getSecuriteJSON(position.lat, position.lng, distanceAround);
+					JSONArray transport = APIs.getTransportJSON(position.lat, position.lng, distanceAround);
+					
+					all.put("education", ecoles);
+					all.put("soin", soins);
+					all.put("sport", sports);
+					all.put("securite", police);
+					all.put("transport", transport);
+					
+					result.put("category", "all");
+					result.put("res", all);
+					
 				} else {
 					result.put("erreur", "Invalid api '" + apiname + "'");
 					trouve = false;
