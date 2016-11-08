@@ -345,17 +345,17 @@ function errorFunction(resultatXHR, statut, erreur, fctName) {
 
 
 function comment(rep) {
-	var adr = get_ParamGET("adresse");
+	//var adr = get_ParamGET("adresse");
 	var comment = document.getElementById('commentText').value;
 	var session_id = getCookie(C_NAME);
-	console.log("adr : " + adr + " , com : " + comment + " , session : " + session_id);
+	console.log("adr : " + adresse + " , com : " + comment + " , session : " + session_id);
 	if(session_id == null || session_id == undefined)
 		console.log("Pas d'identifiant de session");
 	else {
 		$.ajax({
 			url : "../comment?",
 			type : "GET",
-			data : "session_id=" + session_id + "&adresse=" + adr + "&comment=" + comment,
+			data : "session_id=" + session_id + "&adresse=" + adresse + "&comment=" + comment,
 			dataType : "json",
 			success : function(rep) {
 				responsePostComment(rep);
@@ -383,16 +383,16 @@ function responsePostComment(rep) {
 }
 
 function rate(note) {
-	var adr = get_ParamGET("adresse");
+	//var adr = get_ParamGET("adresse");
 	var session_id = getCookie(C_NAME);
-	console.log("adr : " + adr + " , session : " + session_id + " , note : " + note);
+	console.log("adr : " + adresse + " , session : " + session_id + " , note : " + note);
 	if(session_id == null || session_id == undefined)
 		console.log("Pas d'identifiant de session");
 	else {
 		$.ajax({
 			url : "../rate?",
 			type : "GET",
-			data : "session_id=" + session_id + "&adresse=" + adr + "&note=" + note,
+			data : "session_id=" + session_id + "&adresse=" + adresse + "&note=" + note,
 			dataType : "json",
 			success : function(rep) {
 				responsePostRate(rep);
