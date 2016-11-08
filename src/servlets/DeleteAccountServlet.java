@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import services.ChangePwService;
+import services.DeleteAccountService;
 import tools.Tools;
 
-public class SuppressAccount extends HttpServlet {
+public class DeleteAccountServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -20,13 +20,12 @@ public class SuppressAccount extends HttpServlet {
 			throws ServletException, IOException {
 		@SuppressWarnings("unchecked")
 		Map<String, String> params = req.getParameterMap();
-		String session_id, login, pw;
+		String session_id, pw;
 		
-		if (params.containsKey("login") && params.containsKey("pw") && params.containsKey("session_id")) {
-			login = req.getParameter("login");
+		if (params.containsKey("pw") && params.containsKey("session_id")) {
 			pw = req.getParameter("pw");
 			session_id = req.getParameter("session_id");
-			resp.getWriter().write(ChangePwService.changePw(session_id, login, pw));
+			resp.getWriter().write(DeleteAccountService.deleteAccount(session_id, pw));
 		} else {
 			resp.getWriter().write(Tools.erreurParam);
 		}

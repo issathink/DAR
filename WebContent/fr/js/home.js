@@ -1,4 +1,6 @@
 var adresse = window.location.href.split('=')[1];
+var login;
+var mail;
 var adresseDefault = "Place Jussieu, Paris, France";
 if(adresse == undefined) {
 	window.location.href = "home.html?adresse=" + adresseDefault;
@@ -35,12 +37,13 @@ function responseIsConnected(response) {
 	console.log(adresse);
 	if(response.ok != undefined) {
 		console.log("already connected");
-
+		
 		document.getElementById("top_button").innerHTML = "<button type='button' class='btn btn-default btn-md'>" +
 		"<a class='glyphicon glyphicon-envelope' aria-hidden='true'></a> </button>" +
 		"<button type='button' class='btn btn-default btn-md'>" +
-		"<a class='glyphicon glyphicon-user' aria-hidden='true'></a> </button>" +
-		"<div><span><a href='changePw.html'>Change password?</a>.</span></div>";
+		"<form action="" method='POST' onsubmit='validate(); return false;'name='user'>" +
+		"<a class='glyphicon glyphicon-user' aria-hidden='true'></a> </button></form>" +
+		;
 
 	} else {
 		document.getElementById("top_button").innerHTML = "<div class='depl_haut'> <a href='signin.html'>Se connecter</a></div>";

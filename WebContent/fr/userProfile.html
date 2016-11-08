@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Censr - Change Password</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="css/signin.css">
+<link rel="stylesheet" href="css/user.css">
+
+<!-- Including Bootstrap JS (with its jQuery dependency) so that dynamic components work -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./js/tools.js"></script>
+<script type="text/javascript" src="./js/userProfile.js"></script>
+
+</head>
+<body>
+
+	<div class="signin">
+		<div class="signin-content">
+			<div class="index">
+				<a href="index.html">Find Your Flat</a>
+			</div>
+
+			<div class="row">
+				<div id="infos"></div>
+			</div>
+			<hr/>
+
+			<div class="row">
+				<form action="" method='POST' onsubmit="validate(); return false;"
+					name="signin">
+					<a>Change my password</a>
+					<div id="error_holder"></div>
+					<div>
+						<input name="pwd_prec" type="password"
+							placeholder="yourOldPassWord" class="password-holder" />
+					</div>
+					<div>
+						<input name="pwd_new" type="password"
+							placeholder="yourNewPassWord" class="password-holder" />
+					</div>
+					<div>
+						<input name="pwd_new_bis" type="password"
+							placeholder="retypeYourNewPassWord" class="password-holder" />
+					</div>
+					<div class="col-xs-10 col-xs-offset-3">
+						<button class="btn-normal">Modify</button>
+					</div>
+				</form>
+			</div>
+			<hr/>
+
+			<div class="row">
+				<a>Delete Account</a>
+				<p/>
+				<div>
+					<input name="pwd_delete" type="password"
+						placeholder="password" class="password-holder" />
+				</div>
+				<div class="col-xs-10 col-xs-offset-3">
+					<button class="btn-normal">Delete</button>
+				</div>
+			</div>
+
+
+			<div class="forgot-pass">
+				<span>Forgot your password ? Enter your email and <a href="#">Click
+						here</a>.
+				</span>
+			</div>
+
+		</div>
+		<div class="modal">
+			<!-- Place at bottom of page -->
+		</div>
+	</div>
+
+</body>
+</html>

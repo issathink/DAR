@@ -55,6 +55,10 @@
 		<servlet-name>ChangePwServlet</servlet-name>
 		<servlet-class>servlets.ChangePwServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>DeleteAccountServlet</servlet-name>
+		<servlet-class>servlets.DeleteAccountServlet</servlet-class>
+	</servlet>
 
 
 	<servlet-mapping>
@@ -108,6 +112,10 @@
 	<servlet-mapping>
 		<servlet-name>ChangePwServlet</servlet-name>
 		<url-pattern>/changepw</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DeleteAccountServlet</servlet-name>
+		<url-pattern>/deleteAccount</url-pattern>
 	</servlet-mapping>
 
 	<resource-env-ref>
