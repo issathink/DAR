@@ -1,4 +1,7 @@
 var adresse = window.location.href.split('=')[1];
+if(adresse == undefined) {
+	adresse = "Place Jussieu, Paris, France";
+}
 var note;
 var map;
 var dist = 500;  //default val of the distance
@@ -6,12 +9,14 @@ isConnected(responseIsConnected);
 
 if(adresse != undefined) {
 	getCommentsAndNote(adresse, dist);
-	loadAllInfos(adress, distance)
+	loadAllInfos(adresse, dist)
+	//setMarkerOfAdress(map, location, adresse);
 }
 
 //////////////////////////////////////////////////////
+var markersSet = false;
 
-var adressMarker;
+var adressMarker; // Le marqueur de l'adresse
 
 var listeMarkerSante;
 var listeMarkerSport;
@@ -35,6 +40,7 @@ var imageTransport = 'img/transport2.png';
 
 
 function loadAllInfos(adress, distance) {
+	console.log("loadAllInfos ==> AJAX");
 	adress = decodeURI(adress);
 	$.ajax({
 		url : "../search?",
@@ -51,6 +57,8 @@ function loadAllInfos(adress, distance) {
 }
 
 function responseSetAllAPI(rep) {
+	console.log("responseSetAPI debut");
+
 	var allJson = rep.category;
 	console.log("nbElem: " + rep.length);
 
@@ -66,6 +74,9 @@ function responseSetAllAPI(rep) {
 	markers["securite"] = getListMarkerPerso(jsonArrayApi, imageSecurite);
 	markers["education"] = getListMarkerPerso(jsonArrayApi, imageEducation);
 	markers["transport"] = getListMarkerPerso(jsonArrayApi, imageTransport);
+
+	markersSet = true;
+	console.log("responseSetAPI false");
 }
 
 function getListMarkerPerso(jsonArrayApi, image) {
@@ -90,9 +101,11 @@ function getListMarkerPerso(jsonArrayApi, image) {
 
 // Ajoute un marqueur sur la map
 function afficherListMarkerPerso(myMap, listeMarker) {
+	console.log("afficherListMarkerPerso debut");
 	for(var i=0 ; i<listeMarker.length ; i++) {
 		var marker = listeMarker[i];
 		marker.setMap(myMap);
+		console.log("afficherListMarkerPerso fin");
 	}
 }
 
@@ -104,8 +117,14 @@ function retirerListMarkerPerso(myMap, listeMarker) {
 }
 
 function apiCall(box, name_api) {
+	console.log("apiCall 1");
+	if(!markersSet)
+		return;
+
+	console.log("apiCall 2");
 
 	if(box.checked && adresse != undefined) {
+		console.log("apiCall 3");
 		if(name_api === "sport")
 			afficherListMarkerPerso(map, markers["sport"]);
 		else if(name_api === "sante")
@@ -117,9 +136,32 @@ function apiCall(box, name_api) {
 		else if(name_api === "transport")
 			afficherListMarkerPerso(map, markers["transport"]);
 	}
-
+	else if(!box.checked && adresse != undefined) {
+		console.log("apiCall 4");
+		if(name_api === "sport")
+			retirerListMarkerPerso(map, markers["sport"]);
+		else if(name_api === "sante")
+			retirerListMarkerPerso(map, markers["sante"]);
+		else if(name_api === "education")
+			retirerListMarkerPerso(map, markers["education"]);
+		else if(name_api === "securite")
+			retirerListMarkerPerso(map, markers["securite"]);
+		else if(name_api === "transport")
+			retirerListMarkerPerso(map, markers["transport"]);
+	}
+	console.log("apiCall 5");
 }
 
+function setMarkerOfAdress(myMap, myLatLng, adresseString) {
+	myMap.zoom(8);
+	myMap.center(myLatLng);
+	adressMarker = new google.maps.Marker({
+		position: myLatLng,
+		map: myMap,
+		title: adresseString // Mettre l'adresse peut etre
+	});
+
+}
 
 ///////////////////////////////////////////////////
 
@@ -258,10 +300,6 @@ function initMap() {
 	});
 
 	google.maps.event.addDomListener(window, 'load', initialize);
-	/*var marker = new google.maps.Marker({
-        position: paris,
-        map: map
-    });*/
 }
 
 function comment(rep) {
@@ -370,17 +408,8 @@ function topBar(message, err) {
 ///////////////////////////////////////////////////////////
 
 
-// Ajoute le marker pour l'adresse et centre la map dessus
-function setMakerOfAdress(latlng, myMap) {
-	myMap.zoom(4);
-	myMap.center(myLatLng);
-	adressMarker = new google.maps.Marker({
-		position: myLatLng,
-		map: myMap,
-		title: 'Hello World!' // Mettre l'adresse peut etre
-	});
 
-}
+
 
 
 function setMarkerCategorie(categorie, myMap) {
@@ -429,15 +458,6 @@ function responseSetAPI(repp) {
 }
 
 
-
-function setMarkerBasique(myMap, location) {
-
-	var optionsMarqueur = {
-		position: location,
-		map: myMap
-	};
-	var marqueur = new google.maps.Marker(optionsMarqueur);
-}
 
 
 
