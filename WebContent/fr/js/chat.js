@@ -7,6 +7,7 @@ console.log("Chat idSession = "+idUserSession);
 
 var friendLogin = get_ParamGET("friend_login");
 
+var delayRefresh = 1000;
 
 // FAUDRAIT VERIFIER DANS MES SERVLETS SI LA SESSION EXISTE (requete return rien....)
 // DANS SEARCH CONTACT DANS LA BARRE (envoyer aussi idSession) FAUT PAS S'AFFICHER
@@ -23,7 +24,7 @@ if(idUserSession == null) {
 	//window.location.href = "login.html";
 } else {
 	refreshPage(); // 1er affichage pour pas voir de latence
-	setInterval(function(){refreshPage();}, 1000);
+	setInterval(function(){refreshPage();}, delayRefresh);
 }
 
 
@@ -117,6 +118,7 @@ function responseSetContact(rep, id_user_session) {
 
 /* Gestion du bloc de messages */
 function setMessages(id_user_session, friend_login) {
+	console.lo
 	$.ajax({
 		url : "../seenmessage?",
 		type : "GET",
@@ -150,6 +152,8 @@ function responseSetMessages(rep, pseudo_friend) {
 		var date = rep[i].date_send;
 		var newBalise = document.createElement("p");
 		var num = (login === pseudo_friend) ? 2 : 1;
+		if(pseudo_friend === login)
+			num = 1;
 		var isRead = (login !== pseudo_friend) ? rep[i].isRead : null;
 		newBalise.innerHTML = message;
 		newBalise.className ="m m"+num;
@@ -167,13 +171,10 @@ function responseSetMessages(rep, pseudo_friend) {
 }
 
 function errorFunction(resultatXHR, statut, erreur, fctName) {
-	// alert("Fonction : "+fctName);
-	// alert("En erreur : "+erreur);
-	// alert("XHR = "+resultatXHR.responseText);
-	// alert("Statut = "+ statut);
 	console.log("Error(" + status + ") : " + resultatXHR.responseText);
 	console.log("Maybe user is not connected.");
-	// window.location.href = "login.html";
+	console.log("Fct ==> "+fctName);
+	console.log("statut ==> "+statut);
 }
 
 function get_ParamGET(param) {
