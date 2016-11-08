@@ -16,12 +16,12 @@ public class ComissariatParisAPI extends RequeteApiIleDeFrancePattern {
 	protected JSONObject getMyJsonObjectFromRecord(JSONObject record) throws JSONException {
 		JSONObject o = new JSONObject();
 		JSONObject fields =  record.getJSONObject("fields");
-		String lat = record.getJSONObject("geometry").getJSONArray("coordinates").get(0).toString();
-		String lon = record.getJSONObject("geometry").getJSONArray("coordinates").get(1).toString();
+		String latitude = fields.getJSONArray("wgs84").getString(0);
+		String longitude = fields.getJSONArray("wgs84").getString(1);
 
 		String service = fields.getString("service");
-		o.put("latitude", lat);
-		o.put("longitude", lon);
+		o.put("latitude", latitude);
+		o.put("longitude", longitude);
 		o.put("nom", service);
 		o.put("description", "");
 		

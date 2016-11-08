@@ -37,13 +37,13 @@ class EtablissementScolairePreBacAPI extends RequeteApiIleDeFrancePattern {
 	@Override
 	protected JSONObject getMyJsonObjectFromRecord(JSONObject record) throws JSONException {
 		JSONObject fields = record.getJSONObject("fields");
-		JSONObject geometry = record.getJSONObject("geometry");
+		//JSONObject geometry = record.getJSONObject("geometry");
 
 		String denominationPrincipale = fields.getString("appellation_officielle_uai");
 		String nature = fields.getString("lib_nature");
 		// Ou l'inverse
-		String latitude = geometry.getJSONArray("coordinates").getString(0);
-		String longitude = geometry.getJSONArray("coordinates").getString(1);
+		String latitude = fields.getJSONArray("wgs84").getString(0);
+		String longitude = fields.getJSONArray("wgs84").getString(1);
 
 		JSONObject res = new JSONObject();
 		res.put("type", "pre_bac");

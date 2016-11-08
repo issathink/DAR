@@ -36,14 +36,15 @@ public class TransportAPI extends RequeteApiIleDeFrancePattern {
 	@Override
 	protected JSONObject getMyJsonObjectFromRecord(JSONObject record) throws JSONException {
 			JSONObject o = new JSONObject();
-			String lon = record.getJSONObject("geometry").getJSONArray("coordinates").get(0).toString();
-			String lat = record.getJSONObject("geometry").getJSONArray("coordinates").get(1).toString();
+			JSONObject fields = record.getJSONObject("fields");
+			String latitude = fields.getJSONArray("geo_point_2d").getString(0);
+			String longitude = fields.getJSONArray("geo_point_2d").getString(1);
 			String type_de_transport = record.getJSONObject("fields").getString("c_nature");
 			String nomLieu = record.getJSONObject("fields").getString("l_station");
 			//String ligne = record.getJSONObject("fields").getString("c_numligne");
 			
-			o.put("latitude", lat);
-			o.put("longitude", lon);
+			o.put("latitude", latitude);
+			o.put("longitude", longitude);
 			o.put("type", "transport");
 			o.put("nom", letterToWord(type_de_transport)+", Station "+nomLieu);
 			o.put("description", ""/*"Ligne "+ligne*/);
