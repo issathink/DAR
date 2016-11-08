@@ -232,7 +232,8 @@ function responseIsConnected(response) {
 		document.getElementById("top_button").innerHTML = "<button type='button' class='btn btn-default btn-md'>" +
 		"<a class='glyphicon glyphicon-envelope' aria-hidden='true'></a> </button>" +
 		"<button type='button' class='btn btn-default btn-md'>" +
-		"<a class='glyphicon glyphicon-user' aria-hidden='true'></a> </button>";
+		"<a class='glyphicon glyphicon-user' aria-hidden='true'></a> </button>" +
+		"<div><span><a href='changePw.html'>Change password?</a>.</span></div>";
 
 	} else {
 		document.getElementById("top_button").innerHTML = "<div class='depl_haut'> <a href='signin.html'>Se connecter</a></div>";
