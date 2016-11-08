@@ -1,5 +1,6 @@
 package api;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,8 +47,8 @@ public class CentreDeSoinAPI extends RequeteApiIleDeFrancePattern {
 
 		//res.put("adresse", fields.getString("adresse"));
 		//res.put("categorie", fields.getString("categorie_de_l_etablissement"));
-		res.put("nom", fields.getString("raison_sociale").replaceAll("^CTRE ", "CENTRE "));
-		res.put("description",fields.getString("categorie_de_l_etablissement"));
+		res.put("nom", StringEscapeUtils.escapeHtml4(fields.getString("raison_sociale").replaceAll("^CTRE ", "CENTRE ")));
+		res.put("description", StringEscapeUtils.escapeHtml4(fields.getString("categorie_de_l_etablissement")));
 		
 		
 //		if(fields.has("num_tel"))

@@ -1,4 +1,5 @@
 package api;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,8 +40,8 @@ class EtablissementScolairePreBacAPI extends RequeteApiIleDeFrancePattern {
 		JSONObject fields = record.getJSONObject("fields");
 		//JSONObject geometry = record.getJSONObject("geometry");
 
-		String denominationPrincipale = fields.getString("appellation_officielle_uai");
-		String nature = fields.getString("lib_nature");
+		String denominationPrincipale = StringEscapeUtils.escapeHtml4(fields.getString("appellation_officielle_uai"));
+		String nature = StringEscapeUtils.escapeHtml4(fields.getString("lib_nature"));
 		// Ou l'inverse
 		String latitude = fields.getJSONArray("wgs84").getString(0);
 		String longitude = fields.getJSONArray("wgs84").getString(1);

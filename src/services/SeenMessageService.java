@@ -45,6 +45,8 @@ public class SeenMessageService {
 			if((resRequestToGetName = statement.executeQuery(requestUserId)).next() == false) {
 				if(statement != null)
 					statement.close();
+				if(statement2 != null)
+					statement2.close();
 				if(connexion != null)
 					connexion.close();
 				JSONObject res = new JSONObject();
@@ -68,7 +70,7 @@ public class SeenMessageService {
 
 			///////////////////:
 			String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
-			String requestMessage = "SELECT id, id_sender, message, date_send, is_read FROM "+tableMessage+
+			String requestMessage = "SELECT id, id_sender, id_receiver, message, date_send, is_read FROM "+tableMessage+
 					" WHERE (id_sender='"+friendId+"' AND id_receiver='"+userId+"') " +
 					"OR (id_sender='"+userId+"' AND id_receiver='"+friendId+"') ORDER BY date_send ASC";
 
@@ -79,6 +81,7 @@ public class SeenMessageService {
 			while(resRequeteToGetMessages.next()) {
 				String idMessage = resRequeteToGetMessages.getString("id");
 				String id_sender = resRequeteToGetMessages.getString("id_sender");
+				String id_receiver = resRequeteToGetMessages.getString("id_receiver");
 				String message = resRequeteToGetMessages.getString("message");
 
 				message = message.replace("'", "''");
@@ -90,7 +93,7 @@ public class SeenMessageService {
 				String pseudoSender = id_sender.equals(userId) ? userLogin : friendLogin;
 				////////////////////
 				/* On indique le message a ete lu */
-				if(isRead.equals("0") && !id_sender.equals(userId)) { // On a recu le message => le mettre a vu
+				if(isRead.equals("0") && (id_receiver.equals(id_sender) || !id_sender.equals(userId))) { // On a recu le message => le mettre a vu
 					String requestUpdateIsRead = "UPDATE "+tableMessage+" SET is_read=1 WHERE id="+idMessage;
 					statement2.executeUpdate(requestUpdateIsRead);
 				}

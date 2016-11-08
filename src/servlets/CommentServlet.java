@@ -33,7 +33,7 @@ public class CommentServlet extends HttpServlet {
 			lng = latLng.lng;
 			comment = req.getParameter("comment");
 			
-			resp.getWriter().write(CommentRateService.commentRate(sessionId, lat, lng, comment, true));
+			resp.getWriter().write(CommentRateService.commentRate(sessionId, adresse, lat, lng, comment, true));
 			
 		} else {
 			resp.getWriter().write(Tools.erreurParam);

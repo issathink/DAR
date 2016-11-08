@@ -1,5 +1,6 @@
 package api;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,7 +50,7 @@ public class PharmacieAPI extends RequeteApiIleDeFrancePattern {
 //			res.put("telephone", fields.getString("telephone"));
 
 		String nom = fields.has("rslongue") ? fields.getString("rslongue") : fields.getString("rs");
-		res.put("nom", nom.replaceAll("^PHARM ", "PHARMACIE "));
+		res.put("nom", StringEscapeUtils.escapeHtml4(nom.replaceAll("^PHARM ", "PHARMACIE ")));
 //		if(fields.has("numvoie"))
 //			res.put(("numvoie"), fields.getString("numvoie"));
 		res.put("description", "");

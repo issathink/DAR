@@ -13,7 +13,7 @@ import tools.Tools;
 
 public class CommentRateService {
 	
-	public static String commentRate(String sessionId, double lat, double lng, String commentNote, boolean comment) {
+	public static String commentRate(String sessionId, String adresse, double lat, double lng, String commentNote, boolean comment) {
 		Connection conn = null;
 		ResultSet listOfComments = null;
 		Statement statement = null;
@@ -52,11 +52,11 @@ public class CommentRateService {
 						if(comment) {
 							s += "2 ";
 							insert = "INSERT INTO " + DBStatic.mysql_db +  ".comments values (NULL,'" + userId
-									+ "','" + commentNote + "', NULL, '" + lat + "','" + lng  + "')";
+									+ "','" + commentNote + "', NULL, '" + lat + "','" + lng + "','" + adresse + "')";
 						} else {
 							s += "2else ";
 							insert = "INSERT INTO " + DBStatic.mysql_db +  ".comments values (NULL,'" + userId
-								+ "', NULL, '" + commentNote + "','" + lat + "','" + lng  +  "')";
+								+ "', NULL, '" + commentNote + "','" + lat + "','" + lng + "','" + adresse +  "')";
 						}
 						if(statement.executeUpdate(insert) > 0) 
 							result.put("ok", "Thanks for participating.");

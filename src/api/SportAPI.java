@@ -1,5 +1,6 @@
 package api;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,8 +44,8 @@ public class SportAPI extends RequeteApiIleDeFrancePattern {
 			o.put("latitude", latitude);
 			o.put("longitude", longitude);
 			o.put("type", "sport");
-			o.put("description", type_de_sport);
-			o.put("nom", nomLieu);
+			o.put("description", StringEscapeUtils.escapeHtml4(type_de_sport));
+			o.put("nom", StringEscapeUtils.escapeHtml4(nomLieu));
 			return o;
 	}
 	

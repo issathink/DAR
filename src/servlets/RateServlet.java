@@ -34,7 +34,7 @@ public class RateServlet extends HttpServlet {
 				lng = latLng.lng;
 				note = req.getParameter("note");
 				
-				resp.getWriter().write(CommentRateService.commentRate(sessionId, lat, lng, note, false));
+				resp.getWriter().write(CommentRateService.commentRate(sessionId, adresse, lat, lng, note, false));
 			} else {
 				resp.getWriter().write(Tools.erreur);
 			}
