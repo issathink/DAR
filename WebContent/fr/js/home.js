@@ -31,7 +31,7 @@ function initialize() {
 	var autocomplete = new google.maps.places.Autocomplete(input);
 }
 
-
+// http://you.arenot.me/2010/06/29/google-maps-api-v3-0-multiple-markers-multiple-infowindows/
 
 ///////////////------------Gestion des marqueurs ------------///////////////////////////
 var markersSet = false;
@@ -122,6 +122,12 @@ function responseSetAllAPI(rep, myMap) {
 function getListMarkerPerso(jsonArrayApi, image, myMap) {
 	console.log("DEBUT getListMarkerPerso ==> "+image+" sizeJSONArrayAPi "+jsonArrayApi.length);
 	var res = [];
+
+	var infowindow = null;
+	infowindow = new google.maps.InfoWindow({
+		content: "holding..."
+	});
+
 	for(var i=0 ; i<jsonArrayApi.length ; i++) {
 		var obj = jsonArrayApi[i];
 		var type = obj.type;
@@ -130,23 +136,38 @@ function getListMarkerPerso(jsonArrayApi, image, myMap) {
 		var location = new google.maps.LatLng(myLatitude, myLongitude);
 		var nom = obj.nom;
 		var description = obj.description;
-		var marker = new google.maps.Marker({
-			title: type,
-			icon: image
-		});
-		marker.setPosition(location);
 
-		// Fenetre de dialog
-		var contentString = nom + " : " +description;
-		var infowindow = new google.maps.InfoWindow({
-			content: contentString
-		});
-		marker.addListener('click', function() {
-			infowindow.open(myMap, marker);
-		});
-		//////////
-		res.push(marker);
+		var markerOptions = {
+			title: type,
+			icon: image,
+			position: location,
+			title: "Titre de test"
+		};
+		var markerPerso = new google.maps.Marker(markerOptions);
+		var contentString = nom + ((description !== "") ? " : "+description : "");
+		contentString = myHTMLspecialhars(contentString);
+		contentString = "<div><b>" + contentString + "</b></div>";
+		console.log("ContentString = "+contentString);
+
+
+		google.maps.event.addListener(markerPerso,'click', (function(marker,content,infowindow){ 
+			return function() {
+				infowindow.setContent(content);
+				infowindow.open(map,marker);
+			};
+		})(markerPerso, contentString, infowindow));  
+
+		//////////////////////
+		// google.maps.event.addListener(markerPerso, 'click', function () {
+		// 	infowindow.setContent(this.html);
+		// 	infowindow.open(myMap, this);
+		// });
+
+		res.push(markerPerso);
 	}
+	//////////
+
+
 	console.log("FIN getListMarkerPerso ==> "+image+" sizeRes "+res.length);
 	return res;
 }
@@ -424,3 +445,19 @@ function topBar(message, err) {
 
 
 
+/////////////// A mettre dans tools
+
+function myHTMLspecialhars(ch) {
+	console.log("Chaine entre = "+ch);
+	ch = ch.replace(/&/g,"&amp;");
+	ch = ch.replace(/\"/g, "&quot;");
+	ch = ch.replace(/\'/g,"&#039;");
+	ch = ch.replace(/</g,"&lt;");
+	ch = ch.replace(/>/g,"&gt;");
+	ch = ch.replace(/é/g,"&eacute;");
+	ch = ch.replace(/è/g,"&egrave;");
+	ch = ch.replace(/à/g,"&agrave;");
+	ch = ch.replace(/ù/g,"&ugrave;");
+	console.log("Chaine sortie = "+ch);
+	return ch;
+}
