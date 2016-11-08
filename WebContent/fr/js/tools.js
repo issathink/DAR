@@ -130,7 +130,7 @@ function myHTMLspecialhars(ch) {
     return ch;
 }
 
-// function myDecodeHTMLspecialhars(ch) {
+function myDecodeHTMLspecialhars(ch) {
 //     console.log("Decode Chaine entre = "+ch);
 //     ch = ch.replace(/&amp;/g,"&");
 //     ch = ch.replace(/&quot;/g, "\"");
@@ -142,5 +142,5 @@ function myHTMLspecialhars(ch) {
 //     ch = ch.replace(/à/g,"&agrave;");
 //     ch = ch.replace(/ù/g,"&ugrave;");
 //     console.log("Decode Chaine sortie = "+ch);
-//     return ch;
-// }
+return ch;
+}
