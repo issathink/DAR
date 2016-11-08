@@ -74,7 +74,7 @@ function responseSetAllAPI(rep, myMap) {
 	console.log("Settage du marker pour l'adresse");
 	setMarkerOfAdress(myMap, myLatLng, tmpAddr);
 
-	console.log("responseSetAllAPI latitude = "+latitude);
+	console.log("responseSetAllAPI latitude = "+latitudeAddr+" longitude = "+longitudeAddr);
 
 
 	var soinJSON = allJson.soin;
@@ -185,11 +185,11 @@ function setMarkerOfAdress(myMap, myLatLng, adresseString) {
 	adressMarker = new google.maps.Marker({
 		position: myLatLng,
 		map: myMap,
-		zoom: 8,
+		zoom: 15,
 		title: adresseString // Mettre l'adresse peut etre
 	});
 
-	myMap.center(myLatLng);
+	myMap.setCenter(myLatLng);
 	console.log("setMarkerOfAdress FIN");
 }
 
@@ -325,7 +325,7 @@ function initialize() {
 function initMap() {
 	var paris = {lat: 48.866667, lng: 2.333333};
 	map = new google.maps.Map(document.getElementById('maps'), {
-		zoom: 10,
+		zoom: 12,
 		center: paris
 	});
 
