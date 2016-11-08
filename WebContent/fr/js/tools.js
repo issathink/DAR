@@ -113,4 +113,34 @@ function get_ParamGET(param) {
 	return vars;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////
 
+function myHTMLspecialhars(ch) {
+    console.log("Chaine entre = "+ch);
+    ch = ch.replace(/&/g,"&amp;");
+    ch = ch.replace(/\"/g, "&quot;");
+    ch = ch.replace(/\'/g,"&#039;");
+    ch = ch.replace(/</g,"&lt;");
+    ch = ch.replace(/>/g,"&gt;");
+    ch = ch.replace(/é/g,"&eacute;");
+    ch = ch.replace(/è/g,"&egrave;");
+    ch = ch.replace(/à/g,"&agrave;");
+    ch = ch.replace(/ù/g,"&ugrave;");
+    console.log("Chaine sortie = "+ch);
+    return ch;
+}
+
+function myDecodeHTMLspecialhars(ch) {
+    console.log("Chaine entre = "+ch);
+    ch = ch.replace("&amp;", /&/g);
+    ch = ch.replace("&quot;", /\"/g,);
+    ch = ch.replace("&#039;", /\'/g);
+    ch = ch.replace("&lt;", /</g);
+    ch = ch.replace("&gt;", />/g);
+    ch = ch.replace(/é/g,"&eacute;");
+    ch = ch.replace(/è/g,"&egrave;");
+    ch = ch.replace(/à/g,"&agrave;");
+    ch = ch.replace(/ù/g,"&ugrave;");
+    console.log("Chaine sortie = "+ch);
+    return ch;
+}
