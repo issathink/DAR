@@ -130,17 +130,17 @@ function myHTMLspecialhars(ch) {
     return ch;
 }
 
-function myDecodeHTMLspecialhars(ch) {
-    console.log("Chaine entre = "+ch);
-    ch = ch.replace("&amp;", /&/g);
-    ch = ch.replace("&quot;", /\"/g,);
-    ch = ch.replace("&#039;", /\'/g);
-    ch = ch.replace("&lt;", /</g);
-    ch = ch.replace("&gt;", />/g);
-    ch = ch.replace(/é/g,"&eacute;");
-    ch = ch.replace(/è/g,"&egrave;");
-    ch = ch.replace(/à/g,"&agrave;");
-    ch = ch.replace(/ù/g,"&ugrave;");
-    console.log("Chaine sortie = "+ch);
-    return ch;
-}
+// function myDecodeHTMLspecialhars(ch) {
+//     console.log("Decode Chaine entre = "+ch);
+//     ch = ch.replace(/&amp;/g,"&");
+//     ch = ch.replace(/&quot;/g, "\"");
+//     ch = ch.replace(/&#039;/g,"\'");
+//     ch = ch.replace(/</g,"&lt;");
+//     ch = ch.replace(/>/g,"&gt;");
+//     ch = ch.replace(/é/g,"&eacute;");
+//     ch = ch.replace(/è/g,"&egrave;");
+//     ch = ch.replace(/à/g,"&agrave;");
+//     ch = ch.replace(/ù/g,"&ugrave;");
+//     console.log("Decode Chaine sortie = "+ch);
+//     return ch;
+// }

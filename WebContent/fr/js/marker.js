@@ -115,7 +115,7 @@ function getListMarkerPerso(jsonArrayApi, image, myMap) {
 		};
 		var markerPerso = new google.maps.Marker(markerOptions);
 		var contentString = nom + ((description !== "") ? " : "+description : "");
-		contentString = myHTMLspecialhars(contentString);
+		contentString = myDecodeHTMLspecialhars(contentString);
 		contentString = "<div><b>" + contentString + "</b></div>";
 		console.log("ContentString = "+contentString);
 
