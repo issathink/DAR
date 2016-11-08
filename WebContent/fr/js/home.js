@@ -74,7 +74,7 @@ function responseSetAllAPI(rep, myMap) {
 	console.log("Settage du marker pour l'adresse");
 	setMarkerOfAdress(myMap, myLatLng, tmpAddr);
 
-	console.log("responseSetAllAPI latitude = "+latitude);
+	console.log("responseSetAllAPI latitude = "+latitudeAddr+" longitude = "+longitudeAddr);
 
 
 	var soinJSON = allJson.soin;
@@ -185,11 +185,11 @@ function setMarkerOfAdress(myMap, myLatLng, adresseString) {
 	adressMarker = new google.maps.Marker({
 		position: myLatLng,
 		map: myMap,
-		zoom: 8,
 		title: adresseString // Mettre l'adresse peut etre
 	});
 
-	myMap.center(myLatLng);
+	myMap.setCenter(myLatLng);
+	myMap.setZoom(15);
 	console.log("setMarkerOfAdress FIN");
 }
 
@@ -325,7 +325,7 @@ function initialize() {
 function initMap() {
 	var paris = {lat: 48.866667, lng: 2.333333};
 	map = new google.maps.Map(document.getElementById('maps'), {
-		zoom: 10,
+		zoom: 12,
 		center: paris
 	});
 
@@ -442,65 +442,65 @@ function topBar(message, err) {
 
 
 
-function setMarkerCategorie(categorie, myMap) {
-	if(markers[categorie] != undefined) {
-		for(var i = 0; i < markers[categorie].length; i++) {
-			markers[categorie][i].setMap(myMap);
-		}
-	}
-	else {
-		// Faire les appel ajax au debut normalement
+// function setMarkerCategorie(categorie, myMap) {
+// 	if(markers[categorie] != undefined) {
+// 		for(var i = 0; i < markers[categorie].length; i++) {
+// 			markers[categorie][i].setMap(myMap);
+// 		}
+// 	}
+// 	else {
+// 		// Faire les appel ajax au debut normalement
 
-	}
-}
+// 	}
+// }
 
-function unsetMarker(categorie) {
-	if(markers[categorie] != undefined) {
-		for(var i = 0; i < markers[categorie].length; i++) {
-			markers[categorie][i].setMap(null);
-		}
-	}
-}
-
-
-function responseSetAPI(repp) {
-	console.log("Dans responseSetAPI !! " + repp);
-	var rep = repp.res;
-	var categorie = repp.category;
-	console.log("nbElem: " + rep.length);
-	for(var i=0 ; i<rep.length ; i++) {
-		console.log("Debut de boucle "+i);
-		var type = rep[i].type;
-		var latitude = rep[i].latitude;
-		var longitude = rep[i].longitude;
-		var location = new google.maps.LatLng(latitude, longitude);
-		var nom = rep[i].nom;
-		var description = rep[i].description;
-		console.log("Location = "+location);
-		console.log("categorie = "+categorie);
-		console.log("nom = "+nom);
-		console.log("description = "+description);
-		var image = getImageFromType(type);
-		addMarkerPerso(map, location, image, categorie)
-		console.log("Fin de boucle "+i);
-		console.log("------------------------");
-	}
-}
+// function unsetMarker(categorie) {
+// 	if(markers[categorie] != undefined) {
+// 		for(var i = 0; i < markers[categorie].length; i++) {
+// 			markers[categorie][i].setMap(null);
+// 		}
+// 	}
+// }
 
 
+// function responseSetAPI(repp) {
+// 	console.log("Dans responseSetAPI !! " + repp);
+// 	var rep = repp.res;
+// 	var categorie = repp.category;
+// 	console.log("nbElem: " + rep.length);
+// 	for(var i=0 ; i<rep.length ; i++) {
+// 		console.log("Debut de boucle "+i);
+// 		var type = rep[i].type;
+// 		var latitude = rep[i].latitude;
+// 		var longitude = rep[i].longitude;
+// 		var location = new google.maps.LatLng(latitude, longitude);
+// 		var nom = rep[i].nom;
+// 		var description = rep[i].description;
+// 		console.log("Location = "+location);
+// 		console.log("categorie = "+categorie);
+// 		console.log("nom = "+nom);
+// 		console.log("description = "+description);
+// 		var image = getImageFromType(type);
+// 		addMarkerPerso(map, location, image, categorie)
+// 		console.log("Fin de boucle "+i);
+// 		console.log("------------------------");
+// 	}
+// }
 
 
 
 
-function getImageFromType(type) {
-	if(type === "pre_bac" || type === "post_bac")
-		return imageEducation;
-	else if(type === "pharmacie" || type === "centre_de_soin" || type === "etablissement_hospitalier")
-		return imageSante;
-	else if(type === "sport")
-		return imageSport;
-	else if(type === "comissariat")
-		return imageSecurite;
-	else //if(type === "transport")
-		return imageTransport;
-}
+
+
+// function getImageFromType(type) {
+// 	if(type === "pre_bac" || type === "post_bac")
+// 		return imageEducation;
+// 	else if(type === "pharmacie" || type === "centre_de_soin" || type === "etablissement_hospitalier")
+// 		return imageSante;
+// 	else if(type === "sport")
+// 		return imageSport;
+// 	else if(type === "comissariat")
+// 		return imageSecurite;
+// 	else //if(type === "transport")
+// 		return imageTransport;
+// }
