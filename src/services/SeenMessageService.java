@@ -45,6 +45,8 @@ public class SeenMessageService {
 			if((resRequestToGetName = statement.executeQuery(requestUserId)).next() == false) {
 				if(statement != null)
 					statement.close();
+				if(statement2 != null)
+					statement2.close();
 				if(connexion != null)
 					connexion.close();
 				JSONObject res = new JSONObject();

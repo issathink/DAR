@@ -2,6 +2,9 @@
 var idUserSession = getCookie(C_NAME); 
 if(idUserSession == null)
 	idUserSession = "b04b3ab6-79d5-4b82-aeae-0bacdf19f7de1476555095875";
+
+console.log("Chat idSession = "+idUserSession);
+
 var friendLogin = get_ParamGET("friend_login");
 
 

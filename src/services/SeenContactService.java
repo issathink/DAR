@@ -47,6 +47,8 @@ public class SeenContactService {
 			if((resRequest= statement.executeQuery(requestUserId)).next() == false) {
 				if(statement != null)
 					statement.close();
+				if(statement2 != null)
+					statement2.close();
 				if(connexion != null)
 					connexion.close();
 				JSONObject res = new JSONObject();
@@ -123,6 +125,8 @@ public class SeenContactService {
 			
 			if(statement != null)
 				statement.close();
+			if(statement2 != null)
+				statement2.close();
 			if(connexion != null)
 				connexion.close();
 
@@ -143,6 +147,8 @@ public class SeenContactService {
 		ResultSet resRequest = statement.executeQuery(request);
 		resRequest.next();
 		String res = resRequest.getString(1);
+		if(statement != null)
+			statement.close();
 		return res;
 	}
 
@@ -154,7 +160,8 @@ public class SeenContactService {
 		Statement statement = connexion.createStatement();
 		ResultSet resRequest = statement.executeQuery(requestUserId);
 		String res = resRequest.next() ? "1" : "0"; // Si jamais y a une ligne (donc connecte)
-		statement.close();
+		if(statement != null)
+			statement.close();
 		return res;
 	}
 
@@ -167,6 +174,8 @@ public class SeenContactService {
 		ResultSet resRequest = statement.executeQuery(request);
 		resRequest.next();
 		String res = resRequest.getString("date_send");
+		if(statement != null)
+			statement.close();
 		return res.substring(0, res.length()-2);
 	}
 

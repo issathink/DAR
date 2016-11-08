@@ -56,7 +56,7 @@ function setFieldsToComment(rep){
 		note.style.visibility = "visible";
 		note.innerHTML = "Noter : <span id='rateYo'></span> <script type='text/javascript'>";
 		$(function() { 
-			$('#rateYo').rateYo({ rating : '50%', spacing : '10px', halfStar : true }).on("rateyo.set", function (e, data) {
+			$('#rateYo').rateYo({ rating : '0%', spacing : '10px', fullStar: true}).on("rateyo.set", function (e, data) {
 				note = data.rating/20;
 				console.log("Vaut : "+note);
 				rate(note);
@@ -103,6 +103,7 @@ function responseSetCommentsAndNote(rep, adresse) {
 			//setVisible(choose another adress)
 			console.log("Not in Paris or its suburban");
 			topBar("Not in Paris or its suburban", true);
+			setTimeout(function(){ window.location.href = "home.html?adresse=" + adresseDefault; }, 2000);
 		}
 		else
 			console.log("SetCommentsAndNote error!");
