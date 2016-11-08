@@ -3,9 +3,12 @@ package api;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.mysql.jdbc.EscapeTokenizer;
 
 import tools.Tools;
 
@@ -41,6 +44,9 @@ public class EtablissementScolairePostBacAPI extends RequeteApiIleDeFrancePatter
 
 		String denominationPrincipale = fields.getString("type_d_etablissement");
 		String patronyme = fields.has("universite") ? fields.getString("universite") : fields.getString("nom");
+		denominationPrincipale = StringEscapeUtils.escapeHtml4(denominationPrincipale);
+		patronyme = StringEscapeUtils.escapeHtml4(patronyme);
+		
 		String adresse = fields.getString("adresse");
 		// Ou l'inverse
 		String latitude = fields.getString("longitude_x");

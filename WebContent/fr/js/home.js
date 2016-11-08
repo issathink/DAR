@@ -257,11 +257,11 @@ function setFieldsToComment(rep){
 	}
 }
 
-// function changePage() {
-// 	addr = document.getElementById("searchTextField").value;
-// 	if(addr.length > 0)
-// 		window.location.href = "home.html?adresse=" + addr;
-// }
+function changePage() {
+	addr = document.getElementById("searchTextField").value;
+	if(addr.length > 0)
+		window.location.href = "home.html?adresse=" + addr;
+}
 
 
 function changeDist(rep) {
