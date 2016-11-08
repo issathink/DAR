@@ -90,7 +90,7 @@ public class SeenContactService {
 				jObj.put("loginFriend", loginFriend);
 				jObj.put("connected", isConnected(myMap.get(loginFriend)));
 				jObj.put("nbMessageNotRead", nbMessageNotRead(userId, myMap.get(loginFriend)));
-				jObj.put("dateLastMessage", dateLastMessage(userId));
+				jObj.put("dateLastMessage", dateLastMessage(userId, myMap.get(loginFriend)));
 				l.add(jObj);
 				//jsonResult.put(jObj);
 			}
@@ -107,7 +107,7 @@ public class SeenContactService {
 						Date date1 = sdf.parse(d1);
 						Date date2 = sdf.parse(d2);
 						
-						return date1.compareTo(date2);
+						return date2.compareTo(date1);
 						
 					} catch (JSONException e) {
 						e.printStackTrace(); // TODO
@@ -158,10 +158,10 @@ public class SeenContactService {
 		return res;
 	}
 
-	private static String dateLastMessage(String userId) throws SQLException {
+	private static String dateLastMessage(String userId, String friendId) throws SQLException {
 		String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
 		String request = "SELECT date_send FROM "+tableMessage+
-				" WHERE id_sender=" +userId+" OR id_receiver="+userId+" ORDER BY date_send DESC LIMIT 1";
+				" WHERE (id_sender=" +userId+" AND id_receiver="+friendId+") OR (id_sender=" +friendId+" AND id_receiver="+userId+") ORDER BY date_send DESC LIMIT 1";
 		// SELECT date_send FROM `messages` WHERE `id_sender`=9 OR `id_receiver`=9 ORDER BY date_send DESC LIMIT 1
 		Statement statement = connexion.createStatement();
 		ResultSet resRequest = statement.executeQuery(request);

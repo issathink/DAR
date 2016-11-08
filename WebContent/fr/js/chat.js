@@ -108,6 +108,7 @@ function responseSetContact(rep, id_user_session) {
 		newBaliseLi.className = "list-group-item";
 		newBaliseLi.appendChild(newBaliseA);
 		myListeContact.appendChild(newBaliseLi);
+		console.log("Contact "+loginFriend+" lastDate = "+rep[i].dateLastMessage);
 	}
 }
 
