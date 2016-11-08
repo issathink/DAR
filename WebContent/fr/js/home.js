@@ -1,3 +1,32 @@
+
+Skip to content
+This repository
+
+    Pull requests
+    Issues
+    Gist
+
+    @FaissalCh
+
+3
+0
+
+    0
+
+issathink/DAR
+Code
+Issues 0
+Pull requests 0
+Projects 0
+Wiki
+Pulse
+Graphs
+DAR/WebContent/fr/js/home.js
+9eb6c4e 2 hours ago
+CHAWKI FAISSAL Add info Bulle to Markers
+@FaissalCh
+@issathink
+464 lines (389 sloc) 13.9 KB
 var adresse = window.location.href.split('=')[1];
 if(adresse == undefined) {
 	adresse = "Place Jussieu, Paris, France";
@@ -31,7 +60,7 @@ function initialize() {
 	var autocomplete = new google.maps.places.Autocomplete(input);
 }
 
-
+// http://you.arenot.me/2010/06/29/google-maps-api-v3-0-multiple-markers-multiple-infowindows/
 
 ///////////////------------Gestion des marqueurs ------------///////////////////////////
 var markersSet = false;
@@ -122,6 +151,12 @@ function responseSetAllAPI(rep, myMap) {
 function getListMarkerPerso(jsonArrayApi, image, myMap) {
 	console.log("DEBUT getListMarkerPerso ==> "+image+" sizeJSONArrayAPi "+jsonArrayApi.length);
 	var res = [];
+
+	var infowindow = null;
+	infowindow = new google.maps.InfoWindow({
+		content: "holding..."
+	});
+
 	for(var i=0 ; i<jsonArrayApi.length ; i++) {
 		var obj = jsonArrayApi[i];
 		var type = obj.type;
@@ -130,23 +165,38 @@ function getListMarkerPerso(jsonArrayApi, image, myMap) {
 		var location = new google.maps.LatLng(myLatitude, myLongitude);
 		var nom = obj.nom;
 		var description = obj.description;
-		var marker = new google.maps.Marker({
-			title: type,
-			icon: image
-		});
-		marker.setPosition(location);
 
-		// Fenetre de dialog
-		var contentString = nom + " : " +description;
-		var infowindow = new google.maps.InfoWindow({
-			content: contentString
-		});
-		marker.addListener('click', function() {
-			infowindow.open(myMap, marker);
-		});
-		//////////
-		res.push(marker);
+		var markerOptions = {
+			title: type,
+			icon: image,
+			position: location,
+			title: "Titre de test"
+		};
+		var markerPerso = new google.maps.Marker(markerOptions);
+		var contentString = nom + ((description !== "") ? " : "+description : "");
+		contentString = myHTMLspecialhars(contentString);
+		contentString = "<div><b>" + contentString + "</b></div>";
+		console.log("ContentString = "+contentString);
+
+
+		google.maps.event.addListener(markerPerso,'click', (function(marker,content,infowindow){ 
+			return function() {
+				infowindow.setContent(content);
+				infowindow.open(map,marker);
+			};
+		})(markerPerso, contentString, infowindow));  
+
+		//////////////////////
+		// google.maps.event.addListener(markerPerso, 'click', function () {
+		// 	infowindow.setContent(this.html);
+		// 	infowindow.open(myMap, this);
+		// });
+
+		res.push(markerPerso);
 	}
+	//////////
+
+
 	console.log("FIN getListMarkerPerso ==> "+image+" sizeRes "+res.length);
 	return res;
 }
@@ -232,8 +282,7 @@ function responseIsConnected(response) {
 		document.getElementById("top_button").innerHTML = "<button type='button' class='btn btn-default btn-md'>" +
 		"<a class='glyphicon glyphicon-envelope' aria-hidden='true'></a> </button>" +
 		"<button type='button' class='btn btn-default btn-md'>" +
-		"<a class='glyphicon glyphicon-user' aria-hidden='true'></a> </button>" +
-		"<div><span><a href='changePw.html'>Change password?</a>.</span></div>";
+		"<a class='glyphicon glyphicon-user' aria-hidden='true'></a> </button>";
 
 	} else {
 		document.getElementById("top_button").innerHTML = "<div class='depl_haut'> <a href='signin.html'>Se connecter</a></div>";
@@ -258,11 +307,11 @@ function setFieldsToComment(rep){
 	}
 }
 
-function changePage() {
-	addr = document.getElementById("searchTextField").value;
-	if(addr.length > 0)
-		window.location.href = "home.html?adresse=" + addr;
-}
+// function changePage() {
+// 	addr = document.getElementById("searchTextField").value;
+// 	if(addr.length > 0)
+// 		window.location.href = "home.html?adresse=" + addr;
+// }
 
 
 function changeDist(rep) {
@@ -345,17 +394,17 @@ function errorFunction(resultatXHR, statut, erreur, fctName) {
 
 
 function comment(rep) {
-	//var adr = get_ParamGET("adresse");
+	var adr = get_ParamGET("adresse");
 	var comment = document.getElementById('commentText').value;
 	var session_id = getCookie(C_NAME);
-	console.log("adr : " + adresse + " , com : " + comment + " , session : " + session_id);
+	console.log("adr : " + adr + " , com : " + comment + " , session : " + session_id);
 	if(session_id == null || session_id == undefined)
 		console.log("Pas d'identifiant de session");
 	else {
 		$.ajax({
 			url : "../comment?",
 			type : "GET",
-			data : "session_id=" + session_id + "&adresse=" + adresse + "&comment=" + comment,
+			data : "session_id=" + session_id + "&adresse=" + adr + "&comment=" + comment,
 			dataType : "json",
 			success : function(rep) {
 				responsePostComment(rep);
@@ -383,16 +432,16 @@ function responsePostComment(rep) {
 }
 
 function rate(note) {
-	//var adr = get_ParamGET("adresse");
+	var adr = get_ParamGET("adresse");
 	var session_id = getCookie(C_NAME);
-	console.log("adr : " + adresse + " , session : " + session_id + " , note : " + note);
+	console.log("adr : " + adr + " , session : " + session_id + " , note : " + note);
 	if(session_id == null || session_id == undefined)
 		console.log("Pas d'identifiant de session");
 	else {
 		$.ajax({
 			url : "../rate?",
 			type : "GET",
-			data : "session_id=" + session_id + "&adresse=" + adresse + "&note=" + note,
+			data : "session_id=" + session_id + "&adresse=" + adr + "&note=" + note,
 			dataType : "json",
 			success : function(rep) {
 				responsePostRate(rep);
@@ -424,4 +473,25 @@ function topBar(message, err) {
 }
 
 
+
+/////////////// A mettre dans tools
+
+function myHTMLspecialhars(ch) {
+	console.log("Chaine entre = "+ch);
+	ch = ch.replace(/&/g,"&amp;");
+	ch = ch.replace(/\"/g, "&quot;");
+	ch = ch.replace(/\'/g,"&#039;");
+	ch = ch.replace(/</g,"&lt;");
+	ch = ch.replace(/>/g,"&gt;");
+	ch = ch.replace(/é/g,"&eacute;");
+	ch = ch.replace(/è/g,"&egrave;");
+	ch = ch.replace(/à/g,"&agrave;");
+	ch = ch.replace(/ù/g,"&ugrave;");
+	console.log("Chaine sortie = "+ch);
+	return ch;
+}
+
+    Contact GitHub API Training Shop Blog About 
+
+    © 2016 GitHub, Inc. Terms Privacy Security Status Help 
 
