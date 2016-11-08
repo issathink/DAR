@@ -50,7 +50,7 @@ public class SeenMessageService {
 				if(connexion != null)
 					connexion.close();
 				JSONObject res = new JSONObject();
-				res.put("Error :", "La connexion n'existe pas");
+				res.put("erreur1", "La connexion n'existe pas");
 				return res.toString();
 			}
 
@@ -58,7 +58,18 @@ public class SeenMessageService {
 
 
 
-			(resRequestToGetName = statement.executeQuery(requestFriendId)).next();
+			if((resRequestToGetName = statement.executeQuery(requestFriendId)).next() == false) {
+				if(statement != null)
+					statement.close();
+				if(statement2 != null)
+					statement2.close();
+				if(connexion != null)
+					connexion.close();
+				JSONObject res = new JSONObject();
+				res.put("erreur2", "Le contact n'existe pas");
+				return res.toString();
+			}
+
 			String friendId = resRequestToGetName.getString("id");
 
 

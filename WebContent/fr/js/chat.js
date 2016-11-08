@@ -7,7 +7,7 @@ console.log("Chat idSession = "+idUserSession);
 
 var friendLogin = get_ParamGET("friend_login");
 
-var delayRefresh = 1000;
+var delayRefresh = 2000;
 
 // FAUDRAIT VERIFIER DANS MES SERVLETS SI LA SESSION EXISTE (requete return rien....)
 // DANS SEARCH CONTACT DANS LA BARRE (envoyer aussi idSession) FAUT PAS S'AFFICHER
@@ -141,6 +141,12 @@ function setMessages(id_user_session, friend_login) {
 
 
 function responseSetMessages(rep, pseudo_friend) {
+	if(rep.erreur2 != undefined) {
+		console.log("Contact does not exist");
+		topBarChat("Contact does not exist", true);
+		setTimeout(function(){ window.location.href = "chat.html?" }, 2000);
+	}
+
 	document.getElementById("h3NomContact").innerHTML = "<b>"+pseudo_friend+"</b>";
 	var myDiv = document.getElementById("idDivMessages");
 	while (myDiv.hasChildNodes()) // Remove l'ancien affichage
@@ -228,3 +234,13 @@ document.getElementById("idSearchLogin").onkeyup = function(e){
 
 
 // fr/chat.html?friend_login=log2
+
+
+function topBarChat(message, err) {
+	if(err)
+		$("<div />", { class: 'erreur_topbar', text: message }).hide().prependTo("body")
+	.slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
+	else
+		$("<div />", { class: 'ok_topbar', text: message }).hide().prependTo("body")
+	.slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
+}
