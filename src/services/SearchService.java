@@ -41,7 +41,8 @@ public class SearchService {
 					JSONArray transport = APIs.getTransportJSON(position.lat, position.lng, distanceAround);
 					result.put("category", "transport");
 					result.put("res", transport);
-				} else if (apiname.equals("all")) {
+				} else if (apiname.equals("all")) { // Ce qu'il y a en haut sert a rien en faite
+					// Mais j'ai peur de l'effacer....
 					JSONObject all = new JSONObject();
 					
 					JSONArray ecoles = APIs.getEducationJSON(position.lat, position.lng, distanceAround);
@@ -58,6 +59,8 @@ public class SearchService {
 					
 					result.put("category", "all");
 					result.put("res", all);
+					result.put("latitudeAdresse", lat);
+					result.put("longitudeAdresse", lng);
 					
 				} else {
 					result.put("erreur", "Invalid api '" + apiname + "'");

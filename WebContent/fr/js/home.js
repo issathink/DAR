@@ -2,6 +2,10 @@ var adresse = window.location.href.split('=')[1];
 if(adresse == undefined) {
 	adresse = "Place Jussieu, Paris, France";
 }
+var latitudeAddr;
+var longitudeAddr;
+var adresseLatLnbgIsSet = false;
+
 var note;
 var map;
 var dist = 500;  //default val of the distance
@@ -48,7 +52,7 @@ function loadAllInfos(adress, distance) {
 		data : "adresse=" + adress + "&apiname=" + "all" + "&dist=" + distance,
 		dataType : "json",
 		success : function(rep) {
-			responseSetAllAPI(rep);
+			responseSetAllAPI(rep, map);
 		}, 
 		error : function(resultatXHR, statut, erreur) {
 			errorFunction(resultatXHR, statut, erreur, "loadAllInfos");
@@ -56,10 +60,21 @@ function loadAllInfos(adress, distance) {
 	});
 }
 
-function responseSetAllAPI(rep) {
-	console.log("responseSetAllAPI debut [Appel Ajax pour les Res OK!]");
+function responseSetAllAPI(rep, myMap) {
+	console.log("responseSetAllAPI =  +latitudedebut [Appel Ajax pour les Res OK!]");
 
 	var allJson = rep.res;
+
+	latitudeAddr = rep.latitudeAdresse;
+	longitudeAddr = rep.longitudeAdresse;
+	adresseLatLnbgIsSet = true;
+
+	var myLatLng = new google.maps.LatLng(latitudeAddr, longitudeAddr);
+	var tmpAddr = (adresse != undefined)? adresse : "Adresse Not Set";
+	console.log("Settage du marker pour l'adresse");
+	setMarkerOfAdress(myMap, myLatLng, tmpAddr);
+
+	console.log("responseSetAllAPI latitude = "+latitude);
 
 
 	var soinJSON = allJson.soin;
@@ -94,9 +109,9 @@ function getListMarkerPerso(jsonArrayApi, image) {
 	for(var i=0 ; i<jsonArrayApi.length ; i++) {
 		var obj = jsonArrayApi[i];
 		var type = obj.type;
-		var latitude = obj.latitude;
-		var longitude = obj.longitude;
-		var location = new google.maps.LatLng(latitude, longitude);
+		var myLatitude = obj.latitude;
+		var myLongitude = obj.longitude;
+		var location = new google.maps.LatLng(myLatitude, myLongitude);
 		var nom = obj.nom;
 		var description = obj.description;
 		var marker = new google.maps.Marker({
@@ -166,14 +181,16 @@ function apiCall(box, name_api) {
 }
 
 function setMarkerOfAdress(myMap, myLatLng, adresseString) {
-	myMap.zoom(8);
-	myMap.center(myLatLng);
+	console.log("setMarkerOfAdress DEBUT");
 	adressMarker = new google.maps.Marker({
 		position: myLatLng,
 		map: myMap,
+		zoom: 8,
 		title: adresseString // Mettre l'adresse peut etre
 	});
 
+	myMap.center(myLatLng);
+	console.log("setMarkerOfAdress FIN");
 }
 
 ///////////////////////////////////////////////////
