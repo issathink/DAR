@@ -81,6 +81,7 @@ function setFieldsToComment(rep){
 }
 
 function changePage() {
+	alert(document.getElementById("distanceSelector").value);
 	addr = document.getElementById("searchTextField").value;
 	if(addr.length > 0)
 		window.location.href = "home.html?adresse=" + addr;
@@ -88,7 +89,8 @@ function changePage() {
 
 
 function changeDist(rep) {
-	var d = document.getElementById("dist").value;
+	var d = document.getElementById("distanceSelector").value;
+	
 	console.log("distance : " + d);
 	dist = d;
 	document.getElementById("dist").value = '';
