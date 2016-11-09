@@ -65,6 +65,7 @@ function loadAllInfos(adress, distance, withSetAff) { // 3eme setAffichage ou no
 	});
 }
 
+
 function responseSetAllAPI(rep, myMap, withSetAff) {
 	console.log("responseSetAllAPI =  +latitudedebut [Appel Ajax pour les Res OK!]");
 

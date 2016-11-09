@@ -14,8 +14,8 @@ var boolIsConnected = false;
 isConnected(responseIsConnected);
 
 if(adresse != undefined) {
+	loadAllInfos(adresse, dist, true);
 	getCommentsAndNote(adresse, dist);
-	loadAllInfos(adresse, dist, false);
 	//setMarkerOfAdress(map, location, adresse);
 }
 
