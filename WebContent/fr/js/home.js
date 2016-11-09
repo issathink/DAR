@@ -106,11 +106,10 @@ function responseSetCommentsAndNote(rep, adresse) {
 			console.log("Not in Paris or its suburban");
 			topBar("Not in Paris or its suburban", true);
 			setTimeout(function(){ window.location.href = "home.html?adresse=" + adresseDefault; }, 2000);
-		}
-		else
+		} else {
 			console.log("SetCommentsAndNote error!");
-	}
-	else {
+		}
+	} else {
 		adresse = decodeURI(adresse)
 
 		isConnected(setFieldsToComment);
@@ -131,14 +130,15 @@ function responseSetCommentsAndNote(rep, adresse) {
 		while (myDiv.hasChildNodes()) // Remove l'ancien affichage
 			myDiv.removeChild(myDiv.lastChild);
 
-		if(rep.login != undefined) {
-			for(var i=0 ; i<rep.login.length ; i++) {
+		console.log(rep);
+		if(rep.comment != undefined) {
+			for(var i=0 ; i<rep.comment.length ; i++) {
 				var login = rep.comment[i].login;
 				var message = rep.comment[i].comment;
 				var addr = rep.comment[i].adresse;
 				var newBalise = document.createElement("div");
 				newBalise.innerHTML = '<div class="row"><div class="col-sm-1"><div class="thumbnail">'
-				+ '<img onclick="goToChat(login)" class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">'
+				+ '<img onclick="goToChat(' + login + ')" class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">'
 				+ '</div><!-- /thumbnail --></div><!-- /col-sm-1 --><div class="col-sm-10"><div class="panel panel-default"><div class="panel-heading"><strong>'
 				+ login + '</strong><span>,' + addr + '</span></div><div class="panel-body">'
 				+ message + '</div><!-- /panel-body --></div><!-- /panel panel-default --></div><!-- /col-sm-5 --></div>';
@@ -159,6 +159,7 @@ function goToChat(loginContact) {
 function errorFunction(resultatXHR, statut, erreur, fctName) {
 	console.log("Error(" + status + ") : " + resultatXHR.responseText);
 	console.log("Error loading "+fctName);
+	topBar(resultatXHR.responseText.erreur, true);
 }
 
 
@@ -194,6 +195,7 @@ function responsePostComment(rep) {
 		console.log(rep.erreur);
 		$('#error_caractere').hide();
 		$('#error_caractere').fadeIn('fast');
+		topBar(rep.erreur, true);
 	} else {
 		console.log("SUCCEED");
 		$('#error_caractere').hide();
@@ -226,6 +228,7 @@ function rate(note) {
 function responsePostRate(rep) {
 	if(rep.erreur != undefined) {
 		console.log("ERROR");
+		topBar(rep.erreur, true);
 	} else {
 		console.log("SUCCEED");
 		getCommentsAndNote(adresse);
