@@ -61,7 +61,7 @@ public class GetCommentsAndNoteService {
 						add = add.substring(0, add.length()-4); // Nice one :)
 	
 						String queryGetComments = "select c.comment, c.note, c.adresse, u.login from " + DBStatic.mysql_db 
-								+  ".comments c," + DBStatic.mysql_db + ".users u where (" + add + ") AND c.user_id='u.id'";
+								+  ".comments c," + DBStatic.mysql_db + ".users u where (" + add + ") AND c.user_id=u.id;";
 						s += queryGetComments;
 						listOfComments = statement.executeQuery(queryGetComments);
 						result.put("query", queryGetComments);
