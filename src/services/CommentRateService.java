@@ -36,11 +36,11 @@ public class CommentRateService {
 						String update;
 						if(comment) {
 							s += "1 ";
-							update = "UPDATE " + DBStatic.mysql_db +  ".comments SET comment='"
+							update = "UPDATE " + DBStatic.mysql_db +  ".comments SET date=now(), comment='"
 									+ commentNote + "' where user_id='" + userId + "' AND lat='" + lat + "' AND lng='" + lng + "'";
 						} else {
 							s += "1else ";
-							update = "UPDATE " + DBStatic.mysql_db +  ".comments SET note='"
+							update = "UPDATE " + DBStatic.mysql_db +  ".comments SET date=now(), note='"
 								+ commentNote + "' where user_id='" + userId + "' AND  lat='" + lat + "' AND lng='" + lng + "'";
 						}
 						if(statement.executeUpdate(update) > 0) 

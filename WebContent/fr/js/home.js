@@ -9,6 +9,7 @@ if(adresse == undefined) {
 var note;
 var map;
 var dist = 500;  //default val of the distance
+var boolIsConnected = false;
 isConnected(responseIsConnected);
 
 if(adresse != undefined) {
@@ -37,7 +38,7 @@ function responseIsConnected(response) {
 	console.log(adresse);
 	if(response.ok != undefined) {
 		console.log("already connected");
-		
+		boolIsConnected = true;
 		document.getElementById("top_button").innerHTML = "<button onclick='goToChat()' type='button' class='btn btn-default btn-md'>" +
 		"<a class='glyphicon glyphicon-envelope' aria-hidden='true'></a> </button>" +
 		"<button onclick='toInfos()' type='button' class='btn btn-default btn-md'>" +
@@ -45,6 +46,7 @@ function responseIsConnected(response) {
 
 	} else {
 		document.getElementById("top_button").innerHTML = "<div class='depl_haut'> <a href='signin.html'>Se connecter</a></div>";
+		boolIsConnected = false;
 	}
 }
 
@@ -141,8 +143,11 @@ function responseSetCommentsAndNote(rep, adresse) {
 				var message = rep.comment[i].comment;
 				var addr = rep.comment[i].adresse;
 				var newBalise = document.createElement("div");
+				var tmp = "";
+				if(boolIsConnected)
+					tmp = 'onclick="goToChat(' + "'" + login +"')" + '"';
 				newBalise.innerHTML = '<div class="row"><div class="col-sm-1"><div class="thumbnail">'
-				+ '<img onclick="goToChat(' + login + ')" class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">'
+				+ '<img '+tmp+' class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">'
 				+ '</div><!-- /thumbnail --></div><!-- /col-sm-1 --><div class="col-sm-10"><div class="panel panel-default"><div class="panel-heading"><strong>'
 				+ login + '</strong><span>,' + addr + '</span></div><div class="panel-body">'
 				+ message + '</div><!-- /panel-body --></div><!-- /panel panel-default --></div><!-- /col-sm-5 --></div>';
@@ -153,6 +158,7 @@ function responseSetCommentsAndNote(rep, adresse) {
 }
 
 function goToChat(loginContact) {
+	// Tester if connected
 	if(loginContact != undefined)
 		window.location.href = "chat.html?friend_login="+loginContact;
 	else

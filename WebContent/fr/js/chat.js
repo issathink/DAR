@@ -1,7 +1,7 @@
 
 var idUserSession = getCookie(C_NAME); 
-if(idUserSession == null)
-	idUserSession = "b04b3ab6-79d5-4b82-aeae-0bacdf19f7de1476555095875";
+// if(idUserSession == null)
+// 	idUserSession = "b04b3ab6-79d5-4b82-aeae-0bacdf19f7de1476555095875";
 
 console.log("Chat idSession = "+idUserSession);
 
@@ -18,7 +18,9 @@ var heightIdDivMessage = document.getElementById("idDivMessages").clientHeight; 
 
 /* A l'ouverture de la page */
 if(idUserSession == null) {
-	alert("Error : Not connected");
+	console.log("You are not connected");
+	topBarChat("You are not connected", true);
+	setTimeout(function(){ window.location.href = "sigin.html?" }, 2000);
 // } else if(friendLogin == null) {
 	//alert("Error : 'user_login' = "+userLogin+", friend_login = "+friendLogin);
 	//window.location.href = "login.html";
@@ -39,7 +41,7 @@ function refreshPage() {
 	if(friendLogin !== null)
 		setMessages(idUserSession, friendLogin);
 	else
-		document.getElementById("h3NomContact").innerHTML = "<b>"+Select contact...+"</b>";
+		document.getElementById("h3NomContact").innerHTML = "<b>"+"Select a contact..."+"</b>";
 	setContact(idUserSession);
 }
 
@@ -59,6 +61,15 @@ function sendMessageText() {
 	var myChampTexte = document.getElementById("champTexte");
 	var s = myChampTexte.value;
 	if(s !== "") {
+		if(friendLogin == undefined) {
+			topBarChat("Select a contact please", true);
+			$('document').ready(function() {
+				$(window).scrollTop(0);
+			});
+			myChampTexte.value = "";
+			console.log("Pas de contact, choisir un contact avant de send un message");
+			return;
+		}
 		myChampTexte.value = "";
 		sendMessageToServeur(idUserSession, friendLogin, s);
 		refreshPage();
@@ -130,7 +141,7 @@ function setMessages(id_user_session, friend_login) {
 			if(rep.erreur2 != undefined) {
 				console.log("Contact does not exist");
 				topBarChat("Contact does not exist", true);
-				setTimeout(function(){ window.location.href = "chat.html?" }, 2000);
+				//setTimeout(function(){ window.location.href = "chat.html?" }, 2000);
 			}
 			else {
 				var obj = document.getElementById("idDivMessages");
