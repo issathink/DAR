@@ -77,12 +77,29 @@ function isConnected(callBack) {
 
 
 function changePage() {
-	alert(document.getElementById("distanceSelector").value);
+	//alert(document.getElementById("distanceSelector").value);
 	addr = document.getElementById("searchTextField").value;
 	if(addr.length > 0)
 		window.location.href = "home.html?adresse=" + addr;
 }
 
+function goToChat(loginContact) {
+	// Tester if connected
+	if(loginContact != undefined)
+		window.location.href = "chat.html?friend_login="+loginContact;
+	else
+		window.location.href = "chat.html?";
+}
+
+function toInfos(){
+	console.log("ToUserProfile");
+	window.location.href = "userProfile.html";
+}
+
+function disconnect() {
+	console.log("disconnect");
+	logout();
+}
 
 /* Convetion : Cookie value equals "-1" means there is no active session. */
 function logout() {

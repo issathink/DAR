@@ -1,3 +1,21 @@
+isConnected(responseIsConnectedHeader);
+var idUserSession = getCookie(C_NAME); 
+
+if(idUserSession == null) {
+	console.log("You are not connected");
+	topBarProfile("You are not connected", true);
+	setTimeout(function(){ window.location.href = "signin.html?" }, 2000);
+}
+
+function topBarProfile(message, err) {
+	if(err)
+		$("<div />", { class: 'erreur_topbar', text: message }).hide().prependTo("body")
+	.slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
+	else
+		$("<div />", { class: 'ok_topbar', text: message }).hide().prependTo("body")
+	.slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
+}
+
 function validate() {
 
 	pwd = document.forms["signin"]["pwd_prec"].value;
@@ -120,23 +138,23 @@ function responseGetInfos(response) {
 		// Successfully loaded
 		document.body.className = '';
 		document.getElementById("infos").innerHTML = "<pre> Your login : "+response.login
-			+"</pre><pre> Your mail : "+response.mail+"</pre>";
+		+"</pre><pre> Your mail : "+response.mail+"</pre>";
 	} else {
 		// Something wrong
 		document.body.className = '';
 	}
 }
 
-function initialize() {
-	var input = document.getElementById('searchTextField');
-	var autocomplete = new google.maps.places.Autocomplete(input);
-}
+//function initialize() {
+//var input = document.getElementById('searchTextField');
+//var autocomplete = new google.maps.places.Autocomplete(input);
+//}
 
-function initMap() {
-	var paris = {lat: 48.866667, lng: 2.333333};
-	map = new google.maps.Map(document.getElementById('maps'), {
-		zoom: 12,
-		center: paris
-	});
-	google.maps.event.addDomListener(window, 'load', initialize);
-}
+//function initMap() {
+//var paris = {lat: 48.866667, lng: 2.333333};
+//map = new google.maps.Map(document.getElementById('maps'), {
+//zoom: 12,
+//center: paris
+//});
+//google.maps.event.addDomListener(window, 'load', initialize);
+//}

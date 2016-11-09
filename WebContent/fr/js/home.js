@@ -53,15 +53,6 @@ function responseIsConnected(response) {
 	}
 }
 
-function toInfos(){
-	console.log("ToUserProfile");
-	window.location.href = "userProfile.html";
-}
-
-function disconnect() {
-	console.log("disconnect");
-	logout();
-}
 
 function setFieldsToComment(rep){
 	if(rep.ok != undefined){
@@ -179,13 +170,7 @@ function responseSetCommentsAndNote(rep, adresse) {
 	}
 }
 
-function goToChat(loginContact) {
-	// Tester if connected
-	if(loginContact != undefined)
-		window.location.href = "chat.html?friend_login="+loginContact;
-	else
-		window.location.href = "chat.html?";
-}
+
 
 
 function errorFunction(resultatXHR, statut, erreur, fctName) {

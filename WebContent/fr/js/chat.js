@@ -1,13 +1,11 @@
-
+isConnected(responseIsConnectedHeader);
 var idUserSession = getCookie(C_NAME); 
 // if(idUserSession == null)
 // 	idUserSession = "b04b3ab6-79d5-4b82-aeae-0bacdf19f7de1476555095875";
-
 console.log("Chat idSession = "+idUserSession);
-
 var friendLogin = get_ParamGET("friend_login");
-
 var delayRefresh = 3000;
+
 
 // FAUDRAIT VERIFIER DANS MES SERVLETS SI LA SESSION EXISTE (requete return rien....)
 // DANS SEARCH CONTACT DANS LA BARRE (envoyer aussi idSession) FAUT PAS S'AFFICHER
@@ -20,7 +18,7 @@ var heightIdDivMessage = document.getElementById("idDivMessages").clientHeight; 
 if(idUserSession == null) {
 	console.log("You are not connected");
 	topBarChat("You are not connected", true);
-	setTimeout(function(){ window.location.href = "sigin.html?" }, 2000);
+	setTimeout(function(){ window.location.href = "signin.html?" }, 2000);
 // } else if(friendLogin == null) {
 	//alert("Error : 'user_login' = "+userLogin+", friend_login = "+friendLogin);
 	//window.location.href = "login.html";

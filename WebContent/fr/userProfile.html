@@ -10,8 +10,8 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 
-<link rel="stylesheet" href="css/signin.css">
 <link rel="stylesheet" href="css/userProfile.css">
+<link rel="stylesheet" href="css/signin.css">
 <link rel="stylesheet" href="css/home.css" />
 
 <!-- Including Bootstrap JS (with its jQuery dependency) so that dynamic components work -->
@@ -20,30 +20,38 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
+<script
+	src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
 </head>
 <body onload="getInfos()">
 
-	<div class="row">
-		<div class="blog-masthead">
-			<div class="container">
-				<nav class="blog-nav">
-					<div class="col-lg-2 col-md-2 col-xs-12">
-						<img src="logo.png" />
-					</div>
-					<div class="col-lg-8 col-md-8 col-xs-12" id="search_bar">
+	<!-- TETE -->
+	<div id="divHeader">
+		<div class="row">
+			<div class="blog-masthead">
+				<div class="container">
+					<nav class="blog-nav">
+						<div class="col-lg-2 col-md-2 col-xs-12">
+							<img src="logo.png" />
+						</div>
+						<div class="col-lg-8 col-md-8 col-xs-12" id="search_bar">
 							<div class="input-group">
 								<input type="text" class="form-control"
 									placeholder="Type an address ..." id="searchTextField">
 								<span class="input-group-btn">
-									<button class="btn btn-default" type="button" onClick="changePage(); return false;">Go</button>
+									<button class="btn btn-default" type="button"
+										onClick="changePage(); return false;">Go</button>
 								</span>
 							</div>
 						</div>
-					<div class="col-lg-2 col-md-2 col-xs-12"></div>
-				</nav>
+
+						<div class="col-lg-2 col-md-2 col-xs-12" id="top_button"></div>
+					</nav>
+				</div>
 			</div>
 		</div>
 	</div>
+
 
 	<div class="signin">
 		<div class="signin-content">
@@ -102,10 +110,16 @@
 			<!-- Place at bottom of page -->
 		</div>
 	</div>
-	
+
+	<script type="text/javascript" src="./js/header.js"></script>
 	<script type="text/javascript" src="./js/tools.js"></script>
 	<script type="text/javascript" src="./js/userProfile.js"></script>
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3YD2YqV03p3NETfHUfW6f0CoUuP4Au6o&libraries=places&callback=initMap"></script>
-	
+	<script type="text/javascript">
+		function initialize() {
+			var input = document.getElementById('searchTextField');
+			var autocomplete = new google.maps.places.Autocomplete(input);
+		}
+		google.maps.event.addDomListener(window, 'load', initialize);
+	</script>
 </body>
 </html>
