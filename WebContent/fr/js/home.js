@@ -8,13 +8,14 @@ if(adresse == undefined) {
 
 var note;
 var map;
-var dist = 500;  //default val of the distance
+var dist = formateDistance(document.getElementById("distance-selector").value); //default val of the distance
+console.log("Distance = "+dist);
 var boolIsConnected = false;
 isConnected(responseIsConnected);
 
 if(adresse != undefined) {
 	getCommentsAndNote(adresse, dist);
-	loadAllInfos(adresse, dist)
+	loadAllInfos(adresse, dist, false);
 	//setMarkerOfAdress(map, location, adresse);
 }
 
@@ -88,6 +89,7 @@ function changeDist() {
 	dist = d;
 	if(adresse != undefined) {
 		setAffichageDependingOfBox(map);
+		topBar("Loading...", false, 2000);
 	}
 }
 
@@ -142,7 +144,7 @@ function responseSetCommentsAndNote(rep, adresse) {
 		document.getElementById("h3NomContact").innerHTML = "<b>"+adresse+"</b>";
 		var myDiv = document.getElementById("idDivMessages");
 		document.getElementById("com").style.visibility = "visible"
-		var note = document.getElementById("moyenne");
+			var note = document.getElementById("moyenne");
 		note.innerHTML = "Note moyenne : <span id='rateYo2'></span> <script type='text/javascript'>";
 
 		if(rep.moyenne != undefined) {
@@ -161,15 +163,16 @@ function responseSetCommentsAndNote(rep, adresse) {
 				var login = rep.comment[i].login;
 				var message = rep.comment[i].comment;
 				var addr = rep.comment[i].adresse;
+				var note = rep.comment[i].note;
 				var newBalise = document.createElement("div");
 				var tmp = "";
 				if(boolIsConnected)
 					tmp = 'onclick="goToChat(' + "'" + login +"')" + '"';
 				newBalise.innerHTML = '<div class="row"><div class="col-sm-1"><div class="thumbnail">'
-				+ '<img '+tmp+' class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">'
-				+ '</div><!-- /thumbnail --></div><!-- /col-sm-1 --><div class="col-sm-10"><div class="panel panel-default"><div class="panel-heading"><strong>'
-				+ login + '</strong><span>,' + addr + '</span></div><div class="panel-body">'
-				+ message + '</div><!-- /panel-body --></div><!-- /panel panel-default --></div><!-- /col-sm-5 --></div>';
+					+ '<img '+tmp+' class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">'
+					+ '</div><!-- /thumbnail --></div><!-- /col-sm-1 --><div class="col-sm-10"><div class="panel panel-default"><div class="panel-heading"><strong>'
+					+ login + '</strong>, <span>' + addr + '</span>\t\t\t<span><strong>Note :</strong> '+note+'/5</span></div><div class="panel-body">'
+					+ message + '</div><!-- /panel-body --></div><!-- /panel panel-default --></div><!-- /col-sm-5 --></div>';
 				myDiv.appendChild(newBalise);
 			}
 		}
@@ -265,11 +268,13 @@ function responsePostRate(rep) {
 }
 
 
-function topBar(message, err) {
+function topBar(message, err, valTime) {
+	if(valTime == undefined)
+		valTime = 5000;
 	if(err)
 		$("<div />", { class: 'erreur_topbar', text: message }).hide().prependTo("body")
-	.slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
+		.slideDown('fast').delay(valTime).fadeOut(function() { $(this).remove(); });
 	else
 		$("<div />", { class: 'ok_topbar', text: message }).hide().prependTo("body")
-	.slideDown('fast').delay(5000).fadeOut(function() { $(this).remove(); });
+		.slideDown('fast').delay(valTime).fadeOut(function() { $(this).remove(); });
 }

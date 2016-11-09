@@ -33,6 +33,10 @@ public class APIs {
 	public static JSONArray getTransportJSON(double latitude, double longitude, double distance) throws Exception {
 		return TransportAPI.getTransportJSON(latitude, longitude, distance);
 	}
+	
+	public static JSONArray getPosteJSON(double latitude, double longitude, double distance) throws Exception {
+		return PosteAPI.getPosteJSON(latitude, longitude, distance);
+	}
 
 
 }

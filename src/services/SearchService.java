@@ -50,12 +50,14 @@ public class SearchService {
 					JSONArray sports = APIs.getSportJSON(position.lat, position.lng, distanceAround);
 					JSONArray police = APIs.getSecuriteJSON(position.lat, position.lng, distanceAround);
 					JSONArray transport = APIs.getTransportJSON(position.lat, position.lng, distanceAround);
+					JSONArray poste = APIs.getPosteJSON(position.lat, position.lng, distanceAround);
 
 					all.put("education", ecoles);
 					all.put("soin", soins);
 					all.put("sport", sports);
 					all.put("securite", police);
 					all.put("transport", transport);
+					all.put("poste", poste);
 
 					result.put("category", "all");
 					result.put("res", all);

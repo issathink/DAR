@@ -62,7 +62,7 @@
 				<select onchange="changeDist()" id="distance-selector" class="form-control" style="margin-left: 10px">
 					<option>100m</option>
 				  	<option>200m</option>
-				  	<option>500m</option>
+				  	<option selected>500m</option>
 				  	<option>1km</option>
 				  	<option>2km</option>
 				</select>
@@ -119,6 +119,17 @@
 							<div class="col-xs-2 col-sm-5"
 							style="background-color: #e6e6e6; height: 30px; padding-top: 5px;">Securite</div>
 							<div style="float: right; padding-top: 2px;"><img src="img/securite.png" width="25px" height="25px" /></div>
+						</div>
+					</li>
+					
+						<li>
+						<div class="input-group top_check_box" id="top_check_box2">
+							<span class="input-group-addon"> <input type="checkbox"
+								onchange="apiCall(this,'poste')" id="checkBox_poste" aria-label="...">
+							</span>
+							<div class="col-xs-2 col-sm-5"
+							style="background-color: #e6e6e6; height: 30px; padding-top: 5px;">Poste</div>
+							<div style="float: right; padding-top: 2px;"><img src="img/poste.png" width="25px" height="25px" /></div>
 						</div>
 					</li>
 				</ul>

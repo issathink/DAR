@@ -15,6 +15,7 @@ var listeMarkerEducation;
 var listeMarkerTransport;
 
 var markers = [];
+markers["poste"] = [];
 markers["sante"] = [];
 markers["sport"] = [];
 markers["securite"] = [];
@@ -22,6 +23,7 @@ markers["education"] = [];
 markers["transport"] = [];
 
 
+var imagePoste = 'img/poste2.png';
 var imageSante = 'img/sante2.png';
 var imageSport = 'img/sport2.png';
 var imageSecurite = 'img/securite2.png';
@@ -30,19 +32,20 @@ var imageTransport = 'img/transport2.png';
 
 
 function setAffichageDependingOfBox(myMap) {
+	retirerListMarkerPerso(map, markers["poste"]);
 	retirerListMarkerPerso(map, markers["sport"]);
 	retirerListMarkerPerso(map, markers["sante"]);
 	retirerListMarkerPerso(map, markers["education"]);
 	retirerListMarkerPerso(map, markers["securite"]);
 	retirerListMarkerPerso(map, markers["transport"]);
+	markers["poste"] = [];
 	markers["sante"] = [];
 	markers["sport"] = [];
 	markers["securite"] = [];
 	markers["education"] = [];
 	markers["transport"] = [];
-	getCommentsAndNote(adresse, dist);	
 	loadAllInfos(adresse, dist, true);
-
+	getCommentsAndNote(adresse, dist);	
 }
 
 function loadAllInfos(adress, distance, withSetAff) { // 3eme setAffichage ou non
@@ -79,6 +82,7 @@ function responseSetAllAPI(rep, myMap, withSetAff) {
 	console.log("responseSetAllAPI latitude = "+latitudeAddr+" longitude = "+longitudeAddr);
 
 
+	var posteJSON = allJson.poste;
 	var soinJSON = allJson.soin;
 	var sportJSON = allJson.sport;
 	var securiteJSON = allJson.securite;
@@ -86,6 +90,9 @@ function responseSetAllAPI(rep, myMap, withSetAff) {
 	var educationJSON = allJson.education;
 
 	//setListMarker(location, image);
+	markers["poste"] = getListMarkerPerso(posteJSON, imagePoste, myMap);
+	console.log("nbElem poste: " + markers["poste"].length);
+	
 	markers["sante"] = getListMarkerPerso(soinJSON, imageSante, myMap);
 	console.log("nbElem sante: " + markers["sante"].length);
 
@@ -115,6 +122,8 @@ function responseSetAllAPI(rep, myMap, withSetAff) {
 			afficherListMarkerPerso(myMap, markers["securite"]);
 		if(document.getElementById("checkBox_transport").checked)
 			afficherListMarkerPerso(myMap, markers["transport"]);
+		if(document.getElementById("checkBox_poste").checked)
+			afficherListMarkerPerso(myMap, markers["poste"]);
 	}
 }
 
@@ -199,6 +208,8 @@ function apiCall(box, name_api) {
 
 	if(box.checked && adresse != undefined) {
 		console.log("apiCall 3");
+		if(name_api === "poste")
+			afficherListMarkerPerso(map, markers["poste"]);
 		if(name_api === "sport")
 			afficherListMarkerPerso(map, markers["sport"]);
 		else if(name_api === "sante")
@@ -212,6 +223,8 @@ function apiCall(box, name_api) {
 	}
 	else if(!box.checked && adresse != undefined) {
 		console.log("apiCall 4");
+		if(name_api === "poste")
+			retirerListMarkerPerso(map, markers["poste"]);
 		if(name_api === "sport")
 			retirerListMarkerPerso(map, markers["sport"]);
 		else if(name_api === "sante")

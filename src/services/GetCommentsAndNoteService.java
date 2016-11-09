@@ -70,14 +70,17 @@ public class GetCommentsAndNoteService {
 							String c = listOfComments.getString("comment");
 							JSONObject jObj = new JSONObject();
 
+							String n = listOfComments.getString("note");
+							
 							if(c != null) {
 								jObj.put("comment", c);
 								jObj.put("adresse", listOfComments.getString("adresse"));
 								jObj.put("login", listOfComments.getString("login"));
+								String tmpNote = (n != null) ? n : "";
+								jObj.put("note", tmpNote);
 								result.append("comment", jObj);
 							}
 							// usersId.add(listOfComments.getString("user_id"));
-							String n = listOfComments.getString("note");
 							if(n != null){
 								moy += Double.valueOf(n);
 								cpt++;

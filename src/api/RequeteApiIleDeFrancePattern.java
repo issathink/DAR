@@ -1,7 +1,10 @@
 package api;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import tools.Tools;
 
 public abstract class RequeteApiIleDeFrancePattern {
 
@@ -70,6 +73,17 @@ public abstract class RequeteApiIleDeFrancePattern {
 
 	private String getNbRow() {
 		return "rows="+nbRow+"&";
+	}
+	
+	protected JSONArray getResJSON(double latitude, double longitude, double distance) throws JSONException, Exception{
+		JSONArray res = new JSONArray();
+		String URL = this.getUrl();
+		JSONArray records = Tools.sendGet(URL).getJSONArray("records");
+		for(int i=0 ; i<records.length() ; i++) {
+			JSONObject tmp = this.getMyJsonObjectFromRecord(records.getJSONObject(i));
+			res.put(tmp);
+		}
+		return res;
 	}
 
 
