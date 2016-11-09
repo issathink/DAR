@@ -55,3 +55,34 @@ function responseChangePw(response, session_id) {
 		document.body.className = '';
 	}
 }
+
+function getInfos(){
+	var session_id = getCookie(C_NAME);
+	$.ajax({
+		url : "../getInfos",
+		type : "get",
+		data : "format=json" + "&session_id=" + session_id,
+		dataType : "json",
+		callback : responseGetInfos,
+		success : function(response) {
+			responseGetInfos(response, session_id);
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			document.body.className = '';
+		}
+	});
+}
+
+function responseGetInfos(response) {
+	console.log("Retour: " + JSON.stringify(response));
+	if(response.ok != undefined) {
+		// Successfully loaded
+		document.body.className = '';
+		document.getElementById("infos").innerHTML = "<pre> Your login : "+response.login
+			+"</pre><pre> Your mail : "+response.mail+"</pre>";
+	} else {
+		// Something wrong
+		document.body.className = '';
+	}
+}
+

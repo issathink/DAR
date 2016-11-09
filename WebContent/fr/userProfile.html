@@ -11,7 +11,7 @@
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 
 <link rel="stylesheet" href="css/signin.css">
-<link rel="stylesheet" href="css/user.css">
+<link rel="stylesheet" href="css/userProfile.css">
 
 <!-- Including Bootstrap JS (with its jQuery dependency) so that dynamic components work -->
 <script
@@ -22,13 +22,14 @@
 <script type="text/javascript" src="./js/userProfile.js"></script>
 
 </head>
-<body>
+<body onload="getInfos()">
 
 	<div class="signin">
 		<div class="signin-content">
 			<div class="index">
 				<a href="index.html">Find Your Flat</a>
 			</div>
+			<p/>
 
 			<div class="row">
 				<div id="infos"></div>
