@@ -165,7 +165,7 @@ function responseSetCommentsAndNote(rep, adresse) {
 				newBalise.innerHTML = '<div class="row"><div class="col-sm-1"><div class="thumbnail">'
 					+ '<img '+tmp+' class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">'
 					+ '</div><!-- /thumbnail --></div><!-- /col-sm-1 --><div class="col-sm-10"><div class="panel panel-default"><div class="panel-heading"><strong>'
-					+ login + '</strong>,    '+ addr + ',   ' + note + '\t\t</div><div class="panel-body">'
+					+ login + '</strong> | '+ addr + ' | ' + note + '\t\t</div><div class="panel-body">'
 					+ message + '</div><!-- /panel-body --></div><!-- /panel panel-default --></div><!-- /col-sm-5 --></div>';
 				myDiv.appendChild(newBalise);
 			}

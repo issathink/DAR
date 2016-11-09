@@ -83,6 +83,11 @@ function changePage() {
 		window.location.href = "home.html?adresse=" + addr;
 }
 
+
+function goToHome() {
+	window.location.href = "home.html?";
+}
+
 function goToChat(loginContact) {
 	// Tester if connected
 	if(loginContact != undefined)
