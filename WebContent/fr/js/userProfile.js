@@ -48,10 +48,51 @@ function responseChangePw(response, session_id) {
 		$("#error_holder").text("Password changed.").fadeIn('fast');
 		document.body.className = '';
 		setCookie(C_NAME, session_id, 30);
-		window.location.href = "home.html";
 	} else {
 		// Something wrong
 		$("#error_holder").text("Wrong password").fadeIn('fast');
+		document.body.className = '';
+	}
+}
+
+function deleteNow(){
+	pw = document.forms["deleteAccount"]["pwd_delete"].value;
+	console.log("pw : "+pw);
+	if(pw.length <= 0) {
+		$("#error_delete").text("Type your password (at least 6 chars).").fadeIn('fast');
+		document.body.className = '';
+	}
+	else {
+		deleteAccount(pw);
+	}
+}
+
+function deleteAccount(pw){
+	var session_id = getCookie(C_NAME);
+	$.ajax({
+		url : "../deleteAccount",
+		type : "get",
+		data : "format=json" + "&session_id=" + session_id + "&pw=" + pw,
+		dataType : "json",
+		callback : responseDeleteAccount,
+		success : function(response) {
+			responseDeleteAccount(response);
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			document.body.className = '';
+		}
+	});
+}
+
+function responseDeleteAccount(response) {
+	console.log("Retour delete: " + JSON.stringify(response));
+	if(response.ok != undefined) {
+		// Successfully deleted
+		logout();
+		document.body.className = '';
+	} else {
+		// Something wrong
+		$("#error_delete").text(JSON.stringify(response.erreur)).fadeIn('fast');
 		document.body.className = '';
 	}
 }

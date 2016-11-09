@@ -29,12 +29,12 @@
 			<div class="index">
 				<a href="index.html">Find Your Flat</a>
 			</div>
-			<p/>
+			<p />
 
 			<div class="row">
 				<div id="infos"></div>
 			</div>
-			<hr/>
+			<hr />
 
 			<div class="row">
 				<form action="" method='POST' onsubmit="validate(); return false;"
@@ -58,26 +58,23 @@
 					</div>
 				</form>
 			</div>
-			<hr/>
+			<hr />
 
 			<div class="row">
-				<a>Delete Account</a>
-				<p/>
-				<div>
-					<input name="pwd_delete" type="password"
-						placeholder="password" class="password-holder" />
-				</div>
-				<div class="col-xs-10 col-xs-offset-3">
-					<button class="btn-normal">Delete</button>
-				</div>
+				<form action="" method='POST' onsubmit="deleteNow(); return false;"
+					name="deleteAccount">
+					<a>Delete Account</a>
+					<div id="error_delete"></div>
+					<div>
+						<input name="pwd_delete" type="password" placeholder="password"
+							class="password-holder" />
+					</div>
+					<div class="col-xs-10 col-xs-offset-3">
+						<button class="btn-normal">Delete</button>
+					</div>
+				</form>
 			</div>
 
-
-			<div class="forgot-pass">
-				<span>Forgot your password ? Enter your email and <a href="#">Click
-						here</a>.
-				</span>
-			</div>
 
 		</div>
 		<div class="modal">

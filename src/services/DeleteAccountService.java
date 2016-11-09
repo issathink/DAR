@@ -1,6 +1,7 @@
 package services;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -15,6 +16,7 @@ public class DeleteAccountService {
 	public static String deleteAccount(String sessionId, String pw) {
 		Connection conn = null;
 		Statement statement = null;
+		ResultSet Pass = null;
 		JSONObject result = new JSONObject();
 		String userId = "";
 		String s = "";
@@ -24,9 +26,19 @@ public class DeleteAccountService {
 			statement = (Statement) conn.createStatement();
 			userId = Tools.getUserId(sessionId, statement);
 			if(userId != null) {
-				String delete = "DELETE FROM " + DBStatic.mysql_db +  ".users where id='" + userId + "'";
-				if(statement.executeUpdate(delete) > 0) 
-					result.put("ok", "Delete successfully.");
+				String query = "select pw from " + DBStatic.mysql_db +  ".users where id='" + userId + "'";
+				Pass = statement.executeQuery(query);
+				if(Pass.next()){
+					if(pw.equals(Pass.getString("pw"))){
+						String delete = "DELETE FROM " + DBStatic.mysql_db +  ".users where id='" + userId + "'";
+						if(statement.executeUpdate(delete) > 0) 
+							result.put("ok", "Delete successfully.");
+					} else {
+						result.put("erreur", "Invalid password.");
+					}
+				}  else {
+					result.put("erreur", "Error retrieving password.");
+				}
 			} else {
 				result.put("erreur", "Invalid session id.");
 			}
