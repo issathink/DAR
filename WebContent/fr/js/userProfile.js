@@ -127,3 +127,16 @@ function responseGetInfos(response) {
 	}
 }
 
+function initialize() {
+	var input = document.getElementById('searchTextField');
+	var autocomplete = new google.maps.places.Autocomplete(input);
+}
+
+function initMap() {
+	var paris = {lat: 48.866667, lng: 2.333333};
+	map = new google.maps.Map(document.getElementById('maps'), {
+		zoom: 12,
+		center: paris
+	});
+	google.maps.event.addDomListener(window, 'load', initialize);
+}
