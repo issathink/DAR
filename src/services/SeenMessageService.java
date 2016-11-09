@@ -94,7 +94,6 @@ public class SeenMessageService {
 				String id_sender = resRequeteToGetMessages.getString("id_sender");
 				String id_receiver = resRequeteToGetMessages.getString("id_receiver");
 				String message = resRequeteToGetMessages.getString("message");
-
 				message = Tools.deProtectStrToDB(message);
 
 				String date = resRequeteToGetMessages.getString("date_send");
@@ -123,7 +122,12 @@ public class SeenMessageService {
 			if(connexion != null)
 				connexion.close();
 		} catch (SQLException e) {
-			return e.getMessage(); 
+			int error = e.getErrorCode();
+			if (error == 0 && e.toString().contains("CommunicationsException")){
+				return getMessages(idSession, friendLogin);
+			}
+			else
+				return e.getMessage(); 
 		} catch (JSONException e) {
 			e.printStackTrace();
 		} 

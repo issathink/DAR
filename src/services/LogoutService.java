@@ -46,7 +46,12 @@ public class LogoutService {
 				connexion.close();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			int error = e.getErrorCode();
+			if (error == 0 && e.toString().contains("CommunicationsException")){
+				return logoutUser(idSession);
+			}
+			else
+				e.printStackTrace();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

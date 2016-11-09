@@ -234,18 +234,43 @@ public class Tools {
 	}
 
 	public static String protectStrToDB(String s) {
-		s = s.replaceAll("&", "\"&\"");
-		s = StringEscapeUtils.escapeHtml4(s);
-		s = s.replace("'", "''"); // Pour l'ajout dans la bdd
-		return s;
+//		s = s.replaceAll("&", "\"&\"");
+//		s = StringEscapeUtils.escapeHtml4(s);
+//		s = s.replace("'", "\\'");
+//		return s;
+		
+		 if (s == null) {
+             return null;
+         }
+
+         String clean_string = s;
+         clean_string = clean_string.replaceAll("\\\\", "\\\\\\\\");
+         clean_string = clean_string.replaceAll("\\n","\\\\n");
+         clean_string = clean_string.replaceAll("\\r", "\\\\r");
+         clean_string = clean_string.replaceAll("\\t", "\\\\t");
+         clean_string = clean_string.replaceAll("\\00", "\\\\0");
+         clean_string = clean_string.replaceAll("'", "\\\\'");
+         clean_string = clean_string.replaceAll("\\\"", "\\\\\"");
+         
+         return clean_string;
 	}
 	
 	public static String deProtectStrToDB(String s) {
-		s = s.replace("''", "'"); // Pour l'ajout dans la bdd
-		s = s.replaceAll("\"&\"", "&");
-		s = StringEscapeUtils.unescapeHtml4(s);
+//		s = s.replace("\\'", "'"); // Pour l'ajout dans la bdd
+//		s = StringEscapeUtils.unescapeHtml4(s);
+//		s = s.replaceAll("\"&\"", "&");
+//		return s;
 		
-		return s;
+        String clean_string = s;
+        clean_string = clean_string.replaceAll("\\\"", "\\\\\"");
+        clean_string = clean_string.replaceAll("'", "\\\\'");
+        clean_string = clean_string.replaceAll("\\00", "\\\\0");
+        clean_string = clean_string.replaceAll("\\t", "\\\\t");
+        clean_string = clean_string.replaceAll("\\r", "\\\\r");
+        clean_string = clean_string.replaceAll("\\n","\\\\n");
+        clean_string = clean_string.replaceAll("\\\\", "\\\\\\\\");
+      
+        return clean_string;
 	}
 }
 

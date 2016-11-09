@@ -44,24 +44,24 @@ public class SearchService {
 				} else if (apiname.equals("all")) { // Ce qu'il y a en haut sert a rien en faite
 					// Mais j'ai peur de l'effacer....
 					JSONObject all = new JSONObject();
-					
+
 					JSONArray ecoles = APIs.getEducationJSON(position.lat, position.lng, distanceAround);
 					JSONArray soins = APIs.getSanteJSON(position.lat, position.lng, distanceAround);
 					JSONArray sports = APIs.getSportJSON(position.lat, position.lng, distanceAround);
 					JSONArray police = APIs.getSecuriteJSON(position.lat, position.lng, distanceAround);
 					JSONArray transport = APIs.getTransportJSON(position.lat, position.lng, distanceAround);
-					
+
 					all.put("education", ecoles);
 					all.put("soin", soins);
 					all.put("sport", sports);
 					all.put("securite", police);
 					all.put("transport", transport);
-					
+
 					result.put("category", "all");
 					result.put("res", all);
 					result.put("latitudeAdresse", lat);
 					result.put("longitudeAdresse", lng);
-					
+
 				} else {
 					result.put("erreur", "Invalid api '" + apiname + "'");
 					trouve = false;
@@ -70,7 +70,12 @@ public class SearchService {
 					result.put("ok", true);
 			}
 		} catch (SQLException e) {
-			return Tools.erreurSQL + e.getMessage();
+			int error = e.getErrorCode();
+			if (error == 0 && e.toString().contains("CommunicationsException")){
+				return search(lat, lng, apiname, dist);
+			}
+			else
+				return Tools.erreurSQL + e.getMessage();
 		} catch (JSONException e) {
 			return Tools.erreurJSON + e.getMessage();
 		} catch (Exception e) {

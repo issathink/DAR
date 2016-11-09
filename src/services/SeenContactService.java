@@ -40,7 +40,7 @@ public class SeenContactService {
 			// Get UserId
 			String tableSession = DBStatic.mysql_db + "." + NameOfTables.sessions;
 			String tableUsers = DBStatic.mysql_db + "." + NameOfTables.users;
-			
+
 			// Get user id from session
 			String requestUserId = "SELECT user_id FROM "+tableSession+
 					" WHERE session_id='"+idSession+"'";
@@ -55,7 +55,7 @@ public class SeenContactService {
 				res.put("erreur1 :", "La connexion n'existe pas");
 				return res.toString();
 			}
-		
+
 			String userId = resRequest.getString("user_id");
 
 			// Get Contact
@@ -97,20 +97,20 @@ public class SeenContactService {
 				//jsonResult.put(jObj);
 			}
 
-			
+
 			Collections.sort(l, new Comparator<JSONObject>() {
 				@Override
 				public int compare(JSONObject o1, JSONObject o2) {
 					try {
 						String d1 = o1.getString("dateLastMessage");
 						String d2 = o2.getString("dateLastMessage");
-						
+
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 						Date date1 = sdf.parse(d1);
 						Date date2 = sdf.parse(d2);
-						
+
 						return date2.compareTo(date1);
-						
+
 					} catch (JSONException e) {
 						e.printStackTrace(); // TODO
 					} catch (ParseException e) {
@@ -119,10 +119,10 @@ public class SeenContactService {
 					return 0;
 				}
 			});
-			
+
 			for(JSONObject j : l)
 				jsonResult.put(j);
-			
+
 			if(statement != null)
 				statement.close();
 			if(statement2 != null)
@@ -131,7 +131,12 @@ public class SeenContactService {
 				connexion.close();
 
 		} catch (SQLException e) {
-			return e.getMessage(); 
+			int error = e.getErrorCode();
+			if (error == 0 && e.toString().contains("CommunicationsException")){
+				return getMessages(idSession);
+			}
+			else
+				return e.getMessage(); 
 		} catch (JSONException e) {
 			e.printStackTrace();
 		} 
