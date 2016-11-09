@@ -94,7 +94,6 @@ public class SeenMessageService {
 				String id_sender = resRequeteToGetMessages.getString("id_sender");
 				String id_receiver = resRequeteToGetMessages.getString("id_receiver");
 				String message = resRequeteToGetMessages.getString("message");
-
 				message = Tools.deProtectStrToDB(message);
 
 				String date = resRequeteToGetMessages.getString("date_send");
