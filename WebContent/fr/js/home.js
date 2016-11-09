@@ -133,13 +133,14 @@ function responseSetCommentsAndNote(rep, adresse) {
 
 		if(rep.login != undefined) {
 			for(var i=0 ; i<rep.login.length ; i++) {
-				var login = rep.login[i];
-				var message = rep.comment[i];
+				var login = rep.comment[i].login;
+				var message = rep.comment[i].comment;
+				var addr = rep.comment[i].adresse;
 				var newBalise = document.createElement("div");
 				newBalise.innerHTML = '<div class="row"><div class="col-sm-1"><div class="thumbnail">'
 				+ '<img onclick="goToChat(login)" class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">'
 				+ '</div><!-- /thumbnail --></div><!-- /col-sm-1 --><div class="col-sm-10"><div class="panel panel-default"><div class="panel-heading"><strong>'
-				+ login + '</strong></div><div class="panel-body">'
+				+ login + '</strong><span>,' + addr + '</span></div><div class="panel-body">'
 				+ message + '</div><!-- /panel-body --></div><!-- /panel panel-default --></div><!-- /col-sm-5 --></div>';
 				myDiv.appendChild(newBalise);
 			}
