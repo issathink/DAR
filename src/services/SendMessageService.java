@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,24 +42,21 @@ public class SendMessageService {
 				if(connexion != null)
 					connexion.close();
 				JSONObject res = new JSONObject();
-				res.put("Error :", "La connexion n'existe pas");
+				res.put("erreur1 :", "La connexion n'existe pas");
 				return res.toString();
 			}
-			
-			/*if((resRequestToGetName = statement.executeQuery(requestFriendId)).next() == false) {
+
+
+			String senderId = resRequestToGetId.getString("user_id");
+			if((resRequestToGetId = statement.executeQuery(requestReceiverId)).next() == false) {
 				if(statement != null)
 					statement.close();
-				if(statement2 != null)
-					statement2.close();
 				if(connexion != null)
 					connexion.close();
 				JSONObject res = new JSONObject();
 				res.put("erreur2", "Le contact n'existe pas");
 				return res.toString();
-			}*/
-
-			String senderId = resRequestToGetId.getString("user_id");
-			(resRequestToGetId = statement.executeQuery(requestReceiverId)).next();
+			}
 			String receiverId = resRequestToGetId.getString("id");
 
 			// Inscription du message dans la BDD

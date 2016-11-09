@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -80,7 +79,7 @@ public class SeenMessageService {
 			String userLogin= resRequestToGetName.getString("login");
 
 
-			///////////////////:
+			///////////////////
 			String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
 			String requestMessage = "SELECT id, id_sender, id_receiver, message, date_send, is_read FROM "+tableMessage+
 					" WHERE (id_sender='"+friendId+"' AND id_receiver='"+userId+"') " +

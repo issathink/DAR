@@ -50,13 +50,19 @@ public class CommentRateService {
 					} else {
 						String insert;
 						if(comment) {
-							s += "2 ";
-							insert = "INSERT INTO " + DBStatic.mysql_db +  ".comments values (NULL,'" + userId
-									+ "','" + commentNote + "', NULL, '" + lat + "','" + lng + "','" + adresse + "')";
+						//	"INSERT INTO "+tableMessage+" (id_sender, id_receiver, message) VALUES ("+
+							//		senderId+","+receiverId+",'"+message+"')";
+						//	s += "2 ";
+							//insert = "INSERT INTO " + DBStatic.mysql_db +  ".comments values (NULL,'" + userId
+								//	+ "','" + commentNote + "', NULL, '" + lat + "','" + lng + "','" + adresse + "')";
+							insert =  "INSERT INTO " +DBStatic.mysql_db +  ".comments (user_id, comment, note, lat, lng, adresse) VALUES ('"
+									+ userId+"','"+commentNote+"',"+"NULL"+",'"+lat+"','"+lng+"','"+adresse+"')";
 						} else {
 							s += "2else ";
-							insert = "INSERT INTO " + DBStatic.mysql_db +  ".comments values (NULL,'" + userId
-								+ "', NULL, '" + commentNote + "','" + lat + "','" + lng + "','" + adresse +  "')";
+//							insert = "INSERT INTO " + DBStatic.mysql_db +  ".comments values (NULL,'" + userId
+//								+ "', NULL, '" + commentNote + "','" + lat + "','" + lng + "','" + adresse +  "')";
+							insert =  "INSERT INTO " +DBStatic.mysql_db +  ".comments (user_id, comment, note, lat, lng, adresse) VALUES ('"
+									+ userId+"',"+"NULL"+","+commentNote+",'"+lat+"','"+lng+"','"+adresse+"')";
 						}
 						if(statement.executeUpdate(insert) > 0) 
 							result.put("ok", "Thanks for participating.");

@@ -52,7 +52,7 @@ public class SeenContactService {
 				if(connexion != null)
 					connexion.close();
 				JSONObject res = new JSONObject();
-				res.put("Error :", "La connexion n'existe pas");
+				res.put("erreur1 :", "La connexion n'existe pas");
 				return res.toString();
 			}
 		

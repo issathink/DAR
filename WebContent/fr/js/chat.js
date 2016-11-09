@@ -118,18 +118,24 @@ function responseSetContact(rep, id_user_session) {
 
 /* Gestion du bloc de messages */
 function setMessages(id_user_session, friend_login) {
-	console.lo
 	$.ajax({
 		url : "../seenmessage?",
 		type : "GET",
 		data : "id_session=" + id_user_session + "&pseudo_other=" + friend_login,
 		dataType : "json",
 		success : function(rep) {
-			var obj = document.getElementById("idDivMessages");
-			var needToMajScroll = (obj.scrollTop === obj.scrollHeight-heightIdDivMessage) ? true : false;
-			responseSetMessages(rep, friend_login);
-			if(needToMajScroll)
-				setScrollbar();
+			if(rep.erreur2 == undefined) {
+				console.log("Contact does not exist");
+				topBarChat("Contact does not exist", true);
+				setTimeout(function(){ window.location.href = "chat.html?" }, 2000);
+			}
+			else {
+				var obj = document.getElementById("idDivMessages");
+				var needToMajScroll = (obj.scrollTop === obj.scrollHeight-heightIdDivMessage) ? true : false;
+				responseSetMessages(rep, friend_login);
+				if(needToMajScroll)
+					setScrollbar();
+			}
 		}, 
 		error : function(resultatXHR, statut, erreur) {
 			errorFunction(resultatXHR, statut, erreur, "setMessages");
@@ -141,11 +147,6 @@ function setMessages(id_user_session, friend_login) {
 
 
 function responseSetMessages(rep, pseudo_friend) {
-	if(rep.erreur2 != undefined) {
-		console.log("Contact does not exist");
-		topBarChat("Contact does not exist", true);
-		setTimeout(function(){ window.location.href = "chat.html?" }, 2000);
-	}
 
 	document.getElementById("h3NomContact").innerHTML = "<b>"+pseudo_friend+"</b>";
 	var myDiv = document.getElementById("idDivMessages");

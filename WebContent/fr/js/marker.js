@@ -86,7 +86,7 @@ function responseSetAllAPI(rep, myMap) {
 	console.log("nbElem transport: " + markers["transport"].length);
 
 	markersSet = true;
-	console.log("responseSetAllAPI false");
+	console.log("responseSetAllAPI Fin");
 }
 
 function getListMarkerPerso(jsonArrayApi, image, myMap) {
