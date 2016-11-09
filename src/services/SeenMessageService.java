@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import tools.DBStatic;
 import tools.NameOfTables;
+import tools.Tools;
 
 public class SeenMessageService {
 
@@ -95,9 +96,7 @@ public class SeenMessageService {
 				String id_receiver = resRequeteToGetMessages.getString("id_receiver");
 				String message = resRequeteToGetMessages.getString("message");
 
-				message = message.replace("'", "''");
-				message = StringEscapeUtils.unescapeHtml4(message);
-				message = message.replaceAll("\"&\"", "&");
+				message = Tools.deProtectStrToDB(message);
 
 				String date = resRequeteToGetMessages.getString("date_send");
 				String isRead = resRequeteToGetMessages.getString(("is_read"));
