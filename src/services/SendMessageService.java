@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import tools.DBStatic;
 import tools.NameOfTables;
+import tools.Tools;
 
 public class SendMessageService {
 
@@ -21,9 +22,7 @@ public class SendMessageService {
 		Connection connexion = null;
 		Statement statement = null;
 
-		message = message.replaceAll("&", "\"&\"");
-		message = StringEscapeUtils.escapeHtml4(message);
-		message = message.replace("'", "''"); // Pour l'ajout dans la bdd
+		message = Tools.protectStrToDB(message);
 
 		try {
 			/* Connexion BD et reglage ... */
@@ -47,6 +46,18 @@ public class SendMessageService {
 				res.put("Error :", "La connexion n'existe pas");
 				return res.toString();
 			}
+			
+			/*if((resRequestToGetName = statement.executeQuery(requestFriendId)).next() == false) {
+				if(statement != null)
+					statement.close();
+				if(statement2 != null)
+					statement2.close();
+				if(connexion != null)
+					connexion.close();
+				JSONObject res = new JSONObject();
+				res.put("erreur2", "Le contact n'existe pas");
+				return res.toString();
+			}*/
 
 			String senderId = resRequestToGetId.getString("user_id");
 			(resRequestToGetId = statement.executeQuery(requestReceiverId)).next();

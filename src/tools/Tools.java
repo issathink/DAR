@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.GregorianCalendar;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -232,6 +233,20 @@ public class Tools {
 		return u.lat * v.lat + u.lng * v.lng;
 	}
 
+	public static String protectStrToDB(String s) {
+		s = s.replaceAll("&", "\"&\"");
+		s = StringEscapeUtils.escapeHtml4(s);
+		s = s.replace("'", "''"); // Pour l'ajout dans la bdd
+		return s;
+	}
+	
+	public static String deProtectStrToDB(String s) {
+		s = s.replace("''", "'"); // Pour l'ajout dans la bdd
+		s = s.replaceAll("\"&\"", "&");
+		s = StringEscapeUtils.unescapeHtml4(s);
+		
+		return s;
+	}
 }
 
 /*
