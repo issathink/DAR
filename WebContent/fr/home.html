@@ -59,7 +59,7 @@
 		<div class="row">
 			<div class="col-lg-2">
 				<div style="margin-top: 20px; margin-bottom: 5px; margin-left: 10px">Distance autour : </div>
-				<select id="distance-selector" class="form-control" style="margin-left: 10px">
+				<select onchange="changeDist()" id="distance-selector" class="form-control" style="margin-left: 10px">
 					<option>100m</option>
 				  	<option>200m</option>
 				  	<option>500m</option>
@@ -71,7 +71,7 @@
 					<li>
 						<div class="input-group top_check_box" id="top_check_box1">
 							<span class="input-group-addon"> <input type="checkbox"
-								onchange="apiCall(this,'transport')" aria-label="...">
+								onchange="apiCall(this,'transport')" id="checkBox_transport" aria-label="...">
 							</span>
 							<div class="col-xs-2 col-sm-5"
 							style="background-color: #e6e6e6; height: 30px; padding-top: 5px;">Transport</div>
@@ -81,7 +81,7 @@
 					<li>
 						<div class="input-group top_check_box" id="top_check_box2">
 							<span class="input-group-addon"> <input type="checkbox"
-								onchange="apiCall(this,'sport')" aria-label="...">
+								onchange="apiCall(this,'sport')" id="checkBox_sport" aria-label="...">
 							</span>
 							<div class="col-xs-2 col-sm-5"
 							style="background-color: #e6e6e6; height: 30px; padding-top: 5px;">Sport</div>
@@ -91,7 +91,7 @@
 					<li>
 						<div class="input-group top_check_box" id="top_check_box2">
 							<span class="input-group-addon"> <input type="checkbox"
-								onchange="apiCall(this,'sante')" aria-label="...">
+								onchange="apiCall(this,'sante')" id="checkBox_sante" aria-label="...">
 							</span>
 							<div class="col-xs-2 col-sm-5"
 							style="background-color: #e6e6e6; height: 30px; padding-top: 5px;">Sant&eacute;</div>
@@ -102,7 +102,7 @@
 					<li>
 						<div class="input-group top_check_box" id="top_check_box2">
 							<span class="input-group-addon"> <input type="checkbox"
-								onchange="apiCall(this,'education')" aria-label="...">
+								onchange="apiCall(this,'education')" id="checkBox_education" aria-label="...">
 							</span>
 							<div class="col-xs-2 col-sm-5"
 							style="background-color: #e6e6e6; height: 30px; padding-top: 5px;">Education</div>
@@ -114,7 +114,7 @@
 					<li>
 						<div class="input-group top_check_box" id="top_check_box2">
 							<span class="input-group-addon"> <input type="checkbox"
-								onchange="apiCall(this,'securite')" aria-label="...">
+								onchange="apiCall(this,'securite')" id="checkBox_securite" aria-label="...">
 							</span>
 							<div class="col-xs-2 col-sm-5"
 							style="background-color: #e6e6e6; height: 30px; padding-top: 5px;">Securite</div>

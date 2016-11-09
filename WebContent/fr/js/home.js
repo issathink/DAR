@@ -81,12 +81,29 @@ function setFieldsToComment(rep){
 }
 
 
-function changeDist(rep) {
-	var d = document.getElementById("distanceSelector").value;
-	
+function changeDist() {
+	var d = document.getElementById("distance-selector").value;
 	console.log("distance : " + d);
+	d = formateDistance(d);
 	dist = d;
-	document.getElementById("dist").value = '';
+	if(adresse != undefined) {
+		setAffichageDependingOfBox(map);
+	}
+}
+
+
+
+function formateDistance(d) {
+	if(d === "100m")
+		return 100;
+	else if(d === "200m")
+		return 200;
+	if(d === "1km")
+		return 1000;
+	if(d === "2km")
+		return 2000;
+	else
+		return 500;
 }
 
 function getCommentsAndNote(adresse) {

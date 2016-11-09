@@ -6,7 +6,7 @@ var markersSet = false;
 
 var adressMarker; // Le marqueur de l'adresse
 
-// http://you.arenot.me/2010/06/29/google-maps-api-v3-0-multiple-markers-multiple-infowindows/
+//http://you.arenot.me/2010/06/29/google-maps-api-v3-0-multiple-markers-multiple-infowindows/
 
 var listeMarkerSante;
 var listeMarkerSport;
@@ -28,6 +28,31 @@ var imageSecurite = 'img/securite2.png';
 var imageEducation = 'img/education2.png';
 var imageTransport = 'img/transport2.png';
 
+
+function setAffichageDependingOfBox(myMap) {
+	retirerListMarkerPerso(map, markers["sport"]);
+	retirerListMarkerPerso(map, markers["sante"]);
+	retirerListMarkerPerso(map, markers["education"]);
+	retirerListMarkerPerso(map, markers["securite"]);
+	retirerListMarkerPerso(map, markers["transport"]);
+	markers["sante"] = [];
+	markers["sport"] = [];
+	markers["securite"] = [];
+	markers["education"] = [];
+	markers["transport"] = [];
+	getCommentsAndNote(adresse, dist);
+	loadAllInfos(adresse, dist);
+	if(document.getElementById("checkBox_sport").checked)
+		afficherListMarkerPerso(myMap, markers["sport"]);
+	if(document.getElementById("checkBox_sante").checked)
+		afficherListMarkerPerso(myMap, markers["sante"]);
+	if(document.getElementById("checkBox_education").checked)
+		afficherListMarkerPerso(myMap, markers["education"]);
+	if(document.getElementById("checkBox_securite").checked)
+		afficherListMarkerPerso(myMap, markers["securite"]);
+	if(document.getElementById("checkBox_transport").checked)
+		afficherListMarkerPerso(myMap, markers["transport"]);
+}
 
 function loadAllInfos(adress, distance) {
 	console.log("loadAllInfos ==> AJAX");
@@ -75,13 +100,13 @@ function responseSetAllAPI(rep, myMap) {
 
 	markers["sport"] = getListMarkerPerso(sportJSON, imageSport, myMap);
 	console.log("nbElem sport: " + markers["sport"].length);
-	
+
 	markers["securite"] = getListMarkerPerso(securiteJSON, imageSecurite, myMap);
 	console.log("nbElem securite: " + markers["securite"].length);
-	
+
 	markers["education"] = getListMarkerPerso(educationJSON, imageEducation, myMap);
 	console.log("nbElem education: " + markers["education"].length);
-	
+
 	markers["transport"] = getListMarkerPerso(transportJSON, imageTransport, myMap);
 	console.log("nbElem transport: " + markers["transport"].length);
 
@@ -108,10 +133,10 @@ function getListMarkerPerso(jsonArrayApi, image, myMap) {
 		var description = obj.description;
 
 		var markerOptions = {
-			title: type,
-			icon: image,
-			position: location,
-			title: "Titre de test"
+				title: type,
+				icon: image,
+				position: location,
+				title: "Titre de test"
 		};
 		var markerPerso = new google.maps.Marker(markerOptions);
 		var contentString = nom + ((description !== "") ? " : "+description : "");
@@ -142,7 +167,7 @@ function getListMarkerPerso(jsonArrayApi, image, myMap) {
 	return res;
 }
 
-// Ajoute un marqueur sur la map
+//Ajoute un marqueur sur la map
 function afficherListMarkerPerso(myMap, listeMarker) {
 	console.log("afficherListMarkerPerso debut");
 	for(var i=0 ; i<listeMarker.length ; i++) {
@@ -152,7 +177,7 @@ function afficherListMarkerPerso(myMap, listeMarker) {
 	}
 }
 
-// Desaffiche les marqueurs sur la map
+//Desaffiche les marqueurs sur la map
 function retirerListMarkerPerso(myMap, listeMarker) {
 	for(var i=0 ; i<listeMarker.length ; i++) {
 		var marker = listeMarker[i];
@@ -160,7 +185,7 @@ function retirerListMarkerPerso(myMap, listeMarker) {
 	}
 }
 
-// Methode appele lorsqu'on coche ou decoche une case, avec name_api la categoride
+//Methode appele lorsqu'on coche ou decoche une case, avec name_api la categoride
 function apiCall(box, name_api) {
 	console.log("apiCall 1");
 	if(!markersSet)
