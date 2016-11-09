@@ -40,13 +40,17 @@ function responseIsConnected(response) {
 		
 		document.getElementById("top_button").innerHTML = "<button onclick='goToChat()' type='button' class='btn btn-default btn-md'>" +
 		"<a class='glyphicon glyphicon-envelope' aria-hidden='true'></a> </button>" +
-		"<button type='button' class='btn btn-default btn-md'>" +
-		"<form action='' method='POST' onsubmit='validate(); return false;'name='user'>" +
-		"<a class='glyphicon glyphicon-user' aria-hidden='true'></a> </button></form>";
+		"<button onclick='toInfos()' type='button' class='btn btn-default btn-md'>" +
+		"<a class='glyphicon glyphicon-user' aria-hidden='true'></a> </button>";
 
 	} else {
 		document.getElementById("top_button").innerHTML = "<div class='depl_haut'> <a href='signin.html'>Se connecter</a></div>";
 	}
+}
+
+function toInfos(){
+	console.log("ToUserProfile");
+	window.location.href = "userProfile.html";
 }
 
 function setFieldsToComment(rep){
