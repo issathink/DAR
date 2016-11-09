@@ -76,6 +76,14 @@ function isConnected(callBack) {
 }
 
 
+function changePage() {
+	alert(document.getElementById("distanceSelector").value);
+	addr = document.getElementById("searchTextField").value;
+	if(addr.length > 0)
+		window.location.href = "home.html?adresse=" + addr;
+}
+
+
 /* Convetion : Cookie value equals "-1" means there is no active session. */
 function logout() {
     setCookie(C_NAME, "-1", 1);
