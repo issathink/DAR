@@ -49,7 +49,7 @@ public class SignupService {
 
 			while(listOfUsers.next())
 				i++;
-			
+
 			if (i > 0) {
 				result.put("erreur", "Il existe un email associe a ce compte.");
 			} else {
@@ -58,8 +58,13 @@ public class SignupService {
 				result.put("ok", "La creation s'est bien passe");
 				result.put("key", obj.get("key"));
 			}
-		} catch (SQLException e1) {
-			return Tools.erreurSQL;
+		} catch (SQLException e) {
+			int error = e.getErrorCode();
+			if (error == 0 && e.toString().contains("CommunicationsException")){
+				return createUser(mail, login, pw);
+			}
+			else
+				return Tools.erreurSQL;
 		} catch (JSONException e) {
 			return Tools.erreurJSON;
 		}

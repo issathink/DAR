@@ -26,7 +26,7 @@ import tools.Tools;
  */
 
 public class SigninService {
-	
+
 	public static String authenticateUser(String login, String pw) {
 		Connection conn = null;
 		ResultSet listOfUsers = null;
@@ -34,18 +34,18 @@ public class SigninService {
 		Statement statement = null;
 		JSONObject result = new JSONObject();
 		String id = "";
-		
+
 		try {
 			conn = DBStatic.getMySQLConnection();
 			String query = "select id, login from " + DBStatic.mysql_db +  ".users where login='" + login + "'";
 			statement = (Statement) conn.createStatement();
 			listOfUsers = statement.executeQuery(query);
-			
+
 			if(listOfUsers.next()) {
 				id = String.valueOf(listOfUsers.getString("id"));
 				query = "select session_id from " + DBStatic.mysql_db + ".sessions where user_id='" + id + "'";
 				listOfSessions = statement.executeQuery(query);
-				
+
 				if(listOfSessions.next()) {
 					String session_id = String.valueOf(listOfSessions.getString("session_id"));
 					if(Tools.extendSession(session_id)) {
@@ -68,8 +68,13 @@ public class SigninService {
 			} else {
 				result.put("erreur", "Unknown user: '" + login + "'");
 			}
-		} catch (SQLException e1) {
-			return Tools.erreurSQL;
+		} catch (SQLException e) {
+			int error = e.getErrorCode();
+			if (error == 0 && e.toString().contains("CommunicationsException")){
+				return authenticateUser(login, pw);
+			}
+			else
+				return Tools.erreurSQL;
 		} catch (JSONException e) {
 			return Tools.erreurJSON;
 		}

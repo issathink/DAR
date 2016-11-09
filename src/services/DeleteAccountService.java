@@ -43,7 +43,12 @@ public class DeleteAccountService {
 				result.put("erreur", "Invalid session id.");
 			}
 		} catch (SQLException e) {
-			return s + Tools.erreurSQL + e.getMessage();
+			int error = e.getErrorCode();
+			if (error == 0 && e.toString().contains("CommunicationsException")){
+				return deleteAccount(sessionId, pw);
+			}
+			else
+				return s + Tools.erreurSQL + e.getMessage();
 		} catch (JSONException e) {
 			return Tools.erreurJSON;
 		}

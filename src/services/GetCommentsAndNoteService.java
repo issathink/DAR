@@ -37,7 +37,7 @@ public class GetCommentsAndNoteService {
 
 				listOfAdress = statement.executeQuery(query);
 				LatLng latLng = Tools.getLatLng(adresse);
-				
+
 				if(latLng != null) {
 					double latitude = latLng.getLat();
 					double longitude = latLng.getLng();
@@ -50,7 +50,7 @@ public class GetCommentsAndNoteService {
 						if(Tools.haversineInKM(latitude, longitude, latCur, longCur) <= Tools.Circonference)
 							listAdress.add(new LatLng(latCur, longCur));
 					}
-					
+
 					result.put("1", listAdress);
 
 					if(vide) {
@@ -59,17 +59,17 @@ public class GetCommentsAndNoteService {
 						for(LatLng ad : listAdress)
 							add += "(lat=" + ad.getLat() + " AND lng=" + ad.getLng() + ") OR ";	
 						add = add.substring(0, add.length()-4); // Nice one :)
-	
+
 						String queryGetComments = "select c.comment, c.note, c.adresse, u.login from " + DBStatic.mysql_db 
 								+  ".comments c," + DBStatic.mysql_db + ".users u where (" + add + ") AND c.user_id=u.id;";
 						s += queryGetComments;
 						listOfComments = statement.executeQuery(queryGetComments);
 						result.put("query", queryGetComments);
-	
+
 						while(listOfComments.next()) {
 							String c = listOfComments.getString("comment");
 							JSONObject jObj = new JSONObject();
-							
+
 							if(c != null) {
 								jObj.put("comment", c);
 								jObj.put("adresse", listOfComments.getString("adresse"));
@@ -83,7 +83,7 @@ public class GetCommentsAndNoteService {
 								cpt++;
 							}
 						}
-						
+
 						result.put("cpt", cpt);
 						if(cpt > 0)
 							moy = moy / cpt;
@@ -97,8 +97,13 @@ public class GetCommentsAndNoteService {
 			} else {
 				result.put("erreur", "Invalid address '" + adresse + "'");
 			}
-		} catch (SQLException e1) {
-			return Tools.erreurSQL + e1.getMessage() + "\n" + s;
+		} catch (SQLException e) {
+			int error = e.getErrorCode();
+			if (error == 0 && e.toString().contains("CommunicationsException")){
+				return getComments(adresse);
+			}
+			else
+				return Tools.erreurSQL + e.getMessage() + "\n" + s;
 		} catch (JSONException e) {
 			return Tools.erreurJSON;
 		}
