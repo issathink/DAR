@@ -40,21 +40,12 @@ function setAffichageDependingOfBox(myMap) {
 	markers["securite"] = [];
 	markers["education"] = [];
 	markers["transport"] = [];
-	getCommentsAndNote(adresse, dist);
-	loadAllInfos(adresse, dist);
-	if(document.getElementById("checkBox_sport").checked)
-		afficherListMarkerPerso(myMap, markers["sport"]);
-	if(document.getElementById("checkBox_sante").checked)
-		afficherListMarkerPerso(myMap, markers["sante"]);
-	if(document.getElementById("checkBox_education").checked)
-		afficherListMarkerPerso(myMap, markers["education"]);
-	if(document.getElementById("checkBox_securite").checked)
-		afficherListMarkerPerso(myMap, markers["securite"]);
-	if(document.getElementById("checkBox_transport").checked)
-		afficherListMarkerPerso(myMap, markers["transport"]);
+	getCommentsAndNote(adresse, dist);	
+	loadAllInfos(adresse, dist, true);
+
 }
 
-function loadAllInfos(adress, distance) {
+function loadAllInfos(adress, distance, withSetAff) { // 3eme setAffichage ou non
 	console.log("loadAllInfos ==> AJAX");
 	adress = decodeURI(adress);
 	$.ajax({
@@ -63,7 +54,7 @@ function loadAllInfos(adress, distance) {
 		data : "adresse=" + adress + "&apiname=" + "all" + "&dist=" + distance,
 		dataType : "json",
 		success : function(rep) {
-			responseSetAllAPI(rep, map);
+			responseSetAllAPI(rep, map, withSetAff);
 		}, 
 		error : function(resultatXHR, statut, erreur) {
 			errorFunction(resultatXHR, statut, erreur, "loadAllInfos");
@@ -71,7 +62,7 @@ function loadAllInfos(adress, distance) {
 	});
 }
 
-function responseSetAllAPI(rep, myMap) {
+function responseSetAllAPI(rep, myMap, withSetAff) {
 	console.log("responseSetAllAPI =  +latitudedebut [Appel Ajax pour les Res OK!]");
 
 	var allJson = rep.res;
@@ -112,6 +103,19 @@ function responseSetAllAPI(rep, myMap) {
 
 	markersSet = true;
 	console.log("responseSetAllAPI Fin");
+
+	if(withSetAff) {
+		if(document.getElementById("checkBox_sport").checked)
+			afficherListMarkerPerso(myMap, markers["sport"]);
+		if(document.getElementById("checkBox_sante").checked)
+			afficherListMarkerPerso(myMap, markers["sante"]);
+		if(document.getElementById("checkBox_education").checked)
+			afficherListMarkerPerso(myMap, markers["education"]);
+		if(document.getElementById("checkBox_securite").checked)
+			afficherListMarkerPerso(myMap, markers["securite"]);
+		if(document.getElementById("checkBox_transport").checked)
+			afficherListMarkerPerso(myMap, markers["transport"]);
+	}
 }
 
 function getListMarkerPerso(jsonArrayApi, image, myMap) {
