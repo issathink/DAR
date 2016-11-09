@@ -21,3 +21,12 @@ http://vps197081.ovh.net:8080/FindYourFlat/fr/chat.html?friend_login=log2
 
 
 &\
+
+
+Rajouter dans tous les services (pour palier à la reinitialisation de la connexion) :
+
+	int error = e.getErrorCode();
+	if (error == 0 && e.toString().contains("CommunicationsException"))
+		rappeler le service avec les memes parametres
+	
+	
