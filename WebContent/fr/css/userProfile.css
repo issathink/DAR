@@ -1,3 +1,8 @@
 .index a{
 	font-size: 2em;
 }
+
+#error_delete {
+	color: red;
+	margin-bottom: 10px;
+}
