@@ -59,7 +59,7 @@ public class GetCommentsAndNoteService {
 						result.put("No comments", adresse);
 					} else {
 						for(LatLng ad : listAdress)
-							add += "(lat=" + ad.getLat() + " AND lng=" + ad.getLng() + ") OR ";	
+							add += "(lat=" + ad.getLat() + " AND lng=" + ad.getLng() + ") OR ";
 						add = add.substring(0, add.length()-4); // Nice one :)
 
 						String queryGetComments = "select c.comment, c.note, c.adresse, u.login from " + DBStatic.mysql_db 
@@ -73,7 +73,7 @@ public class GetCommentsAndNoteService {
 							JSONObject jObj = new JSONObject();
 
 							String n = listOfComments.getString("note");
-							
+
 							if(c != null) {
 								jObj.put("comment",  StringEscapeUtils.escapeHtml4(c)+"DIST = "+dist);
 								jObj.put("adresse", StringEscapeUtils.escapeHtml4(listOfComments.getString("adresse")));
