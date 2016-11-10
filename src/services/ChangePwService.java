@@ -46,10 +46,8 @@ public class ChangePwService {
 			}
 
 		} catch (SQLException e) {
-			int error = e.getErrorCode();
-			if (error == 0 && e.toString().contains("CommunicationsException")){
+			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
 				return changePw(sessionId, prec_pw, new_pw);
-			}
 			else
 				return Tools.erreurSQL + e.getMessage();
 		} catch (JSONException e) {

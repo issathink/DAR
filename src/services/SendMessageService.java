@@ -75,10 +75,8 @@ public class SendMessageService {
 			if(connexion != null)
 				connexion.close();
 		} catch (SQLException e) {
-			int error = e.getErrorCode();
-			if (error == 0 && e.toString().contains("CommunicationsException")){
+			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
 				return sendMessage(idSession, receiver, message);
-			}
 			else
 				return e.getMessage(); 
 		} catch(JSONException e){

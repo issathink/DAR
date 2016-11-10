@@ -101,10 +101,8 @@ public class GetCommentsAndNoteService {
 				result.put("erreur", "Invalid address '" + adresse + "'");
 			}
 		} catch (SQLException e) {
-			int error = e.getErrorCode();
-			if (error == 0 && e.toString().contains("CommunicationsException")){
+			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
 				return getComments(adresse);
-			}
 			else
 				return Tools.erreurSQL + e.getMessage() + "\n" + s;
 		} catch (JSONException e) {
