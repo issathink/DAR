@@ -98,7 +98,7 @@ function goToChat(loginContact) {
 
 function toInfos(){
 	console.log("ToUserProfile");
-	window.location.href = "userProfile.html";
+	window.location.href = "userprofile.html";
 }
 
 function disconnect() {

@@ -19,6 +19,7 @@ if(adresse != undefined) {
 	//setMarkerOfAdress(map, location, adresse);
 }
 
+
 function initMap() {
 	var paris = {lat: 48.866667, lng: 2.333333};
 	map = new google.maps.Map(document.getElementById('maps'), {
@@ -28,12 +29,13 @@ function initMap() {
 	google.maps.event.addDomListener(window, 'load', initialize);
 }
 
+
 function initialize() {
 	var input = document.getElementById('searchTextField');
 	var autocomplete = new google.maps.places.Autocomplete(input);
 }
 
-
+/* Update navbar if user is connected */
 function responseIsConnected(response) {
 	console.log(response);
 	console.log(adresse);
@@ -99,6 +101,7 @@ function formateDistance(d) {
 		return 500;
 }
 
+
 function getCommentsAndNote(adresse, myDistance) {
 	console.log("Recuperation comments distance = "+myDistance);
 	if(adresse != undefined){
@@ -117,7 +120,7 @@ function getCommentsAndNote(adresse, myDistance) {
 	}
 }
 
-
+/* Update UI by adding comments */
 function responseSetCommentsAndNote(rep, adresse) {
 	console.log("Setage des commentaires");
 	if(rep.erreur != undefined) {
@@ -131,7 +134,6 @@ function responseSetCommentsAndNote(rep, adresse) {
 		}
 	} else {
 		adresse = decodeURI(adresse)
-
 		isConnected(setFieldsToComment);
 
 		document.getElementById("h3NomContact").innerHTML = "<b>"+adresse+"</b>";
@@ -253,6 +255,7 @@ function rate(note) {
 		});
 	}
 }
+
 
 function responsePostRate(rep) {
 	if(rep.erreur != undefined) {
