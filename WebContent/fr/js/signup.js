@@ -34,8 +34,8 @@ function validate() {
 	} else if(valMail == false) {
 		$("#error_holder").text("Please enter a valid email.").fadeIn('fast');
 		document.body.className = '';
-	} else if(login.length < 6) {
-		$("#error_holder").text("Your login is too short (at least 6 chars).").fadeIn('fast');
+	} else if(login.length < 4) {
+		$("#error_holder").text("Your login is too short (at least 4 chars).").fadeIn('fast');
 		document.body.className = '';
 	} else if(pwd.length < 6) {
 		$("#error_holder").text("Your password is too short (at least 6 chars).").fadeIn('fast');

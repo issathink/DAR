@@ -51,7 +51,10 @@ public class SignupService {
 
 			if (i > 0) {
 				result.put("erreur", "Il existe un email associe a ce compte.");
+			}else if (pw.length() < 6){
+				result.put("erreur", "Mot de passe trop court");
 			} else {
+
 				statement = conn.prepareStatement(insert);
 				statement.setString(1, mail);
 				statement.setString(2, login);
