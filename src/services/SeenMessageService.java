@@ -1,9 +1,9 @@
 package services;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,21 +15,16 @@ import tools.Tools;
 
 public class SeenMessageService {
 
-
 	// TODO Mettre les messages (ou on est le receiver) a vu 
 	public static String getMessages(String idSession, String friendLogin){
-
 		ResultSet resRequeteToGetMessages, resRequestToGetName;
 		JSONArray jsonResult = new JSONArray();
 		Connection connexion = null;
-		Statement statement = null, statement2 = null;
+		PreparedStatement statement = null, statement2 = null;
 
-		try { // TODO preparedStatement
-
+		try {
 			/* Connexion BD et reglage ... */
 			connexion = DBStatic.getMySQLConnection();
-			statement = connexion.createStatement();
-			statement2 = connexion.createStatement();
 
 			/* Recuperation des Ids */
 			// TODO , faire une union pour faire qu'une seul requete a la bd
@@ -37,12 +32,15 @@ public class SeenMessageService {
 			String tableSession = DBStatic.mysql_db + "." + NameOfTables.sessions;
 
 			String requestUserId = "SELECT user_id FROM "+tableSession+
-					" WHERE session_id='"+idSession+"'";
+					" WHERE session_id=?";
 			String requestFriendId = "SELECT id FROM "+tableUsers+
-					" WHERE login='"+friendLogin+"'";
+					" WHERE login=?";
+			statement = connexion.prepareStatement(requestUserId);
+			statement.setString(1, idSession);
+			statement2 = connexion.prepareStatement(requestFriendId);
+			statement2.setString(1, friendLogin);
 
-
-			if((resRequestToGetName = statement.executeQuery(requestUserId)).next() == false) {
+			if((resRequestToGetName = statement.executeQuery()).next() == false) {
 				if(statement != null)
 					statement.close();
 				if(statement2 != null)
@@ -56,9 +54,7 @@ public class SeenMessageService {
 
 			String userId = resRequestToGetName.getString("user_id");
 
-
-
-			if((resRequestToGetName = statement.executeQuery(requestFriendId)).next() == false) {
+			if((resRequestToGetName = statement2.executeQuery()).next() == false) {
 				if(statement != null)
 					statement.close();
 				if(statement2 != null)
@@ -72,10 +68,11 @@ public class SeenMessageService {
 
 			String friendId = resRequestToGetName.getString("id");
 
-
 			String requestUserLogin = "SELECT login FROM "+tableUsers +
-					" WHERE id='"+userId+"'";
-			(resRequestToGetName = statement.executeQuery(requestUserLogin)).next();
+					" WHERE id=?";
+			statement = connexion.prepareStatement(requestUserLogin);
+			statement.setInt(1, Integer.parseInt(userId));
+			(resRequestToGetName = statement.executeQuery()).next();
 			String userLogin= resRequestToGetName.getString("login");
 
 
@@ -84,10 +81,14 @@ public class SeenMessageService {
 			String requestMessage = "SELECT id, id_sender, id_receiver, message, date_send, is_read FROM "+tableMessage+
 					" WHERE (id_sender='"+friendId+"' AND id_receiver='"+userId+"') " +
 					"OR (id_sender='"+userId+"' AND id_receiver='"+friendId+"') ORDER BY date_send ASC";
-
+			statement = connexion.prepareStatement(requestMessage);
+			statement.setInt(1, Integer.parseInt(friendId));
+			statement.setInt(2, Integer.parseInt(userId));
+			statement.setInt(3, Integer.parseInt(userId));
+			statement.setInt(4, Integer.parseInt(friendId));
 
 			/* Requete sql vers la base pour recuperer les messages */
-			resRequeteToGetMessages = statement.executeQuery(requestMessage);
+			resRequeteToGetMessages = statement.executeQuery();
 
 			while(resRequeteToGetMessages.next()) {
 				String idMessage = resRequeteToGetMessages.getString("id");
@@ -102,8 +103,10 @@ public class SeenMessageService {
 				////////////////////
 				/* On indique le message a ete lu */
 				if(isRead.equals("0") && (id_receiver.equals(id_sender) || !id_sender.equals(userId))) { // On a recu le message => le mettre a vu
-					String requestUpdateIsRead = "UPDATE "+tableMessage+" SET is_read=1 WHERE id="+idMessage;
-					statement2.executeUpdate(requestUpdateIsRead);
+					String requestUpdateIsRead = "UPDATE "+tableMessage+" SET is_read=1 WHERE id=?";
+					statement2 = connexion.prepareStatement(requestUpdateIsRead);
+					statement2.setInt(1, Integer.parseInt(idMessage));
+					statement2.executeUpdate();
 				}
 				///////////
 				JSONObject jObj = new JSONObject();

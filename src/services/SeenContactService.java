@@ -1,9 +1,9 @@
 package services;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,26 +29,25 @@ public class SeenContactService {
 		ResultSet resRequest;
 		JSONArray jsonResult = new JSONArray();
 
-		Statement statement = null;
-		Statement statement2 = null;
+		PreparedStatement statement = null;
+		PreparedStatement statement2 = null;
 
-		try { // TODO preparedStatement
+		try {
 			connexion = DBStatic.getMySQLConnection();
-			statement = connexion.createStatement();
-			statement2 = connexion.createStatement();
-
+			
 			// Get UserId
 			String tableSession = DBStatic.mysql_db + "." + NameOfTables.sessions;
 			String tableUsers = DBStatic.mysql_db + "." + NameOfTables.users;
 
 			// Get user id from session
 			String requestUserId = "SELECT user_id FROM "+tableSession+
-					" WHERE session_id='"+idSession+"'";
-			if((resRequest= statement.executeQuery(requestUserId)).next() == false) {
+					" WHERE session_id=?";
+			statement = connexion.prepareStatement(requestUserId);
+			statement.setString(1, idSession);
+			
+			if((resRequest= statement.executeQuery()).next() == false) {
 				if(statement != null)
 					statement.close();
-				if(statement2 != null)
-					statement2.close();
 				if(connexion != null)
 					connexion.close();
 				JSONObject res = new JSONObject();
@@ -65,9 +64,12 @@ public class SeenContactService {
 			ResultSet resRequest2;
 
 			String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
-			String requestMessage = "SELECT DISTINCT id_sender, id_receiver FROM "+tableMessage+
-					" WHERE (id_sender='"+userId+"' OR id_receiver='"+userId+"')";
-			resRequest = statement.executeQuery(requestMessage);
+			String requestMessage = "SELECT DISTINCT id_sender, id_receiver FROM " + tableMessage+
+					" WHERE (id_sender=? OR id_receiver=?)";
+			statement = connexion.prepareStatement(requestMessage);
+			statement.setInt(1, Integer.parseInt(userId));
+			statement.setInt(2, Integer.parseInt(userId));
+			resRequest =  statement.executeQuery();
 
 			while(resRequest.next()) {
 				String id_sender = resRequest.getString("id_sender");
@@ -75,9 +77,10 @@ public class SeenContactService {
 				String idFriend = id_sender.equals(userId) ? id_receiver : id_sender;
 
 				// Get FriendId
-				String requestFriendLogin = "SELECT login FROM "+tableUsers+
-						" WHERE id='"+idFriend+"'";
-				(resRequest2 = statement2.executeQuery(requestFriendLogin)).next();
+				String requestFriendLogin = "SELECT login FROM " + tableUsers + " WHERE id=?";
+				statement2 = connexion.prepareStatement(requestFriendLogin);
+				statement2.setInt(1, Integer.parseInt(idFriend));
+				(resRequest2 = statement2.executeQuery()).next();
 				String friendLogin = resRequest2.getString("login");
 
 				// Resultat du service
@@ -110,9 +113,8 @@ public class SeenContactService {
 						Date date2 = sdf.parse(d2);
 
 						return date2.compareTo(date1);
-
 					} catch (JSONException e) {
-						e.printStackTrace(); // TODO
+						e.printStackTrace(); 
 					} catch (ParseException e) {
 						e.printStackTrace();
 					} 				
@@ -144,10 +146,12 @@ public class SeenContactService {
 
 	private static String nbMessageNotRead(String idUser, String idFriend) throws SQLException {
 		String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
-		String request = "SELECT COUNT(*) FROM "+tableMessage+
-				" WHERE id_sender=" +idFriend+" AND id_receiver="+idUser+" AND is_read=0";
-		Statement statement = connexion.createStatement();
-		ResultSet resRequest = statement.executeQuery(request);
+		String request = "SELECT COUNT(*) FROM " + tableMessage +
+				" WHERE id_sender=? AND id_receiver=? AND is_read=0";
+		PreparedStatement statement = connexion.prepareStatement(request);
+		statement.setInt(1, Integer.parseInt(idFriend));
+		statement.setInt(2, Integer.parseInt(idUser));
+		ResultSet resRequest = statement.executeQuery();
 		resRequest.next();
 		String res = resRequest.getString(1);
 		if(statement != null)
@@ -155,13 +159,12 @@ public class SeenContactService {
 		return res;
 	}
 
-
-
 	private static String isConnected(String idUser) throws SQLException {
 		String tableSessions = DBStatic.mysql_db + "." + NameOfTables.sessions;
-		String requestUserId = "SELECT session_id FROM "+tableSessions+" WHERE user_id="+idUser;
-		Statement statement = connexion.createStatement();
-		ResultSet resRequest = statement.executeQuery(requestUserId);
+		String requestUserId = "SELECT session_id FROM " + tableSessions + " WHERE user_id=?";
+		PreparedStatement statement = connexion.prepareStatement(requestUserId);
+		statement.setInt(1, Integer.parseInt(idUser));
+		ResultSet resRequest = statement.executeQuery();
 		String res = resRequest.next() ? "1" : "0"; // Si jamais y a une ligne (donc connecte)
 		if(statement != null)
 			statement.close();
@@ -171,16 +174,19 @@ public class SeenContactService {
 	private static String dateLastMessage(String userId, String friendId) throws SQLException {
 		String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
 		String request = "SELECT date_send FROM "+tableMessage+
-				" WHERE (id_sender=" +userId+" AND id_receiver="+friendId+") OR (id_sender=" +friendId+" AND id_receiver="+userId+") ORDER BY date_send DESC LIMIT 1";
+				" WHERE (id_sender=? AND id_receiver=?) OR (id_sender=? AND id_receiver=?) ORDER BY date_send DESC LIMIT 1";
 		// SELECT date_send FROM `messages` WHERE `id_sender`=9 OR `id_receiver`=9 ORDER BY date_send DESC LIMIT 1
-		Statement statement = connexion.createStatement();
-		ResultSet resRequest = statement.executeQuery(request);
+		PreparedStatement statement = connexion.prepareStatement(request);
+		statement.setInt(1, Integer.parseInt(userId));
+		statement.setInt(2, Integer.parseInt(friendId));
+		statement.setInt(3, Integer.parseInt(friendId));
+		statement.setInt(4, Integer.parseInt(userId));
+		ResultSet resRequest = statement.executeQuery();
 		resRequest.next();
 		String res = resRequest.getString("date_send");
 		if(statement != null)
 			statement.close();
 		return res.substring(0, res.length()-2);
 	}
-
 
 }

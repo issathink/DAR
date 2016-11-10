@@ -1,9 +1,9 @@
 package services;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,36 +15,40 @@ public class ChangePwService {
 
 	public static String changePw(String sessionId, String prec_pw, String new_pw) {
 		Connection conn = null;
-		Statement statement = null;
-		ResultSet PrecPw = null;
+		PreparedStatement statement = null, st = null;
+		ResultSet precPw = null;
 		JSONObject result = new JSONObject();
 		String userId = "";
 
-		try { // TODO preparedStatement
+		try {
 			conn = DBStatic.getMySQLConnection();
-			statement = (Statement) conn.createStatement();
 			userId = Tools.getUserId(sessionId, conn);
-			String query = "select pw from " + DBStatic.mysql_db +  ".users where id='" + userId + "'";
+			String query = "select pw from " + DBStatic.mysql_db +  ".users where id=?";
+			statement = conn.prepareStatement(query);
+			
 			if(userId != null) {
-				PrecPw = statement.executeQuery(query);
-				if(PrecPw.next()) {
-					if(prec_pw.equals(PrecPw.getString("pw"))){
-						String update = "UPDATE " + DBStatic.mysql_db +  ".users SET pw='"
-								+ new_pw + "' where id='" + userId + "'";
-						if(statement.executeUpdate(update) > 0) 
+				statement.setInt(1, Integer.parseInt(userId));
+				precPw = statement.executeQuery();
+				if(precPw.next()) {
+					if(prec_pw.equals(precPw.getString("pw"))){
+						String update = "UPDATE " + DBStatic.mysql_db +  ".users SET pw=? where id=?";
+						st = conn.prepareStatement(update);
+						st.setString(1, new_pw);
+						st.setInt(2, Integer.parseInt(userId));
+						
+						if(st.executeUpdate() > 0) 
 							result.put("ok", "Password changed successfully.");
 						else
 							result.put("erreur", "Unexpected error while changing pw.");
-					}
-					else
+					} else {
 						result.put("erreur", "Invalid precedent pw.");
-				}
-				else
+					}
+				} else {
 					result.put("erreur", "No pw.");
+				}
 			} else {
 				result.put("erreur", "Invalid session id.");
 			}
-
 		} catch (SQLException e) {
 			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
 				return changePw(sessionId, prec_pw, new_pw);
@@ -57,6 +61,8 @@ public class ChangePwService {
 		try {
 			if (statement != null)
 				statement.close();
+			if(st != null)
+				st.close();
 			if (conn != null)
 				conn.close();
 		} catch (SQLException e) {}
