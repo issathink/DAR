@@ -1,4 +1,4 @@
-package tools;
+package services;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,14 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CreateTablesForZones {
+import tools.DBStatic;
+import tools.Tools;
+
+public class CreateTablesForZonesService {
 
 	public static String createTablesForZones(){
 
-		double north = 48.107892;
-		double south = 49.235588;
+		double south = 48.107892;
+		double north = 49.235588;
 		double west = 1.421153;
 		double east = 3.637298;
 		final double delta_lat = 0.05;
@@ -22,8 +26,7 @@ public class CreateTablesForZones {
 		double cumul_lng = west;
 
 		Connection conn = null;
-		PreparedStatement statement = null, st = null;
-		ResultSet PrecPw = null;
+		PreparedStatement statement = null;
 		JSONObject result = new JSONObject();
 		int cpt = 0;
 
@@ -32,18 +35,22 @@ public class CreateTablesForZones {
 			while (cumul_lat < north) {
 				while (cumul_lng < east) {
 					String query = "CREATE TABLE zone" + cpt + " (id INT PRIMARY KEY NOT NULL, "
-							+ "adresse VARCHAR(100)";
-					cpt++;
+							+ "adresse VARCHAR(100))";
 					statement = conn.prepareStatement(query);
+					statement.executeUpdate(query);
+					result.put("ok", "table"+cpt);
+					cpt++;
 					cumul_lng += delta_lng;
 				}
 				cumul_lng = west;
 				cumul_lat += delta_lat;
 			}
 		}catch (SQLException e) {
-			e.printStackTrace();
+			return Tools.erreurSQL + e.getMessage();
+		} catch (JSONException e) {
+			return Tools.erreurJSON;
 		}
-		return null;
+		return result.toString();
 
 	}
 

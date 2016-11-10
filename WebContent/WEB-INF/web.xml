@@ -71,6 +71,10 @@
 		<servlet-name>ForgotPasswordServlet</servlet-name>
 		<servlet-class>servlets.ForgotPasswordServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>CreateTablesServletForZones</servlet-name>
+		<servlet-class>servlets.CreateTablesServletForZones</servlet-class>
+	</servlet>
 
 
 	<servlet-mapping>
@@ -141,6 +145,11 @@
 		<servlet-name>ForgotPasswordServlet</servlet-name>
 		<url-pattern>/forgotPassword</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CreateTablesServletForZones</servlet-name>
+		<url-pattern>/launch</url-pattern>
+	</servlet-mapping>
+	
 
 	<resource-env-ref>
 		<resource-env-ref-name>jdbc/projet_dar</resource-env-ref-name>
