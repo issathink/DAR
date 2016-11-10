@@ -1,9 +1,9 @@
 package services;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,24 +19,25 @@ public class SendMessageService {
 		ResultSet resRequestToGetId;
 		JSONObject jsonResult = new JSONObject();
 		Connection connexion = null;
-		Statement statement = null;
+		PreparedStatement statement = null;
 
 		message = Tools.protectStrToDB(message);
 
-		try { // TODO preparedStatement
+		try {
 			/* Connexion BD et reglage ... */
 			connexion = DBStatic.getMySQLConnection();
-			statement = connexion.createStatement();
 
 			// get id sender/receiver
 			String tableUsers = DBStatic.mysql_db + "." + NameOfTables.users;
 			String tableSession = DBStatic.mysql_db + "." + NameOfTables.sessions;
 			String requestSenderId = "SELECT user_id FROM "+tableSession+
-					" WHERE session_id='"+idSession+"'";
+					" WHERE session_id=?";
 			String requestReceiverId = "SELECT id FROM "+tableUsers+
-					" WHERE login='"+receiver+"'";
+					" WHERE login=?";
+			statement = connexion.prepareStatement(requestSenderId);
+			statement.setString(1, idSession);
 
-			if((resRequestToGetId = statement.executeQuery(requestSenderId)).next() == false) {
+			if((resRequestToGetId = statement.executeQuery()).next() == false) {
 				if(statement != null)
 					statement.close();
 				if(connexion != null)
@@ -46,9 +47,10 @@ public class SendMessageService {
 				return res.toString();
 			}
 
-
 			String senderId = resRequestToGetId.getString("user_id");
-			if((resRequestToGetId = statement.executeQuery(requestReceiverId)).next() == false) {
+			statement = connexion.prepareStatement(requestReceiverId);
+			statement.setString(1, receiver);
+			if((resRequestToGetId = statement.executeQuery()).next() == false) {
 				if(statement != null)
 					statement.close();
 				if(connexion != null)
@@ -61,10 +63,13 @@ public class SendMessageService {
 
 			// Inscription du message dans la BDD
 			String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
-			String requestSendMessage = "INSERT INTO "+tableMessage+" (id_sender, id_receiver, message) VALUES ("+
-					senderId+","+receiverId+",'"+message+"')";
-
-			int ret  = statement.executeUpdate(requestSendMessage);
+			String requestSendMessage = "INSERT INTO "+tableMessage+" (id_sender, id_receiver, message) VALUES (?,?,?)";
+			statement = connexion.prepareStatement(requestSendMessage);
+			statement.setInt(1, Integer.parseInt(senderId));
+			statement.setInt(2, Integer.parseInt(receiverId));
+			statement.setString(1, message);
+			int ret  = statement.executeUpdate();
+			
 			if(ret == 1)
 				jsonResult.put("ValAddOnBD", "Message Add to BDD");
 			else

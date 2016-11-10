@@ -1,9 +1,9 @@
 package services;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
@@ -15,25 +15,23 @@ import tools.NameOfTables;
 
 public class GetLoginBeginByService {
 
-
 	public static String getLoginList(String beginBy) {
 		ResultSet resRequestToGetLogins;
 		JSONArray jsonResult = new JSONArray();
 		Connection connexion = null;
-		Statement statement = null;
+		PreparedStatement statement = null;
 
-		try { // TODO preparedStatement
-
+		try {
 			/* Connexion BD et reglage ... */
 			connexion = DBStatic.getMySQLConnection();
-			statement = connexion.createStatement();
 
 			String tableUsers = DBStatic.mysql_db + "." + NameOfTables.users;
-			String requestSQL = "SELECT * from "+tableUsers+" WHERE (login LIKE '"+beginBy+"%')";
+			String requestSQL = "SELECT * from " + tableUsers + " WHERE (login LIKE ?)";
+			statement = connexion.prepareStatement(requestSQL);
+			statement.setString(1, beginBy + "%");
+			resRequestToGetLogins = statement.executeQuery();
 
-			resRequestToGetLogins = statement.executeQuery(requestSQL);
-
-			while(resRequestToGetLogins.next()) {
+			while (resRequestToGetLogins.next()) {
 				String login = resRequestToGetLogins.getString("login");
 				login = StringEscapeUtils.escapeHtml4(login);
 
@@ -43,21 +41,20 @@ public class GetLoginBeginByService {
 				jsonResult.put(jObj);
 			}
 
-			if(statement != null)
+			if (statement != null)
 				statement.close();
-			if(connexion != null)
+			if (connexion != null)
 				connexion.close();
 		} catch (SQLException e) {
 			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
 				return getLoginList(beginBy);
 			else
-				return e.getMessage(); 
+				return e.getMessage();
 		} catch (JSONException e) {
 			e.printStackTrace();
-		} 
+		}
 
 		return jsonResult.toString();
 	}
-
 
 }

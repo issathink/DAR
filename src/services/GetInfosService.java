@@ -1,9 +1,9 @@
 package services;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,30 +15,30 @@ public class GetInfosService {
 
 	public static String getInfos(String sessionId) {
 		Connection conn = null;
-		Statement statement = null;
-		ResultSet Infos = null;
+		PreparedStatement statement = null;
+		ResultSet infos = null;
 		JSONObject result = new JSONObject();
 		String userId = "";
 
 		try {
 			conn = DBStatic.getMySQLConnection();
-			statement = (Statement) conn.createStatement();
 			userId = Tools.getUserId(sessionId, conn);
-			String query = "select login, mail from " + DBStatic.mysql_db +  ".users where id='" + userId + "'";
+			String query = "select login, mail from " + DBStatic.mysql_db +  ".users where id=?";
+			statement = conn.prepareStatement(query);
+			
 			if(userId != null) {
-				Infos = statement.executeQuery(query);
-				if(Infos.next()) {
-					result.put("login", Infos.getString("login"));
-					result.put("mail", Infos.getString("mail"));
+				statement.setInt(1, Integer.parseInt(userId));
+				infos = statement.executeQuery();
+				if(infos.next()) {
+					result.put("login", infos.getString("login"));
+					result.put("mail", infos.getString("mail"));
 					result.put("ok", "Infos loaded successfully.");
-				}
-				else {
+				} else {
 					result.put("erreur", "Problem recovering user's infos");
 				}
 			} else {
 				result.put("erreur", "Invalid session id.");
 			}
-
 		} catch (SQLException e) {
 			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
 				return getInfos(sessionId);

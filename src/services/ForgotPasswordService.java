@@ -1,16 +1,22 @@
 package services;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import javax.mail.*;
-import javax.mail.internet.*;
 
 import tools.DBStatic;
 import tools.PwGenerator;
@@ -26,30 +32,33 @@ public class ForgotPasswordService {
 
 	public String forgotPassword(String mail, String login){
 		Connection conn = null;
-		Statement statement = null;
-		ResultSet LoginRes = null;
-		ResultSet ResMail = null;
+		PreparedStatement statement = null;
+		ResultSet loginRes = null;
+		ResultSet resMail = null;
 		JSONObject result = new JSONObject();
 		String userId = "";
 
 		try {
 			conn = DBStatic.getMySQLConnection();
-			statement = (Statement) conn.createStatement();
-			String q = "select id from " + DBStatic.mysql_db +  ".users where login='" + login + "'";
-			LoginRes = statement.executeQuery(q);
-			if(LoginRes.next())
-				userId = LoginRes.getString("id");
+			String q = "select id from " + DBStatic.mysql_db +  ".users where login=?";
+			statement = conn.prepareStatement(q);
+			statement.setString(1, login);
+			loginRes = statement.executeQuery();
+			if(loginRes.next())
+				userId = loginRes.getString("id");
 			else {
 				result.put("erreur", "Login does not exist");
 				return result.toString();
 			}
 				
-			String query = "select mail from " + DBStatic.mysql_db +  ".users where id='" + userId + "'";
+			String query = "select mail from " + DBStatic.mysql_db +  ".users where id=?";
 			if(userId != null) {
-				ResMail = statement.executeQuery(query);
-				if(ResMail.next()) {
-					if(mail.equals(ResMail.getString("mail"))){
-						
+				statement = conn.prepareStatement(query);
+				statement.setInt(1, Integer.parseInt(userId));
+				resMail = statement.executeQuery();
+				
+				if(resMail.next()) {
+					if(mail.equals(resMail.getString("mail"))) {
 						PwGenerator pg = new PwGenerator();
 						String new_pw = pg.nextSessionId();
 
@@ -80,26 +89,28 @@ public class ForgotPasswordService {
 						msg.addRecipient(Message.RecipientType.TO, new InternetAddress(m_to));
 						Transport.send(msg);
 						
-						String update = "UPDATE " + DBStatic.mysql_db +  ".users SET pw='" + new_pw + "' where id='" + userId + "'";
-						if(statement.executeUpdate(update) > 0) 
+						String update = "UPDATE " + DBStatic.mysql_db +  ".users SET pw=? where id=?";
+						statement = conn.prepareStatement(update);
+						statement.setString(1, new_pw);
+						statement.setInt(2, Integer.parseInt(userId));
+						
+						if(statement.executeUpdate() > 0) 
 							result.put("ok", "Password changed");
 						else
 							result.put("erreur", "Unexpected error please try again later");
 
-					}else
+					} else {
 						result.put("erreur", "Invalid mail.");
-				}
-				else
+					}
+				} else {
 					result.put("erreur", "No mail.");
+				}
 			} else {
 				result.put("erreur", "Invalid session id.");
 			}
-
 		} catch (SQLException e) {
-			int error = e.getErrorCode();
-			if (error == 0 && e.toString().contains("CommunicationsException")){
+			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
 				return forgotPassword(mail, login);
-			}
 			else
 				return Tools.erreurSQL + e.getMessage();
 		} catch (JSONException e) {
@@ -120,7 +131,6 @@ public class ForgotPasswordService {
 		} catch (SQLException e) {}
 
 		return result.toString();
-
 	}
 
 }
