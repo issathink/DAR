@@ -111,7 +111,7 @@ public class Tools {
 			conn = DBStatic.getMySQLConnection();
 			statement = (Statement) conn.createStatement();
 			String update = "UPDATE " + DBStatic.mysql_db + ".sessions SET start = '" + Tools.getNowMillis()
-					+ "' where session_id = '" + id + "'";
+			+ "' where session_id = '" + id + "'";
 			statement.executeUpdate(update);
 		} catch (SQLException e1) {
 			// e1.printStackTrace();
@@ -133,7 +133,7 @@ public class Tools {
 		ResultSet listOfUsers = null;
 		String query = "select user_id, start from " + DBStatic.mysql_db + ".sessions where session_id=?";
 		PreparedStatement st = null;
-				
+
 		try {
 			st = conn.prepareStatement(query);
 			st.setString(1, sessionId);
@@ -243,45 +243,17 @@ public class Tools {
 	}
 
 	public static String protectStrToDB(String s) {
-//		s = s.replaceAll("&", "\"&\"");
-//		s = StringEscapeUtils.escapeHtml4(s);
-//		s = s.replace("'", "\\'");
-//		return s;
-		
-		 if (s == null) {
-             return null;
-         }
+		s = s.replaceAll("&", "\\&");
+		//s = s.replaceAll("\\", "\\\\");
+		return s;
+	}
 
-         String clean_string = s;
-         clean_string = clean_string.replaceAll("\\\\", "\\\\\\\\");
-         clean_string = clean_string.replaceAll("\\n","\\\\n");
-         clean_string = clean_string.replaceAll("\\r", "\\\\r");
-         clean_string = clean_string.replaceAll("\\t", "\\\\t");
-         clean_string = clean_string.replaceAll("\\00", "\\\\0");
-         clean_string = clean_string.replaceAll("'", "\\\\'");
-         clean_string = clean_string.replaceAll("\\\"", "\\\\\"");
-         
-         return clean_string;
-	}
-	
 	public static String deProtectStrToDB(String s) {
-//		s = s.replace("\\'", "'"); // Pour l'ajout dans la bdd
-//		s = StringEscapeUtils.unescapeHtml4(s);
-//		s = s.replaceAll("\"&\"", "&");
-//		return s;
-		
-        String clean_string = s;
-        clean_string = clean_string.replaceAll("\\\"", "\\\\\"");
-        clean_string = clean_string.replaceAll("'", "\\\\'");
-        clean_string = clean_string.replaceAll("\\00", "\\\\0");
-        clean_string = clean_string.replaceAll("\\t", "\\\\t");
-        clean_string = clean_string.replaceAll("\\r", "\\\\r");
-        clean_string = clean_string.replaceAll("\\n","\\\\n");
-        clean_string = clean_string.replaceAll("\\\\", "\\\\\\\\");
-      
-        return clean_string;
+		//s = s.replaceAll("\\\\+","\\\\");
+		s = s.replaceAll("\\&", "&");
+		return s;
 	}
-	
+
 	public static boolean isNumber(String s) {
 		for(char c : s.toCharArray())
 			if(c!='0' && c!='1' && c!='2' && c!='3' && c!='4' && c!='5' && c!='6' && c!='7' && c!='8' && c!='9')

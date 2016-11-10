@@ -28,7 +28,6 @@ public class SendMessageServlet extends HttpServlet {
 			String sender = req.getParameter("id_session");
 			String receiver = req.getParameter("pseudo_receiver");
 			String message = req.getParameter("message");
-			message = StringEscapeUtils.escapeHtml4(message);
 			String response = SendMessageService.sendMessage(sender, receiver, message);
 			res = response;
 		}

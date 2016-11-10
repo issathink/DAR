@@ -7,11 +7,6 @@ var friendLogin = get_ParamGET("friend_login");
 var delayRefresh = 3000;
 
 
-// FAUDRAIT VERIFIER DANS MES SERVLETS SI LA SESSION EXISTE (requete return rien....)
-// DANS SEARCH CONTACT DANS LA BARRE (envoyer aussi idSession) FAUT PAS S'AFFICHER
-// Trier les contacts selon la date !!!
-// Retirer le \n lorsqu'on fait entre !!!!
-
 var heightIdDivMessage = document.getElementById("idDivMessages").clientHeight; // (ou offsetHeight) Valeur height du div
 
 /* A l'ouverture de la page */
@@ -64,11 +59,12 @@ function sendMessageText() {
 			$('document').ready(function() {
 				$(window).scrollTop(0);
 			});
-			myChampTexte.value = "";
+			//myChampTexte.value = "";
 			console.log("Pas de contact, choisir un contact avant de send un message");
 			return;
 		}
 		myChampTexte.value = "";
+		s = s.trim();
 		sendMessageToServeur(idUserSession, friendLogin, s);
 		refreshPage();
 	}
@@ -144,6 +140,7 @@ function setMessages(id_user_session, friend_login) {
 			else {
 				var obj = document.getElementById("idDivMessages");
 				var needToMajScroll = (obj.scrollTop === obj.scrollHeight-heightIdDivMessage) ? true : false;
+				console.log("NeedToMajScroll = "+needToMajScroll);
 				responseSetMessages(rep, friend_login);
 				if(needToMajScroll)
 					setScrollbar();

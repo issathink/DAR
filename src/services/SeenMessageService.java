@@ -15,7 +15,6 @@ import tools.Tools;
 
 public class SeenMessageService {
 
-	// TODO Mettre les messages (ou on est le receiver) a vu 
 	public static String getMessages(String idSession, String friendLogin){
 		ResultSet resRequeteToGetMessages, resRequestToGetName;
 		JSONArray jsonResult = new JSONArray();
@@ -27,7 +26,6 @@ public class SeenMessageService {
 			connexion = DBStatic.getMySQLConnection();
 
 			/* Recuperation des Ids */
-			// TODO , faire une union pour faire qu'une seul requete a la bd
 			String tableUsers = DBStatic.mysql_db + "." + NameOfTables.users;
 			String tableSession = DBStatic.mysql_db + "." + NameOfTables.sessions;
 
@@ -76,11 +74,10 @@ public class SeenMessageService {
 			String userLogin= resRequestToGetName.getString("login");
 
 
-			///////////////////
 			String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
 			String requestMessage = "SELECT id, id_sender, id_receiver, message, date_send, is_read FROM "+tableMessage+
-					" WHERE (id_sender='"+friendId+"' AND id_receiver='"+userId+"') " +
-					"OR (id_sender='"+userId+"' AND id_receiver='"+friendId+"') ORDER BY date_send ASC";
+					" WHERE (id_sender="+"?"+" AND id_receiver="+"?"+") " +
+					"OR (id_sender="+"?"+" AND id_receiver="+"?"+") ORDER BY date_send ASC";
 			statement = connexion.prepareStatement(requestMessage);
 			statement.setInt(1, Integer.parseInt(friendId));
 			statement.setInt(2, Integer.parseInt(userId));
@@ -100,7 +97,7 @@ public class SeenMessageService {
 				String date = resRequeteToGetMessages.getString("date_send");
 				String isRead = resRequeteToGetMessages.getString(("is_read"));
 				String pseudoSender = id_sender.equals(userId) ? userLogin : friendLogin;
-				////////////////////
+
 				/* On indique le message a ete lu */
 				if(isRead.equals("0") && (id_receiver.equals(id_sender) || !id_sender.equals(userId))) { // On a recu le message => le mettre a vu
 					String requestUpdateIsRead = "UPDATE "+tableMessage+" SET is_read=1 WHERE id=?";
@@ -108,7 +105,7 @@ public class SeenMessageService {
 					statement2.setInt(1, Integer.parseInt(idMessage));
 					statement2.executeUpdate();
 				}
-				///////////
+
 				JSONObject jObj = new JSONObject();
 				jObj.put("login", pseudoSender);
 				jObj.put("message", message);
@@ -130,7 +127,7 @@ public class SeenMessageService {
 			else
 				return e.getMessage(); 
 		} catch (JSONException e) {
-			e.printStackTrace();
+			return e.getMessage();
 		} 
 
 		return jsonResult.toString();

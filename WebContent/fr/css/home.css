@@ -74,8 +74,7 @@
 }
 
 .aligncenter, div.aligncenter {
-	/* overflow: hidden; */
-	overflow: auto;
+	overflow: hidden; 
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -173,4 +172,11 @@
     background-color: #e6e6e6;
     border: 1px solid #e5e5e5;
     border-radius: 5px;
+}
+
+#idDivMessages {
+	height: 465px;
+	overflow-y:auto;
+	overflow-x:auto;
+	border-radius: 0px;
 }

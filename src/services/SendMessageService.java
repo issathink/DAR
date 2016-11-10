@@ -67,7 +67,7 @@ public class SendMessageService {
 			statement = connexion.prepareStatement(requestSendMessage);
 			statement.setInt(1, Integer.parseInt(senderId));
 			statement.setInt(2, Integer.parseInt(receiverId));
-			statement.setString(1, message);
+			statement.setString(3, message);
 			int ret  = statement.executeUpdate();
 			
 			if(ret == 1)
