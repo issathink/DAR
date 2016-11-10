@@ -5,12 +5,12 @@ function responseIsConnected(response) {
 
 	if(response.ok != undefined) {
 		// alert("Already logged in: " + getCookie(C_NAME));
-		document.getElementById("index_signin").innerHTML = "<button type='button'" 
+		document.getElementById("index_signin").innerHTML = "<button onclick='goToChat();' type='button'" 
 			+ " class='btn btn-default btn-md'><a class='glyphicon glyphicon-envelope'" 
-			+ " aria-hidden='true' href='chat.html'></a></button>";
+			+ " aria-hidden='true' ></a></button>";
 
-		document.getElementById("index_signup").innerHTML = "<button type='button'" 
-			+ " class='btn btn-default btn-md' href='profile.html'>"
+		document.getElementById("index_signup").innerHTML = "<button onclick='toInfos();' type='button'" 
+			+ " class='btn btn-default btn-md'>"
 			+ "<a class='glyphicon glyphicon-user' aria-hidden='true'></a></button>";
 
 		document.getElementById("index_logout").innerHTML = "<button onclick='disconnect();' "+

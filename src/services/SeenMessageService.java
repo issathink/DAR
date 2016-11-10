@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -107,8 +108,8 @@ public class SeenMessageService {
 				}
 
 				JSONObject jObj = new JSONObject();
-				jObj.put("login", pseudoSender);
-				jObj.put("message", message);
+				jObj.put("login", StringEscapeUtils.escapeHtml4(pseudoSender));
+				jObj.put("message", StringEscapeUtils.escapeHtml4(message));
 				jObj.put("date_send", date);
 				if(id_sender.equals(userId)) // On indique si le destinataire a read le message ou non
 					jObj.put("isRead", isRead);
