@@ -21,11 +21,12 @@ public class GetCommentsAndNoteServlet extends HttpServlet {
 		@SuppressWarnings("unchecked")
 		Map<String, String> params = req.getParameterMap();
 		String adresse;
+		String distance;
 		
-		if (params.containsKey("adresse")) {
+		if (params.containsKey("adresse") && params.containsKey("distance") && Tools.isNumber(req.getParameter("distance"))) {
 			adresse = req.getParameter("adresse");
-			
-			resp.getWriter().write(GetCommentsAndNoteService.getComments(adresse));
+			distance = req.getParameter("distance");
+			resp.getWriter().write(GetCommentsAndNoteService.getComments(adresse, distance));
 			
 		} else {
 			resp.getWriter().write(Tools.erreurParam);

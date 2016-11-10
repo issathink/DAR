@@ -31,7 +31,7 @@ var imageEducation = 'img/education2.png';
 var imageTransport = 'img/transport2.png';
 
 
-function setAffichageDependingOfBox(myMap) {
+function setAffichageDependingOfBox(myMap, distance) {
 	retirerListMarkerPerso(map, markers["poste"]);
 	retirerListMarkerPerso(map, markers["sport"]);
 	retirerListMarkerPerso(map, markers["sante"]);
@@ -45,7 +45,7 @@ function setAffichageDependingOfBox(myMap) {
 	markers["education"] = [];
 	markers["transport"] = [];
 	loadAllInfos(adresse, dist, true);
-	getCommentsAndNote(adresse, dist);	
+	getCommentsAndNote(adresse, distance);	
 }
 
 function loadAllInfos(adress, distance, withSetAff) { // 3eme setAffichage ou non
@@ -129,7 +129,7 @@ function responseSetAllAPI(rep, myMap, withSetAff) {
 }
 
 function getListMarkerPerso(jsonArrayApi, image, myMap) {
-	console.log("DEBUT getListMarkerPerso ==> "+image+" sizeJSONArrayAPi "+jsonArrayApi.length);
+	//console.log("DEBUT getListMarkerPerso ==> "+image+" sizeJSONArrayAPi "+jsonArrayApi.length);
 	var res = [];
 
 	var infowindow = null;
@@ -156,7 +156,7 @@ function getListMarkerPerso(jsonArrayApi, image, myMap) {
 		var contentString = nom + ((description !== "") ? " : "+description : "");
 		contentString = myDecodeHTMLspecialhars(contentString);
 		contentString = "<div><b>" + contentString + "</b></div>";
-		console.log("ContentString = "+contentString);
+		//console.log("ContentString = "+contentString);
 
 
 		google.maps.event.addListener(markerPerso,'click', (function(marker,content,infowindow){ 
@@ -177,18 +177,18 @@ function getListMarkerPerso(jsonArrayApi, image, myMap) {
 	//////////
 
 
-	console.log("FIN getListMarkerPerso ==> "+image+" sizeRes "+res.length);
+	//console.log("FIN getListMarkerPerso ==> "+image+" sizeRes "+res.length);
 	return res;
 }
 
 //Ajoute un marqueur sur la map
 function afficherListMarkerPerso(myMap, listeMarker) {
-	console.log("afficherListMarkerPerso debut");
+	//console.log("afficherListMarkerPerso debut");
 	for(var i=0 ; i<listeMarker.length ; i++) {
 		var marker = listeMarker[i];
 		marker.setMap(myMap);
-		console.log("afficherListMarkerPerso fin");
 	}
+	//console.log("afficherListMarkerPerso fin");
 }
 
 //Desaffiche les marqueurs sur la map
@@ -241,7 +241,7 @@ function apiCall(box, name_api) {
 }
 
 function setMarkerOfAdress(myMap, myLatLng, adresseString) {
-	console.log("setMarkerOfAdress DEBUT");
+	//console.log("setMarkerOfAdress DEBUT");
 	adressMarker = new google.maps.Marker({
 		position: myLatLng,
 		map: myMap,
@@ -250,5 +250,5 @@ function setMarkerOfAdress(myMap, myLatLng, adresseString) {
 
 	myMap.setCenter(myLatLng);
 	myMap.setZoom(15);
-	console.log("setMarkerOfAdress FIN");
+	//console.log("setMarkerOfAdress FIN");
 }

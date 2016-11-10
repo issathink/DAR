@@ -79,7 +79,7 @@ function changeDist() {
 	d = formateDistance(d);
 	dist = d;
 	if(adresse != undefined) {
-		setAffichageDependingOfBox(map);
+		setAffichageDependingOfBox(map, dist);
 		topBar("Loading...", false, 2000);
 	}
 }
@@ -99,12 +99,13 @@ function formateDistance(d) {
 		return 500;
 }
 
-function getCommentsAndNote(adresse) {
+function getCommentsAndNote(adresse, distance) {
+	console.log("Recuperation comments distance = "+distance);
 	if(adresse != undefined){
 		$.ajax({
 			url : "../getCommentsAndNote?",
 			type : "GET",
-			data : "adresse=" + adresse,
+			data : "adresse=" + adresse+"&distance="+distance,
 			dataType : "json",
 			success : function(rep) {
 				responseSetCommentsAndNote(rep, adresse);
@@ -154,6 +155,11 @@ function responseSetCommentsAndNote(rep, adresse) {
 				var login = rep.comment[i].login;
 				var message = rep.comment[i].comment;
 				var addr = rep.comment[i].adresse;
+				
+				login = myDecodeHTMLspecialhars(login);
+				message = myDecodeHTMLspecialhars(message);
+				addr = myDecodeHTMLspecialhars(addr);
+				
 				addr =  '<span><strong>Adresse :</strong> ' + addr + '</span>';
 				var note = rep.comment[i].note;
 				if(note !== "")
@@ -219,7 +225,7 @@ function responsePostComment(rep) {
 	} else {
 		console.log("SUCCEED");
 		$('#error_caractere').hide();
-		getCommentsAndNote(adresse);
+		getCommentsAndNote(adresse, dist);
 	}
 }
 
@@ -251,7 +257,7 @@ function responsePostRate(rep) {
 		topBar(rep.erreur, true);
 	} else {
 		console.log("SUCCEED");
-		getCommentsAndNote(adresse);
+		getCommentsAndNote(adresse, dist);
 	}
 }
 

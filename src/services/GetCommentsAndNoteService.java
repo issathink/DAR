@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,7 +17,7 @@ import tools.Tools;
 
 public class GetCommentsAndNoteService {
 
-	public static String getComments(String adresse) {
+	public static String getComments(String adresse, String distance) {
 		Connection conn = null;
 		ResultSet listOfAdress = null;
 		ResultSet listOfComments = null;
@@ -28,6 +29,7 @@ public class GetCommentsAndNoteService {
 		boolean vide = true;
 		String s = "";
 
+		double dist = mToKm(distance);
 		try { // TODO preparedStatement
 			if(Tools.isValidAddress(adresse)) {
 				conn = DBStatic.getMySQLConnection();
@@ -47,7 +49,7 @@ public class GetCommentsAndNoteService {
 						vide = false;
 						latCur = Double.valueOf(listOfAdress.getString("lat"));
 						longCur = Double.valueOf(listOfAdress.getString("lng"));
-						if(Tools.haversineInKM(latitude, longitude, latCur, longCur) <= Tools.Circonference)
+						if(Tools.haversineInKM(latitude, longitude, latCur, longCur) <= dist)
 							listAdress.add(new LatLng(latCur, longCur));
 					}
 
@@ -73,9 +75,9 @@ public class GetCommentsAndNoteService {
 							String n = listOfComments.getString("note");
 							
 							if(c != null) {
-								jObj.put("comment", c);
-								jObj.put("adresse", listOfComments.getString("adresse"));
-								jObj.put("login", listOfComments.getString("login"));
+								jObj.put("comment",  StringEscapeUtils.escapeHtml4(c)+"DIST = "+dist);
+								jObj.put("adresse", StringEscapeUtils.escapeHtml4(listOfComments.getString("adresse")));
+								jObj.put("login", StringEscapeUtils.escapeHtml4(listOfComments.getString("login")));
 								String tmpNote = (n != null) ? n : "";
 								jObj.put("note", tmpNote);
 								result.append("comment", jObj);
@@ -102,7 +104,7 @@ public class GetCommentsAndNoteService {
 			}
 		} catch (SQLException e) {
 			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
-				return getComments(adresse);
+				return getComments(adresse, distance);
 			else
 				return Tools.erreurSQL + e.getMessage() + "\n" + s;
 		} catch (JSONException e) {
@@ -117,6 +119,12 @@ public class GetCommentsAndNoteService {
 		} catch (SQLException e) {}
 
 		return result.toString();
+	}
+
+	private static double mToKm(String distance) {
+		Double d = Double.parseDouble(distance);
+		d = d/100;
+		return d;
 	}
 
 }
