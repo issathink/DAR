@@ -20,7 +20,7 @@ function validate() {
 	document.body.className += "loading";
 	// valMail = validateEmail(mail)
 
-	if(login.length >= 6 && pwd.length >= 6) {
+	if(login.length >= 4 && pwd.length >= 6) {
 		console.log("pwd :" + pwd + " login: " + login);
 		signin(login, pwd);
 		$("#error_holder").text("");
