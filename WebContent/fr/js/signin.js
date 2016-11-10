@@ -13,12 +13,9 @@ function responseIsConnected(response) {
 }
 
 function validate() {
-
 	login = document.forms["signin"]["login"].value;
 	pwd  = document.forms["signin"]["pwd"].value;
-
 	document.body.className += "loading";
-	// valMail = validateEmail(mail)
 
 	if(login.length >= 4 && pwd.length >= 6) {
 		console.log("pwd :" + pwd + " login: " + login);
@@ -63,13 +60,13 @@ function responseSignin(response) {
 
 	if(response.ok != undefined) {
 		// Successfully logged in
-		$("#error_holder").text("Bravo! You're now logged in.").fadeIn('fast');
+		// $("#error_holder").text("Bravo! You're now logged in.").fadeIn('fast');
 		document.body.className = '';
 		setCookie(C_NAME, response.key, 30);
 		window.location.href = "home.html";
 	} else {
 		// Something wrong
-		$("#error_holder").text(response.message).fadeIn('fast');
+		$("#error_holder").text(response.erreur).fadeIn('fast');
 		document.body.className = '';
 	}
 }

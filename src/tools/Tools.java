@@ -114,7 +114,6 @@ public class Tools {
 			+ "' where session_id = '" + id + "'";
 			statement.executeUpdate(update);
 		} catch (SQLException e1) {
-			// e1.printStackTrace();
 			return false;
 		}
 
@@ -123,8 +122,7 @@ public class Tools {
 				statement.close();
 			if (conn != null)
 				conn.close();
-		} catch (SQLException e) {
-		}
+		} catch (SQLException e) {}
 
 		return true;
 	}
@@ -178,16 +176,14 @@ public class Tools {
 	}
 
 	public static JSONObject sendGet(String url) throws Exception {
-
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
 		// optional default is GET
 		con.setRequestMethod("GET");
-
 		// add request header
 		// con.setRequestProperty("User-Agent", USER_AGENT);
-
+		
 		int responseCode = con.getResponseCode();
 		System.out.println("\nSending 'GET' request to URL : " + url);
 		System.out.println("Response Code : " + responseCode);
@@ -196,14 +192,12 @@ public class Tools {
 		String inputLine;
 		StringBuffer response = new StringBuffer();
 
-		while ((inputLine = in.readLine()) != null) {
+		while ((inputLine = in.readLine()) != null)
 			response.append(inputLine);
-		}
+		
 		in.close();
 		con.disconnect();
 
-		// print result
-		// System.out.println(response.toString());
 		return new JSONObject(response.toString());
 	}
 
@@ -221,11 +215,10 @@ public class Tools {
 
 	public static JSONArray concatArray(JSONArray... arrs) throws JSONException {
 		JSONArray result = new JSONArray();
-		for (JSONArray arr : arrs) {
-			for (int i = 0; i < arr.length(); i++) {
+		for (JSONArray arr : arrs)
+			for (int i = 0; i < arr.length(); i++)
 				result.put(arr.get(i));
-			}
-		}
+		
 		return result;
 	}
 

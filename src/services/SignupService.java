@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tools.BCrypt;
 import tools.DBStatic;
 import tools.Tools;
 
@@ -45,20 +46,18 @@ public class SignupService {
 			statement = conn.prepareStatement(present);
 			statement.setString(1, mail);
 			listOfUsers = statement.executeQuery();
-
 			while(listOfUsers.next())
 				i++;
 
 			if (i > 0) {
 				result.put("erreur", "Il existe un email associe a ce compte.");
-			}else if (pw.length() < 6){
+			} else if (pw.length() < 6){
 				result.put("erreur", "Mot de passe trop court");
 			} else {
-
 				statement = conn.prepareStatement(insert);
 				statement.setString(1, mail);
 				statement.setString(2, login);
-				statement.setString(3, pw);
+				statement.setString(3, BCrypt.hashpw(pw, BCrypt.gensalt()));
 				statement.executeUpdate();
 				JSONObject obj = new JSONObject(SigninService.authenticateUser(login, pw));
 				result.put("ok", "La creation s'est bien passe");
@@ -78,8 +77,7 @@ public class SignupService {
 				statement.close();
 			if (conn != null)
 				conn.close();
-		} catch (SQLException e) {
-		}
+		} catch (SQLException e) {}
 
 		return result.toString();
 	}

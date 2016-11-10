@@ -10,8 +10,8 @@ import javax.sql.DataSource;
 
 import org.json.JSONException;
 
+import tools.BCrypt;
 import tools.DBStatic;
-import tools.Tools;
 
 
 /**
@@ -26,7 +26,23 @@ public class TestOperation {
 
 		// testCreate();
 		// testJDBC();
-		System.out.println(Tools.isValidAddress("japon"));
+		// System.out.println(Tools.isValidAddress("japon"));
+		String password = "test";
+		String candidate = "test";
+		
+		// Hash a password for the first time
+		String hashed = BCrypt.hashpw(password, BCrypt.gensalt(12));
+
+		// gensalt's log_rounds parameter determines the complexity
+		// the work factor is 2**log_rounds, and the default is 10
+		// String hashed2 = BCrypt.hashpw(password, BCrypt.gensalt(12));
+
+		// Check that an unencrypted password matches one that has
+		// previously been hashed
+		if (BCrypt.checkpw(candidate, hashed))
+			System.out.println("It matches");
+		else
+			System.out.println("It does not match");
 	}
 
 	public static void testCreate() throws JSONException {

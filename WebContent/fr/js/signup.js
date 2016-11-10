@@ -13,7 +13,6 @@ function responseIsConnected(response) {
 
 
 function validate() {
-
 	mail = document.forms["signup"]["email"].value;
 	login = document.forms["signup"]["login"].value;
 	pwd = document.forms["signup"]["pwd"].value;
@@ -67,7 +66,7 @@ function signup(mail, login, pwd, repwd) {
 
 
 function responseSignup(response) {
-
+	$("#error_holder").fadeOut('fast');
 	if(response.ok != undefined) {
 		$("#error_holder").fadeOut('fast');
 		$("#error_holder").text(response.message).fadeIn('fast');

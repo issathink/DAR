@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tools.BCrypt;
 import tools.DBStatic;
 import tools.Tools;
 
@@ -37,12 +38,12 @@ public class SigninService {
 
 		try {
 			conn = DBStatic.getMySQLConnection();
-			String query = "select id, login from " + DBStatic.mysql_db +  ".users where login=?";
+			String query = "select id, login, pw from " + DBStatic.mysql_db +  ".users where login=?";
 			statement = conn.prepareStatement(query);
 			statement.setString(1, login);
 			listOfUsers = statement.executeQuery();
 
-			if(listOfUsers.next()) {
+			if(listOfUsers.next() && BCrypt.checkpw(pw, String.valueOf(listOfUsers.getString("pw")))) {
 				id = String.valueOf(listOfUsers.getString("id"));
 				query = "select session_id from " + DBStatic.mysql_db + ".sessions where user_id=?";
 				statement = conn.prepareStatement(query);
@@ -72,7 +73,7 @@ public class SigninService {
 					}
 				}
 			} else {
-				result.put("erreur", "Unknown user: '" + login + "'");
+				result.put("erreur", "Unknown user: '" + login + "' or bad password.");
 			}
 		} catch (SQLException e) {
 			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
