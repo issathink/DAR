@@ -25,7 +25,6 @@ public class ForgotPasswordService {
 	}
 
 	public String forgotPassword(String mail, String login){
-
 		Connection conn = null;
 		Statement statement = null;
 		ResultSet LoginRes = null;
