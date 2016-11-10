@@ -156,7 +156,8 @@ function responseSetCommentsAndNote(rep, adresse) {
 				var login = rep.comment[i].login;
 				var message = rep.comment[i].comment;
 				var addr = rep.comment[i].adresse;
-
+				var dateMess = rep.comment[i].date;
+				
 				login = myDecodeHTMLspecialhars(login);
 				message = myDecodeHTMLspecialhars(message);
 				addr = myDecodeHTMLspecialhars(addr);
@@ -164,7 +165,8 @@ function responseSetCommentsAndNote(rep, adresse) {
 				addr =  '<span><strong>Adresse :</strong> ' + addr + '</span>';
 				var note = rep.comment[i].note;
 				if(note !== "")
-					note = "<span><strong>Note :</strong> "+note+"/5</span>";
+					note = "| <span><strong>Note :</strong> "+note+"/5</span>";
+				var date = "<span>Posté le "+dateMess+"</span>";
 				var newBalise = document.createElement("div");
 				var tmp = "";
 				if(boolIsConnected)
@@ -172,7 +174,7 @@ function responseSetCommentsAndNote(rep, adresse) {
 				newBalise.innerHTML = '<div class="row"><div class="col-sm-1"><div class="thumbnail">'
 					+ '<img '+tmp+' class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">'
 					+ '</div><!-- /thumbnail --></div><!-- /col-sm-1 --><div class="col-sm-10"><div class="panel panel-default"><div class="panel-heading"><strong>'
-					+ login + '</strong> | '+ addr + ' | ' + note + '\t\t</div><div class="panel-body">'
+					+ login + '</strong>, '+date+ ' <br /> ' + addr + ' ' + note + ' </div><div class="panel-body">'
 					+ message + '</div><!-- /panel-body --></div><!-- /panel panel-default --></div><!-- /col-sm-5 --></div>';
 				myDiv.appendChild(newBalise);
 			}

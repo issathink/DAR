@@ -61,7 +61,7 @@ public class GetCommentsAndNoteService {
 							add += "(lat=" + ad.getLat() + " AND lng=" + ad.getLng() + ") OR ";
 						add = add.substring(0, add.length() - 4); // Nice one :)
 
-						String queryGetComments = "select c.comment, c.note, c.adresse, u.login from "
+						String queryGetComments = "select c.comment, c.note, c.adresse, c.date, u.login from "
 								+ DBStatic.mysql_db + ".comments c," + DBStatic.mysql_db + ".users u where (" + add
 								+ ") AND c.user_id=u.id;";
 						s += queryGetComments;
@@ -75,9 +75,13 @@ public class GetCommentsAndNoteService {
 
 							String n = listOfComments.getString("note");
 
+							String myDate = listOfComments.getString("date").split(" ")[0];
+							String [] tmpS = myDate.split("-");
+							myDate = tmpS[2]+"/"+tmpS[1]+"/"+tmpS[0];
 							if (c != null) {
-								jObj.put("comment", StringEscapeUtils.escapeHtml4(c) + "DIST = " + dist);
+								jObj.put("comment", StringEscapeUtils.escapeHtml4(c));
 								jObj.put("adresse", StringEscapeUtils.escapeHtml4(listOfComments.getString("adresse")));
+								jObj.put("date", StringEscapeUtils.escapeHtml4(myDate));
 								jObj.put("login", StringEscapeUtils.escapeHtml4(listOfComments.getString("login")));
 								String tmpNote = (n != null) ? n : "";
 								jObj.put("note", tmpNote);
@@ -123,7 +127,7 @@ public class GetCommentsAndNoteService {
 
 	private static double mToKm(String distance) {
 		Double d = Double.parseDouble(distance);
-		d = d / 100;
+		d = d / 1000;
 		return d;
 	}
 

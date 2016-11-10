@@ -74,7 +74,8 @@
 }
 
 .aligncenter, div.aligncenter {
-	overflow: hidden;
+	/* overflow: hidden; */
+	overflow: auto;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
