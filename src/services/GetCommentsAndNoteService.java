@@ -28,7 +28,7 @@ public class GetCommentsAndNoteService {
 		boolean vide = true;
 		String s = "";
 
-		try {
+		try { // TODO preparedStatement
 			if(Tools.isValidAddress(adresse)) {
 				conn = DBStatic.getMySQLConnection();
 				statement = (Statement) conn.createStatement();

@@ -20,10 +20,10 @@ public class ChangePwService {
 		JSONObject result = new JSONObject();
 		String userId = "";
 
-		try {
+		try { // TODO preparedStatement
 			conn = DBStatic.getMySQLConnection();
 			statement = (Statement) conn.createStatement();
-			userId = Tools.getUserId(sessionId, statement);
+			userId = Tools.getUserId(sessionId, conn);
 			String query = "select pw from " + DBStatic.mysql_db +  ".users where id='" + userId + "'";
 			if(userId != null) {
 				PrecPw = statement.executeQuery(query);

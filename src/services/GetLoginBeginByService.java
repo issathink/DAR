@@ -22,7 +22,7 @@ public class GetLoginBeginByService {
 		Connection connexion = null;
 		Statement statement = null;
 
-		try {
+		try { // TODO preparedStatement
 
 			/* Connexion BD et reglage ... */
 			connexion = DBStatic.getMySQLConnection();

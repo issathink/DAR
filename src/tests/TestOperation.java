@@ -25,7 +25,7 @@ public class TestOperation {
 		// System.out.println(Calcul.calcul("5", "0", "div"));
 
 		// testCreate();
-		//testJDBC();
+		// testJDBC();
 		System.out.println(Tools.isValidAddress("japon"));
 	}
 

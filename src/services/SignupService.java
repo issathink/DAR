@@ -1,9 +1,9 @@
 package services;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,17 +35,16 @@ public class SignupService {
 		Connection conn = null;
 		JSONObject result = new JSONObject();
 		ResultSet listOfUsers = null;
-		Statement statement = null;
+		PreparedStatement statement = null;
 		int i = 0;
 
 		try {
 			conn = DBStatic.getMySQLConnection();
-			String present = "SELECT id FROM " + DBStatic.mysql_db +  ".users WHERE mail='"
-					+ mail + "'";
-			String insert = "INSERT INTO " + DBStatic.mysql_db +  ".users values (NULL, '"
-					+ mail + "','" + login + "','" + pw + "')";
-			statement = (Statement) conn.createStatement();
-			listOfUsers = statement.executeQuery(present);
+			String present = "SELECT id FROM " + DBStatic.mysql_db +  ".users WHERE mail=?";
+			String insert = "INSERT INTO " + DBStatic.mysql_db +  ".users values (NULL, ?, ?, ?)";
+			statement = conn.prepareStatement(present);
+			statement.setString(1, mail);
+			listOfUsers = statement.executeQuery();
 
 			while(listOfUsers.next())
 				i++;
@@ -53,18 +52,20 @@ public class SignupService {
 			if (i > 0) {
 				result.put("erreur", "Il existe un email associe a ce compte.");
 			} else {
-				statement.executeUpdate(insert);
+				statement = conn.prepareStatement(insert);
+				statement.setString(1, mail);
+				statement.setString(2, login);
+				statement.setString(3, pw);
+				statement.executeUpdate();
 				JSONObject obj = new JSONObject(SigninService.authenticateUser(login, pw));
 				result.put("ok", "La creation s'est bien passe");
 				result.put("key", obj.get("key"));
 			}
 		} catch (SQLException e) {
-			int error = e.getErrorCode();
-			if (error == 0 && e.toString().contains("CommunicationsException")){
+			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
 				return createUser(mail, login, pw);
-			}
 			else
-				return Tools.erreurSQL;
+				return Tools.erreurSQL + e.getMessage();
 		} catch (JSONException e) {
 			return Tools.erreurJSON;
 		}

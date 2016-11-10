@@ -24,7 +24,7 @@ public class SeenMessageService {
 		Connection connexion = null;
 		Statement statement = null, statement2 = null;
 
-		try {
+		try { // TODO preparedStatement
 
 			/* Connexion BD et reglage ... */
 			connexion = DBStatic.getMySQLConnection();

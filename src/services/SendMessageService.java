@@ -23,7 +23,7 @@ public class SendMessageService {
 
 		message = Tools.protectStrToDB(message);
 
-		try {
+		try { // TODO preparedStatement
 			/* Connexion BD et reglage ... */
 			connexion = DBStatic.getMySQLConnection();
 			statement = connexion.createStatement();

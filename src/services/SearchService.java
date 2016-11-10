@@ -72,10 +72,8 @@ public class SearchService {
 					result.put("ok", true);
 			}
 		} catch (SQLException e) {
-			int error = e.getErrorCode();
-			if (error == 0 && e.toString().contains("CommunicationsException")){
+			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
 				return search(lat, lng, apiname, dist);
-			}
 			else
 				return Tools.erreurSQL + e.getMessage();
 		} catch (JSONException e) {

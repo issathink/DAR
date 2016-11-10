@@ -32,7 +32,7 @@ public class SeenContactService {
 		Statement statement = null;
 		Statement statement2 = null;
 
-		try {
+		try { // TODO preparedStatement
 			connexion = DBStatic.getMySQLConnection();
 			statement = connexion.createStatement();
 			statement2 = connexion.createStatement();

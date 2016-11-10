@@ -23,7 +23,7 @@ public class GetInfosService {
 		try {
 			conn = DBStatic.getMySQLConnection();
 			statement = (Statement) conn.createStatement();
-			userId = Tools.getUserId(sessionId, statement);
+			userId = Tools.getUserId(sessionId, conn);
 			String query = "select login, mail from " + DBStatic.mysql_db +  ".users where id='" + userId + "'";
 			if(userId != null) {
 				Infos = statement.executeQuery(query);

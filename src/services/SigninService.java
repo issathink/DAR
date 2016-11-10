@@ -1,9 +1,9 @@
 package services;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,20 +31,23 @@ public class SigninService {
 		Connection conn = null;
 		ResultSet listOfUsers = null;
 		ResultSet listOfSessions = null;
-		Statement statement = null;
+		PreparedStatement statement = null;
 		JSONObject result = new JSONObject();
 		String id = "";
 
 		try {
 			conn = DBStatic.getMySQLConnection();
-			String query = "select id, login from " + DBStatic.mysql_db +  ".users where login='" + login + "'";
-			statement = (Statement) conn.createStatement();
-			listOfUsers = statement.executeQuery(query);
+			String query = "select id, login from " + DBStatic.mysql_db +  ".users where login=?";
+			statement = conn.prepareStatement(query);
+			statement.setString(1, login);
+			listOfUsers = statement.executeQuery();
 
 			if(listOfUsers.next()) {
 				id = String.valueOf(listOfUsers.getString("id"));
-				query = "select session_id from " + DBStatic.mysql_db + ".sessions where user_id='" + id + "'";
-				listOfSessions = statement.executeQuery(query);
+				query = "select session_id from " + DBStatic.mysql_db + ".sessions where user_id=?";
+				statement = conn.prepareStatement(query);
+				statement.setInt(1, Integer.parseInt(id));
+				listOfSessions = statement.executeQuery();
 
 				if(listOfSessions.next()) {
 					String session_id = String.valueOf(listOfSessions.getString("session_id"));
@@ -56,9 +59,12 @@ public class SigninService {
 					}
 				} else {
 					String key = Tools.getSessionKey();
-					String insert = "INSERT INTO " + DBStatic.mysql_db +  ".sessions values (NULL,'" + key
-							+ "','" + id + "','" + Tools.getNowMillis() + "')";
-					if(statement.executeUpdate(insert) < 1) {
+					String insert = "INSERT INTO " + DBStatic.mysql_db +  ".sessions values (NULL, ?, ?, ?)";
+					statement = conn.prepareStatement(insert);
+					statement.setString(1, key);
+					statement.setInt(2, Integer.parseInt(id));
+					statement.setString(3, Tools.getNowMillis() + "");
+					if(statement.executeUpdate() < 1) {
 						result.put("erreur", "Couldn't create session.");
 					} else {
 						result.put("ok", "Successfully connected");
@@ -69,12 +75,10 @@ public class SigninService {
 				result.put("erreur", "Unknown user: '" + login + "'");
 			}
 		} catch (SQLException e) {
-			int error = e.getErrorCode();
-			if (error == 0 && e.toString().contains("CommunicationsException")){
+			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
 				return authenticateUser(login, pw);
-			}
 			else
-				return Tools.erreurSQL;
+				return Tools.erreurSQL + e.getMessage();
 		} catch (JSONException e) {
 			return Tools.erreurJSON;
 		}

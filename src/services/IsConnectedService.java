@@ -1,9 +1,9 @@
 package services;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,17 +15,17 @@ public class IsConnectedService {
 
 	public static String isConnected(String id) {
 		Connection conn = null;
-		Statement statement = null;
+		PreparedStatement statement = null;
 		JSONObject result = new JSONObject();
 		ResultSet connections = null;
 
 		try {
+			String query = "select start from " + DBStatic.mysql_db +  ".sessions where session_id=?";
 			conn = DBStatic.getMySQLConnection();
-			statement = (Statement) conn.createStatement();
-
-			String query = "select start from " + DBStatic.mysql_db +  ".sessions where session_id='" + id + "'";
 			long start;
-			connections = statement.executeQuery(query);
+			statement = conn.prepareStatement(query);
+			statement.setString(1, id);
+			connections = statement.executeQuery();
 
 			if(connections.next()) {
 				start = Long.parseLong(String.valueOf(connections.getString("start")));
@@ -41,14 +41,12 @@ public class IsConnectedService {
 				result.put("erreur", "invalid session id");
 			}
 		} catch (SQLException e) {
-			int error = e.getErrorCode();
-			if (error == 0 && e.toString().contains("CommunicationsException")){
+			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
 				return isConnected(id);
-			}
 			else
-				return Tools.erreurSQL;
+				return Tools.erreurSQL + e.getMessage();
 		} catch (JSONException e) {
-			return Tools.erreurJSON;
+			return Tools.erreurJSON + e.getMessage();
 		}
 
 		try {

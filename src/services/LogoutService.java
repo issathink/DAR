@@ -1,60 +1,58 @@
 package services;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import tools.DBStatic;
+import tools.Tools;
 
 public class LogoutService {
 
 	public static String logoutUser(String idSession) {
 		String table = DBStatic.mysql_db+".sessions";
-
-		String requestDB = "SELECT id FROM "+table+
-				" WHERE session_id='"+idSession+"'";
-		String requestResp = "DELETE FROM "+table+
-				" WHERE session_id='"+idSession+"'";
-
+		String requestDB = "SELECT id FROM " + table + " WHERE session_id=?";
+		String requestResp = "DELETE FROM " + table + " WHERE session_id=?";
 
 		ResultSet res;
 		JSONObject jsonResult = new JSONObject();
 		Connection connexion = null;
-		Statement statement = null;
+		PreparedStatement statement = null;
 
 		try {
 			connexion = DBStatic.getMySQLConnection();
-			statement = connexion.createStatement();
-			res = statement.executeQuery(requestDB);
+			statement = connexion.prepareStatement(requestDB);
+			statement.setString(1, idSession);
+			res = statement.executeQuery();
 
 			if(res.first() == false) {
 				// N'existe pas
 				jsonResult.put("Error :", "La connexion n'existe pas");
-			}
-			else {
-				statement.executeUpdate(requestResp);
+			} else {
+				statement = connexion.prepareStatement(requestResp);
+				statement.setString(1, idSession);
+				statement.executeUpdate();
 				jsonResult.put("OK", "Deconnexion effective");
 			}
-
-			if(statement != null)
-				statement.close();
-			if(connexion != null)
-				connexion.close();
-
 		} catch (SQLException e) {
-			int error = e.getErrorCode();
-			if (error == 0 && e.toString().contains("CommunicationsException")){
+			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
 				return logoutUser(idSession);
-			}
 			else
-				e.printStackTrace();
+				return Tools.erreurSQL + e.getMessage();
 		} catch (JSONException e) {
-			e.printStackTrace();
+			return Tools.erreurJSON + e.getMessage();
 		}
+		
+		try {
+			if (statement != null)
+				statement.close();
+			if (connexion != null)
+				connexion.close();
+		} catch (SQLException e) {}
 
 		return jsonResult.toString();
 	}

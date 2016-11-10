@@ -5,13 +5,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.GregorianCalendar;
 import java.util.UUID;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -129,17 +129,26 @@ public class Tools {
 		return true;
 	}
 
-	public static String getUserId(String sessionId, Statement statement) {
+	public static String getUserId(String sessionId, Connection conn) {
 		ResultSet listOfUsers = null;
-		String query = "select user_id, start from " + DBStatic.mysql_db + ".sessions where session_id='" + sessionId
-				+ "'";
-
+		String query = "select user_id, start from " + DBStatic.mysql_db + ".sessions where session_id=?";
+		PreparedStatement st = null;
+				
 		try {
-			listOfUsers = statement.executeQuery(query);
+			st = conn.prepareStatement(query);
+			st.setString(1, sessionId);
+			listOfUsers = st.executeQuery();
 
-			if (listOfUsers.next())
-				if (!Tools.moreThan30Min(Long.parseLong(listOfUsers.getString("start"))))
-					return String.valueOf(listOfUsers.getString("user_id"));
+			if (listOfUsers.next()) {
+				if (!Tools.moreThan30Min(Long.parseLong(listOfUsers.getString("start")))) {
+					String s = String.valueOf(listOfUsers.getString("user_id"));
+					if(st != null)
+						st.close();
+					return s;
+				}
+			}
+			if(st != null)
+				st.close();
 			return null;
 		} catch (SQLException e) {
 			return null;

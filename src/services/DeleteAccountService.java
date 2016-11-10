@@ -21,10 +21,10 @@ public class DeleteAccountService {
 		String userId = "";
 		String s = "";
 
-		try {
+		try { // TODO preparedStatement
 			conn = DBStatic.getMySQLConnection();
 			statement = (Statement) conn.createStatement();
-			userId = Tools.getUserId(sessionId, statement);
+			userId = Tools.getUserId(sessionId, conn);
 			if(userId != null) {
 				String query = "select pw from " + DBStatic.mysql_db +  ".users where id='" + userId + "'";
 				Pass = statement.executeQuery(query);
