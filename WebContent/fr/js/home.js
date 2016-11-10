@@ -99,13 +99,13 @@ function formateDistance(d) {
 		return 500;
 }
 
-function getCommentsAndNote(adresse, distance) {
-	console.log("Recuperation comments distance = "+distance);
+function getCommentsAndNote(adresse, myDistance) {
+	console.log("Recuperation comments distance = "+myDistance);
 	if(adresse != undefined){
 		$.ajax({
 			url : "../getCommentsAndNote?",
 			type : "GET",
-			data : "adresse=" + adresse+"&distance="+distance,
+			data : "adresse=" + adresse+"&distance="+myDistance,
 			dataType : "json",
 			success : function(rep) {
 				responseSetCommentsAndNote(rep, adresse);
@@ -119,6 +119,7 @@ function getCommentsAndNote(adresse, distance) {
 
 
 function responseSetCommentsAndNote(rep, adresse) {
+	console.log("Setage des commentaires");
 	if(rep.erreur != undefined) {
 		if(rep.erreur.indexOf("Invalid address") !== -1) {
 			//setVisible(choose another adress)
@@ -155,11 +156,11 @@ function responseSetCommentsAndNote(rep, adresse) {
 				var login = rep.comment[i].login;
 				var message = rep.comment[i].comment;
 				var addr = rep.comment[i].adresse;
-				
+
 				login = myDecodeHTMLspecialhars(login);
 				message = myDecodeHTMLspecialhars(message);
 				addr = myDecodeHTMLspecialhars(addr);
-				
+
 				addr =  '<span><strong>Adresse :</strong> ' + addr + '</span>';
 				var note = rep.comment[i].note;
 				if(note !== "")

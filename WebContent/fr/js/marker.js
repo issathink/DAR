@@ -31,7 +31,7 @@ var imageEducation = 'img/education2.png';
 var imageTransport = 'img/transport2.png';
 
 
-function setAffichageDependingOfBox(myMap, distance) {
+function setAffichageDependingOfBox(myMap, myDistance) {
 	retirerListMarkerPerso(map, markers["poste"]);
 	retirerListMarkerPerso(map, markers["sport"]);
 	retirerListMarkerPerso(map, markers["sante"]);
@@ -45,7 +45,7 @@ function setAffichageDependingOfBox(myMap, distance) {
 	markers["education"] = [];
 	markers["transport"] = [];
 	loadAllInfos(adresse, dist, true);
-	getCommentsAndNote(adresse, distance);	
+	getCommentsAndNote(adresse, myDistance);	
 }
 
 function loadAllInfos(adress, distance, withSetAff) { // 3eme setAffichage ou non
