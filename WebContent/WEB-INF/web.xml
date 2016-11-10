@@ -75,6 +75,10 @@
 		<servlet-name>CreateTablesServletForZones</servlet-name>
 		<servlet-class>servlets.CreateTablesServletForZones</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>DeleteTablesServlet</servlet-name>
+		<servlet-class>servlets.DeleteTablesServlet</servlet-class>
+	</servlet>
 
 
 	<servlet-mapping>
@@ -148,6 +152,10 @@
 	<servlet-mapping>
 		<servlet-name>CreateTablesServletForZones</servlet-name>
 		<url-pattern>/launch</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DeleteTablesServlet</servlet-name>
+		<url-pattern>/delete</url-pattern>
 	</servlet-mapping>
 	
 
