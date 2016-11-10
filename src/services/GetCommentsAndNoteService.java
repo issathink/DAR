@@ -46,11 +46,12 @@ public class GetCommentsAndNoteService {
 					double latCur, longCur;
 
 					while(listOfAdress.next()){
-						vide = false;
 						latCur = Double.valueOf(listOfAdress.getString("lat"));
 						longCur = Double.valueOf(listOfAdress.getString("lng"));
-						if(Tools.haversineInKM(latitude, longitude, latCur, longCur) <= dist)
+						if(Tools.haversineInKM(latitude, longitude, latCur, longCur) <= dist) {
 							listAdress.add(new LatLng(latCur, longCur));
+							vide = false;
+						}
 					}
 
 					result.put("1", listAdress);
