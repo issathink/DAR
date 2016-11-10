@@ -2,9 +2,7 @@ package services;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,8 +32,9 @@ public class CreateTablesForZonesService {
 			conn = DBStatic.getMySQLConnection();
 			while (cumul_lat < north) {
 				while (cumul_lng < east) {
-					String query = "CREATE TABLE zone" + cpt + " (id INT PRIMARY KEY NOT NULL, "
-							+ "adresse VARCHAR(100))";
+					String query = "CREATE TABLE zone" + cpt + " (id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, "
+							+ "user_id INT NOT NULL, comment VARCHAR(512), note INT, lat DOUBLE, lng DOUBLE, "
+							+ "adress TEXT, date DATETIME)";
 					statement = conn.prepareStatement(query);
 					statement.executeUpdate(query);
 					result.put("ok", "table"+cpt);
