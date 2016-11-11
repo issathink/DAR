@@ -41,16 +41,17 @@ public class SignupService {
 
 		try {
 			conn = DBStatic.getMySQLConnection();
-			String present = "SELECT id FROM " + DBStatic.mysql_db +  ".users WHERE mail=?";
+			String present = "SELECT id FROM " + DBStatic.mysql_db +  ".users WHERE mail=? or login=?";
 			String insert = "INSERT INTO " + DBStatic.mysql_db +  ".users values (NULL, ?, ?, ?)";
 			statement = conn.prepareStatement(present);
 			statement.setString(1, mail);
+			statement.setString(2, login);
 			listOfUsers = statement.executeQuery();
 			while(listOfUsers.next())
 				i++;
 
 			if (i > 0) {
-				result.put("erreur", "Il existe un email associe a ce compte.");
+				result.put("erreur", "Login ou email deja utilise.");
 			} else if (pw.length() < 6){
 				result.put("erreur", "Mot de passe trop court");
 			} else {

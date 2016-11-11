@@ -203,10 +203,12 @@ function comment(rep) {
 	if(session_id == null || session_id == undefined)
 		console.log("Pas d'identifiant de session");
 	else {
+		var model = { "session_id": session_id, "adresse": adr, "comment": comment };
+		// "session_id=" + session_id + "&adresse=" + adr + "&comment=" + comment,
 		$.ajax({
 			url : "../comment?",
 			type : "GET",
-			data : "session_id=" + session_id + "&adresse=" + adr + "&comment=" + comment,
+			data : model,
 			dataType : "json",
 			success : function(rep) {
 				responsePostComment(rep);

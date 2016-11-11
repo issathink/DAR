@@ -18,6 +18,7 @@ import javax.mail.internet.MimeMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tools.BCrypt;
 import tools.DBStatic;
 import tools.PwGenerator;
 import tools.Tools;
@@ -91,7 +92,7 @@ public class ForgotPasswordService {
 						
 						String update = "UPDATE " + DBStatic.mysql_db +  ".users SET pw=? where id=?";
 						statement = conn.prepareStatement(update);
-						statement.setString(1, new_pw);
+						statement.setString(1, BCrypt.hashpw(new_pw, BCrypt.gensalt()));
 						statement.setInt(2, Integer.parseInt(userId));
 						
 						if(statement.executeUpdate() > 0) 

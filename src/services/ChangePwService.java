@@ -31,7 +31,7 @@ public class ChangePwService {
 				statement.setInt(1, Integer.parseInt(userId));
 				precPw = statement.executeQuery();
 				if(precPw.next()) {
-					if(prec_pw.equals(precPw.getString("pw"))){
+					if(BCrypt.checkpw(prec_pw, precPw.getString("pw"))) {
 						String update = "UPDATE " + DBStatic.mysql_db +  ".users SET pw=? where id=?";
 						st = conn.prepareStatement(update);
 						st.setString(1, BCrypt.hashpw(new_pw, BCrypt.gensalt()));
@@ -40,12 +40,12 @@ public class ChangePwService {
 						if(st.executeUpdate() > 0) 
 							result.put("ok", "Password changed successfully.");
 						else
-							result.put("erreur", "Unexpected error while changing pw.");
+							result.put("erreur", "Unexpected error while changing password.");
 					} else {
-						result.put("erreur", "Invalid precedent pw.");
+						result.put("erreur", "Invalid precedent password.");
 					}
 				} else {
-					result.put("erreur", "No pw.");
+					result.put("erreur", "No password.");
 				}
 			} else {
 				result.put("erreur", "Invalid session id.");

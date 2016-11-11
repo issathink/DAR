@@ -18,17 +18,13 @@ function validate() {
 	pwd = document.forms["signup"]["pwd"].value;
 	repwd = document.forms["signup"]["repwd"].value;
 
-	console.log("mail: " + mail);
-	console.log("pwd: " + pwd);
-	console.log("repwd: " + repwd);
-
 	document.body.className += "loading";
 	m = mail;
 	rep = repwd;
 	valMail = validateEmail(mail);
 	$("#error_holder").fadeOut('fast');
 
-	if(valMail == true && pwd == repwd && pwd.length >= 6) {		
+	if(valMail == true && pwd === repwd && pwd.length >= 6 && login.length >= 4) {		
 		signup(mail, login, pwd, repwd);
 	} else if(valMail == false) {
 		$("#error_holder").text("Please enter a valid email.").fadeIn('fast');
@@ -58,7 +54,9 @@ function signup(mail, login, pwd, repwd) {
 			responseSignup(rep);
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			func_erreur(-1, jqXHR.responseText, errorThrown);
+			// func_erreur(-1, jqXHR.responseText, errorThrown);
+			$("#error_holder").text("Unexpected error. Try again").fadeIn('fast');
+			console.log(jqXHR.responseText);
 		}
 	});
 
@@ -69,14 +67,11 @@ function responseSignup(response) {
 	$("#error_holder").fadeOut('fast');
 	if(response.ok != undefined) {
 		$("#error_holder").fadeOut('fast');
-		$("#error_holder").text(response.message).fadeIn('fast');
-
+		// $("#error_holder").text(response.message).fadeIn('fast');
 		setCookie(C_NAME, response.key, 30);
 		window.location.href = "home.html"
 	} else {
-		$("error_holder").text("Unexpected error. Try again").fadeIn('fast');
+		$("#error_holder").text(response.erreur).fadeIn('fast');
 		console.log("What is this: " + JSON.stringify(response));
 	}
-
-	document.body.className = '';
 }

@@ -16,7 +16,7 @@ public class CreateTablesForZonesService {
 	public static String createTablesForZones(){
 
 		/**
-		 * Les points cardinaux delimites le carré représentant l'Ile de France
+		 * Les points cardinaux delimitent le carré représentant l'Ile de France
 		 * delta_lat : taille de la longueur du carré selon l'axe des ordonnées
 		 * delta_lng : taille de la largeur du carré selon l'axe des abscisses
 		 * cumul_lat : progression de la latitude dans l'algo
