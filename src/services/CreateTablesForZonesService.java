@@ -10,16 +10,25 @@ import org.json.JSONObject;
 import tools.DBStatic;
 import tools.Tools;
 
+
 public class CreateTablesForZonesService {
 
 	public static String createTablesForZones(){
 
+		/**
+		 * Les points cardinaux delimites le carré représentant l'Ile de France
+		 * delta_lat : taille de la longueur du carré selon l'axe des ordonnées
+		 * delta_lng : taille de la largeur du carré selon l'axe des abscisses
+		 * cumul_lat : progression de la latitude dans l'algo
+		 * cumul_lng : progression de la longitude dans l'algo
+		 */
+		
 		double south = 48.107892;
 		double north = 49.235588;
 		double west = 1.421153;
 		double east = 3.637298;
-		final double delta_lat = 0.05;
-		final double delta_lng = 0.5;
+		final double delta_lat = 0.01;
+		final double delta_lng = 0.015;
 		double cumul_lat = south;
 		double cumul_lng = west;
 
@@ -27,6 +36,12 @@ public class CreateTablesForZonesService {
 		PreparedStatement statement = null;
 		JSONObject result = new JSONObject();
 		int cpt = 0;
+		
+		/**
+		 * On va avoir une boucle pour la longueur des cases (en latitude) dans laquelle on bouclera
+		 * sur la largeur des cases (en longitude). --> construction de plusieurs carrés pour partitionner
+		 * la map en commencer en bas à gauche (Sud-Ouest) puis en allant vers la droite (Est) puis en allante vers le haut (Nord)
+		 */
 
 		try {
 			conn = DBStatic.getMySQLConnection();
