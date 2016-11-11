@@ -71,10 +71,12 @@ function sendMessageText() {
 }
 
 function sendMessageToServeur(id_user_session, pseudo_receiver, message) {
+	var model = { "id_session": id_user_session, "pseudo_receiver": pseudo_receiver, "message": message };
+	// "id_session=" + id_user_session + "&pseudo_receiver="+pseudo_receiver+"&message="+message
 	$.ajax({
 		url : "../sendmessage?",
 		type : "POST",
-		data : "id_session=" + id_user_session + "&pseudo_receiver="+pseudo_receiver+"&message="+message,
+		data : model,
 		dataType : "json",
 		success : function(rep) {
 			refreshPage(); // ADD MAYBE BUG !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
