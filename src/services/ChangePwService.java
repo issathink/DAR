@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tools.BCrypt;
 import tools.DBStatic;
 import tools.Tools;
 
@@ -33,7 +34,7 @@ public class ChangePwService {
 					if(prec_pw.equals(precPw.getString("pw"))){
 						String update = "UPDATE " + DBStatic.mysql_db +  ".users SET pw=? where id=?";
 						st = conn.prepareStatement(update);
-						st.setString(1, new_pw);
+						st.setString(1, BCrypt.hashpw(new_pw, BCrypt.gensalt()));
 						st.setInt(2, Integer.parseInt(userId));
 						
 						if(st.executeUpdate() > 0) 
