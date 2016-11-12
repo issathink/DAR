@@ -12,6 +12,8 @@ import tools.Tools;
 
 
 public class CreateTablesForZonesService {
+	
+	static int cpt = 0;
 
 	public static String createTablesForZones(){
 
@@ -23,19 +25,12 @@ public class CreateTablesForZonesService {
 		 * cumul_lng : progression de la longitude dans l'algo
 		 */
 		
-		double south = 48.107892;
-		double north = 49.235588;
-		double west = 1.421153;
-		double east = 3.637298;
-		final double delta_lat = 0.01;
-		final double delta_lng = 0.015;
-		double cumul_lat = south;
-		double cumul_lng = west;
+		double cumul_lat = Tools.south;
+		double cumul_lng = Tools.west;
 
 		Connection conn = null;
 		PreparedStatement statement = null;
 		JSONObject result = new JSONObject();
-		int cpt = 0;
 		
 		/**
 		 * On va avoir une boucle pour la longueur des cases (en latitude) dans laquelle on bouclera
@@ -45,20 +40,20 @@ public class CreateTablesForZonesService {
 
 		try {
 			conn = DBStatic.getMySQLConnection();
-			while (cumul_lat < north) {
-				while (cumul_lng < east) {
-					String query = "CREATE TABLE zone" + cpt + " (id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, "
-							+ "user_id INT NOT NULL, comment VARCHAR(512), note INT, lat DOUBLE, lng DOUBLE, "
-							+ "adress TEXT, date DATETIME)";
+			while (cumul_lat < Tools.north) {
+				while (cumul_lng < Tools.east) {
+					String query = "CREATE TABLE zone" + cpt++ + " (id INT PRIMARY KEY NOT NULL AUTO_INCREMENT, "
+							+ "user_id INT NOT NULL, comment VARCHAR(512), note INT, lat DOUBLE KEY NOT NULL, lng DOUBLE KEY NOT NULL, "
+							+ "adress TEXT KEY NOT NULL, date DATETIME KEY NOT NULL CURRENT_TIMESTAMP)";
 					statement = conn.prepareStatement(query);
 					statement.executeUpdate(query);
-					result.put("ok", "table"+cpt);
-					cpt++;
-					cumul_lng += delta_lng;
+					cumul_lng += Tools.delta_lng;
+					System.out.println("cpt : "+cpt);
 				}
-				cumul_lng = west;
-				cumul_lat += delta_lat;
+				cumul_lng = Tools.west;
+				cumul_lat += Tools.delta_lat;
 			}
+			result.put("ok", "tablesCreated");
 		}catch (SQLException e) {
 			return Tools.erreurSQL + e.getMessage();
 		} catch (JSONException e) {
@@ -67,5 +62,5 @@ public class CreateTablesForZonesService {
 		return result.toString();
 
 	}
-
+	
 }

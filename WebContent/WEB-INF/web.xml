@@ -72,12 +72,20 @@
 		<servlet-class>servlets.ForgotPasswordServlet</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>CreateTablesServletForZones</servlet-name>
-		<servlet-class>servlets.CreateTablesServletForZones</servlet-class>
+		<servlet-name>CreateTablesForZonesServlet</servlet-name>
+		<servlet-class>servlets.CreateTablesForZonesServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>DeleteTablesServlet</servlet-name>
 		<servlet-class>servlets.DeleteTablesServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>GetCommentsAndNoteByZonesService</servlet-name>
+		<servlet-class>servlets.GetCommentsAndNoteByZonesService</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>CommentRateByZonesService</servlet-name>
+		<servlet-class>servlets.CommentRateByZonesService</servlet-class>
 	</servlet>
 
 
@@ -150,12 +158,20 @@
 		<url-pattern>/forgotPassword</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>CreateTablesServletForZones</servlet-name>
+		<servlet-name>CreateTablesForZonesServlet</servlet-name>
 		<url-pattern>/launch</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>DeleteTablesServlet</servlet-name>
 		<url-pattern>/delete</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GetCommentsAndNoteByZonesService</servlet-name>
+		<url-pattern>/getCommentsAndNoteByZones</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CommentRateByZonesService</servlet-name>
+		<url-pattern>/rateByZones</url-pattern>
 	</servlet-mapping>
 	
 

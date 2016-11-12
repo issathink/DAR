@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import services.CommentRateByZonesService;
 import services.CommentRateService;
 import tools.LatLng;
 import tools.Tools;
@@ -35,6 +36,7 @@ public class RateServlet extends HttpServlet {
 				note = req.getParameter("note");
 				
 				resp.getWriter().write(CommentRateService.commentRate(sessionId, adresse, lat, lng, note, false));
+				//resp.getWriter().write(CommentRateByZonesService.commentRate(sessionId, adresse, lat, lng, note, false));
 			} else {
 				resp.getWriter().write(Tools.erreur);
 			}

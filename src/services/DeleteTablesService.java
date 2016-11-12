@@ -16,10 +16,10 @@ public class DeleteTablesService {
 		Connection conn = null;
 		PreparedStatement statement = null;
 		JSONObject result = new JSONObject();
-		int cpt = 0;
+		int cpt =0;
 
 		try {
-			while(cpt < 114){
+			while(cpt <= 690){
 				conn = DBStatic.getMySQLConnection();
 				String query = "DROP TABLE zone" + cpt;
 				statement = conn.prepareStatement(query);
@@ -35,5 +35,5 @@ public class DeleteTablesService {
 		return result.toString();
 
 	}
-
+	
 }

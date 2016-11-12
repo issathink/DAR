@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import services.GetCommentsAndNoteByZonesService;
 import services.GetCommentsAndNoteService;
 import tools.Tools;
 
@@ -27,6 +28,7 @@ public class GetCommentsAndNoteServlet extends HttpServlet {
 			adresse = req.getParameter("adresse");
 			distance = req.getParameter("distance");
 			resp.getWriter().write(GetCommentsAndNoteService.getComments(adresse, distance));
+			//resp.getWriter().write(GetCommentsAndNoteByZonesService.getComments(adresse, distance));
 			
 		} else {
 			resp.getWriter().write(Tools.erreurParam);

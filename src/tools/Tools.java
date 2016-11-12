@@ -44,6 +44,12 @@ public class Tools {
 	public static double LonParisCenter = 2.529981;
 	public static double ParisRadius = 75.0;
 	public static double Circonference = 0.5;
+	public static double south = 48.107892;
+	public static double north = 49.235588;
+	public static double west = 1.421153;
+	public static double east = 3.637298;
+	public static double delta_lat = 0.03;
+	public static double delta_lng = 0.045;
 
 	double haversineKM(double lat1, double long1, double lat2, double long2) {
 		double d2r = Math.PI / 180.0;
