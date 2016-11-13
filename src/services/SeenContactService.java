@@ -62,7 +62,7 @@ public class SeenContactService {
 
 			// Get Contact
 			// Parcourt du resultat
-			//int cpt = 0; // Pour les afficher dans l'ordre peut etre
+			// int cpt = 0; // Pour les afficher dans l'ordre peut etre
 			Map<String, String> myMap = new HashMap<String, String>();
 			ResultSet resRequest2;
 

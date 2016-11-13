@@ -86,9 +86,6 @@ public class GetCommentsAndNoteByZonesService {
 								String n = listOfComments.getString("note");
 
 								String myDate = listOfComments.getString("date");
-								//							myDate = myDate.split(" ")[0];
-								//							String [] tmpS = myDate.split("-");
-								//							myDate = tmpS[2]+"/"+tmpS[1]+"/"+tmpS[0];
 								if (c != null) {
 									jObj.put("comment", StringEscapeUtils.escapeHtml4(c));
 									jObj.put("adresse", StringEscapeUtils.escapeHtml4(listOfComments.getString("adresse")));
@@ -97,7 +94,6 @@ public class GetCommentsAndNoteByZonesService {
 									String tmpNote = (n != null) ? n : "";
 									jObj.put("note", tmpNote);
 									listJ.add(jObj);
-									//result.append("comment", jObj);
 								}
 								if (n != null) {
 									moy += Double.valueOf(n);

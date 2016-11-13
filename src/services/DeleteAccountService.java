@@ -24,7 +24,7 @@ public class DeleteAccountService {
 		String userId = "";
 		String s = "";
 
-		try { // TODO preparedStatement
+		try {
 			conn = DBStatic.getMySQLConnection();
 			statement = (Statement) conn.createStatement();
 			userId = Tools.getUserId(sessionId, conn);

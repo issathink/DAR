@@ -24,7 +24,6 @@ public class CommentRateByZonesService {
 		PreparedStatement stmt = null;
 		JSONObject result = new JSONObject();
 		String userId = "";
-		String s = "";
 		int num_zone = 0;
 
 		try {
@@ -64,7 +63,6 @@ public class CommentRateByZonesService {
 						if(listOfComments.next()) {
 							String update;
 							if(comment) {
-								s += "1 ";
 								update = "UPDATE " + DBStatic.mysql_db +  ".zone"+num_zone+" SET date=now(), comment=? where user_id=? AND lat=? AND lng=?";
 								stmt = conn.prepareStatement(update);
 								stmt.setString(1, commentNote);
@@ -72,7 +70,6 @@ public class CommentRateByZonesService {
 								stmt.setDouble(3, lat);
 								stmt.setDouble(4, lng);
 							} else {
-								s += "1else ";
 								update = "UPDATE " + DBStatic.mysql_db +  ".zone"+num_zone+" SET date=now(), note=? where user_id=? AND lat=? AND lng=?";
 								stmt = conn.prepareStatement(update);
 								stmt.setInt(1, Integer.parseInt(commentNote));
@@ -100,9 +97,6 @@ public class CommentRateByZonesService {
 								stmt.setDouble(4, lng);
 								stmt.setString(5, adresse);
 							} else {
-								s += "2else ";
-								//							insert = "INSERT INTO " + DBStatic.mysql_db +  ".comments values (NULL,'" + userId
-								//								+ "', NULL, '" + commentNote + "','" + lat + "','" + lng + "','" + adresse +  "')";
 								insert =  "INSERT INTO " +DBStatic.mysql_db +  ".zone"+num_zone+" (user_id, comment, note, lat, lng, adresse) VALUES ('"
 										+ userId+"',"+"NULL"+","+commentNote+",'"+lat+"','"+lng+"','"+adresse+"')";
 								stmt = conn.prepareStatement(insert);
@@ -128,7 +122,7 @@ public class CommentRateByZonesService {
 			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
 				return commentRate(sessionId, adresse, lat, lng, commentNote, comment);
 			else
-				return s + Tools.erreurSQL + e.getMessage();
+				return Tools.erreurSQL + e.getMessage();
 		} catch (JSONException e) {
 			return Tools.erreurJSON;
 		}

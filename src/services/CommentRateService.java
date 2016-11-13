@@ -23,7 +23,6 @@ public class CommentRateService {
 		PreparedStatement stmt = null;
 		JSONObject result = new JSONObject();
 		String userId = "";
-		String s = "";
 
 		try {
 			conn = DBStatic.getMySQLConnection();
@@ -43,7 +42,6 @@ public class CommentRateService {
 					if(listOfComments.next()) {
 						String update;
 						if(comment) {
-							s += "1 ";
 							update = "UPDATE " + DBStatic.mysql_db +  ".comments SET date=now(), comment=? where user_id=? AND lat=? AND lng=?";
 							stmt = conn.prepareStatement(update);
 							stmt.setString(1, commentNote);
@@ -51,7 +49,6 @@ public class CommentRateService {
 							stmt.setDouble(3, lat);
 							stmt.setDouble(4, lng);
 						} else {
-							s += "1else ";
 							update = "UPDATE " + DBStatic.mysql_db +  ".comments SET date=now(), note=? where user_id=? AND lat=? AND lng=?";
 							stmt = conn.prepareStatement(update);
 							stmt.setInt(1, Integer.parseInt(commentNote));
@@ -66,11 +63,6 @@ public class CommentRateService {
 					} else {
 						String insert;
 						if(comment) {
-							//	"INSERT INTO "+tableMessage+" (id_sender, id_receiver, message) VALUES ("+
-							//		senderId+","+receiverId+",'"+message+"')";
-							//	s += "2 ";
-							//insert = "INSERT INTO " + DBStatic.mysql_db +  ".comments values (NULL,'" + userId
-							//	+ "','" + commentNote + "', NULL, '" + lat + "','" + lng + "','" + adresse + "')";
 							insert =  "INSERT INTO " +DBStatic.mysql_db +  ".comments (user_id, comment, note, lat, lng, adresse) VALUES (?,?,"+"NULL"+",?,?,?)";
 							stmt = conn.prepareStatement(insert);
 							stmt.setInt(1, Integer.parseInt(userId));
@@ -79,9 +71,6 @@ public class CommentRateService {
 							stmt.setDouble(4, lng);
 							stmt.setString(5, adresse);
 						} else {
-							s += "2else ";
-							//							insert = "INSERT INTO " + DBStatic.mysql_db +  ".comments values (NULL,'" + userId
-							//								+ "', NULL, '" + commentNote + "','" + lat + "','" + lng + "','" + adresse +  "')";
 							insert =  "INSERT INTO " +DBStatic.mysql_db +  ".comments (user_id, comment, note, lat, lng, adresse) VALUES ('"
 									+ userId+"',"+"NULL"+","+commentNote+",'"+lat+"','"+lng+"','"+adresse+"')";
 							stmt = conn.prepareStatement(insert);
@@ -106,7 +95,7 @@ public class CommentRateService {
 			if (e.getErrorCode() == 0 && e.toString().contains("CommunicationsException"))
 				return commentRate(sessionId, adresse, lat, lng, commentNote, comment);
 			else
-				return s + Tools.erreurSQL + e.getMessage();
+				return Tools.erreurSQL + e.getMessage();
 		} catch (JSONException e) {
 			return Tools.erreurJSON;
 		}

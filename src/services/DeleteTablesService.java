@@ -11,7 +11,7 @@ import tools.DBStatic;
 import tools.Tools;
 
 /*
- * Service de suppression des bases de données des zones
+ * Service de suppression des bases de donnees des zones
  */
 public class DeleteTablesService {
 
