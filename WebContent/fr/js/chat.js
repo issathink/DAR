@@ -6,6 +6,7 @@ console.log("Chat idSession = "+idUserSession);
 var friendLogin = get_ParamGET("friend_login");
 var delayRefresh = 3000;
 
+console.log("FriendLogin = "+friendLogin);
 
 var heightIdDivMessage = document.getElementById("idDivMessages").clientHeight; // (ou offsetHeight) Valeur height du div
 
@@ -137,7 +138,7 @@ function setMessages(id_user_session, friend_login) {
 			if(rep.erreur2 != undefined) {
 				console.log("Contact does not exist");
 				topBarChat("Contact does not exist", true);
-				//setTimeout(function(){ window.location.href = "chat.html?" }, 2000);
+				setTimeout(function(){ window.location.href = "chat.html?" }, 2000);
 			}
 			else {
 				var obj = document.getElementById("idDivMessages");
@@ -149,6 +150,11 @@ function setMessages(id_user_session, friend_login) {
 			}
 		}, 
 		error : function(resultatXHR, statut, erreur) {
+			if(resultatXHR.responseText === "{\"erreur2\":\"Le contact n'existe pas\"}") {
+				console.log("Contact does not exist");
+				topBarChat("Contact does not exist", true);
+				setTimeout(function(){ window.location.href = "chat.html?" }, 2000);
+			}
 			errorFunction(resultatXHR, statut, erreur, "setMessages");
 		}
 	});
@@ -215,7 +221,7 @@ $('#idSearchLogin').autocomplete({
 		$.ajax({
 			url : "../getloginbeginbyservlet?",
 			type : "GET",
-			data : "begin_by=" + $('#idSearchLogin').val(),
+			data : "begin_by=" + encodeURI($('#idSearchLogin').val()),
 			dataType : "json",
 			success : function(rep) {
 				reponse(rep);
