@@ -13,7 +13,7 @@ public abstract class RequeteApiIleDeFrancePattern {
 	private String start = "0";
 	private String geofilter_distance;
 	private String timeZone = "Europe/Paris";
-	private String pretty_print = "true";
+	private String pretty_print = "false";
 	private String debUrl = "https://data.iledefrance.fr/api/records/1.0/search/?";
 
 	protected RequeteApiIleDeFrancePattern(double latitude, double longitude, double distance) {
