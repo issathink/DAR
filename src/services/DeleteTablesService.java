@@ -19,7 +19,7 @@ public class DeleteTablesService {
 		int cpt =0;
 
 		try {
-			while(cpt <= 690){
+			while(cpt <= 1900){
 				conn = DBStatic.getMySQLConnection();
 				String query = "DROP TABLE zone" + cpt;
 				statement = conn.prepareStatement(query);
