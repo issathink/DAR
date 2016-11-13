@@ -21,6 +21,9 @@ import org.json.JSONObject;
 import tools.DBStatic;
 import tools.NameOfTables;
 
+/*
+ * Service pour mettre à jour le flag d'un message
+ */
 public class SeenContactService {
 
 	private static Connection connexion = null;

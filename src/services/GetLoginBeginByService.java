@@ -13,6 +13,9 @@ import org.json.JSONObject;
 import tools.DBStatic;
 import tools.NameOfTables;
 
+/*
+ * Service de recherche d'utilisateur
+ */
 public class GetLoginBeginByService {
 
 	public static String getLoginList(String beginBy) {

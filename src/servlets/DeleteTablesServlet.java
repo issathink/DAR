@@ -16,8 +16,6 @@ public class DeleteTablesServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
-		resp.getWriter().write(DeleteTablesService.deleteTables());
-		
+		resp.getWriter().write(DeleteTablesService.deleteTables());	
 	}
 }

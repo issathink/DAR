@@ -12,6 +12,9 @@ import tools.BCrypt;
 import tools.DBStatic;
 import tools.Tools;
 
+/*
+ * Service permettant de changer un mot de passe
+ */
 public class ChangePwService {
 
 	public static String changePw(String sessionId, String prec_pw, String new_pw) {

@@ -17,7 +17,6 @@ public class IsConnectedServlet extends HttpServlet  {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
 		@SuppressWarnings("unchecked")
 		Map<String, String> params = req.getParameterMap();
 

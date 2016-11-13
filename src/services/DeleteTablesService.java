@@ -10,6 +10,9 @@ import org.json.JSONObject;
 import tools.DBStatic;
 import tools.Tools;
 
+/*
+ * Service de suppression des bases de données des zones
+ */
 public class DeleteTablesService {
 
 	public static String deleteTables(){

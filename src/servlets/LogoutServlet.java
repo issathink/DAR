@@ -26,7 +26,7 @@ public class LogoutServlet extends HttpServlet {
 			String response = LogoutService.logoutUser(idSession);
 			resp.getWriter().write(response);
 		}
-		else { // Gerer cas erreur
+		else {
 			resp.getWriter().write("Erreur : Argument 'keyID' n'existe pas");
 		}
 	}

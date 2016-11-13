@@ -13,7 +13,7 @@ import tools.DBStatic;
 import tools.Tools;
 
 /**
- * <b>AuthenticateUserService est la classe permettant d'authentifier un
+ * <b>SigninService est la classe permettant d'authentifier un
  * utilisateur.</b>
  * 
  * @return 

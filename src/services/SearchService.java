@@ -10,6 +10,9 @@ import api.APIs;
 import tools.LatLng;
 import tools.Tools;
 
+/*
+ * Service de recherche (faisant appel aux APIs)
+ */
 public class SearchService {
 
 	public static String search(double lat, double lng, String apiname,

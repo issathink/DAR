@@ -11,9 +11,6 @@ import services.SendMessageService;
 
 public class SendMessageServlet extends HttpServlet {
 
-	// pseudo_sender, pseudo_receiver, message
-	// TODO securiser message !!
-
 	private static final long serialVersionUID = 1L;
 
 	private String res;
@@ -22,7 +19,6 @@ public class SendMessageServlet extends HttpServlet {
 		@SuppressWarnings("unchecked")
 		Map<String, String> params = req.getParameterMap();
 		if(params.containsKey("id_session") && params.containsKey("pseudo_receiver") && params.containsKey("message")) {
-			//this.doGet(req, resp);
 			String sender = req.getParameter("id_session");
 			String receiver = req.getParameter("pseudo_receiver");
 			String message = req.getParameter("message");

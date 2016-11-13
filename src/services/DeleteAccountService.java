@@ -11,6 +11,9 @@ import org.json.JSONObject;
 import tools.DBStatic;
 import tools.Tools;
 
+/*
+ * Service pour supprimer un compte utilisateur 
+ */
 public class DeleteAccountService {
 
 	public static String deleteAccount(String sessionId, String pw) {

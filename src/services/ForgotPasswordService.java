@@ -23,6 +23,9 @@ import tools.DBStatic;
 import tools.PwGenerator;
 import tools.Tools;
 
+/*
+ * Service de reinitialisation de mot de passe
+ */
 public class ForgotPasswordService {
 
 	private class SMTPAuthenticator extends javax.mail.Authenticator {

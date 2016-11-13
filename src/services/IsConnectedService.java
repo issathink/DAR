@@ -11,6 +11,9 @@ import org.json.JSONObject;
 import tools.DBStatic;
 import tools.Tools;
 
+/*
+ * Service verifiant si une session est valide
+ */
 public class IsConnectedService {
 
 	public static String isConnected(String id) {

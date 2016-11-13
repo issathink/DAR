@@ -12,6 +12,9 @@ import tools.DBStatic;
 import tools.NameOfTables;
 import tools.Tools;
 
+/*
+ * Service pour envoyer de messages
+ */
 public class SendMessageService {
 
 	public static String sendMessage(String idSession, String receiver, String message) {

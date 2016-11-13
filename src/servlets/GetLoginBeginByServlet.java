@@ -26,7 +26,7 @@ public class GetLoginBeginByServlet extends HttpServlet {
 			String response = GetLoginBeginByService.getLoginList(beginBy);
 			resp.getWriter().write(response);
 		}
-		else { // Gerer cas erreur
+		else {
 			resp.getWriter().write("{ \"Erreur\" : \"Argument 'begin_by' n'existe pas\" }");
 		}
 	}

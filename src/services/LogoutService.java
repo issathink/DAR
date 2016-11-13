@@ -11,6 +11,9 @@ import org.json.JSONObject;
 import tools.DBStatic;
 import tools.Tools;
 
+/*
+ * Service de deconnexion
+ */
 public class LogoutService {
 
 	public static String logoutUser(String idSession) {

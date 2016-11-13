@@ -20,6 +20,9 @@ import tools.DBStatic;
 import tools.LatLng;
 import tools.Tools;
 
+/*
+ * Service qui recupere les commentaires et la note d'une note
+ */
 public class GetCommentsAndNoteByZonesService {
 
 	public static String getComments(String adresse, String distance) {

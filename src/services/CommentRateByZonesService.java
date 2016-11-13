@@ -12,6 +12,9 @@ import tools.DBStatic;
 import tools.LatLng;
 import tools.Tools;
 
+/*
+ * Service inserant le commentaire/note dans la bonne zone
+ */
 public class CommentRateByZonesService {
 
 	public static String commentRate(String sessionId, String adresse, double lat, double lng, String commentNote, boolean comment) {

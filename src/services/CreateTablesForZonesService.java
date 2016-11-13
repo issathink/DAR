@@ -10,7 +10,9 @@ import org.json.JSONObject;
 import tools.DBStatic;
 import tools.Tools;
 
-
+/*
+ * Service pour creer toutes les zones de l'application
+ */
 public class CreateTablesForZonesService {
 	
 	static int cpt = 0;

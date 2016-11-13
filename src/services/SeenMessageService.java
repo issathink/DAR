@@ -14,6 +14,9 @@ import tools.DBStatic;
 import tools.NameOfTables;
 import tools.Tools;
 
+/*
+ * Service pour mettre à jour le flag d'un message
+ */
 public class SeenMessageService {
 
 	public static String getMessages(String idSession, String friendLogin){

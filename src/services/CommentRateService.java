@@ -5,13 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import tools.DBStatic;
 import tools.Tools;
 
+/*
+ * Service qui ajoute un commentaire ou une note
+ */
 public class CommentRateService {
 
 	public static String commentRate(String sessionId, String adresse, double lat, double lng, String commentNote, boolean comment) {

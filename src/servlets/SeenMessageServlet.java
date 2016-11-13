@@ -24,7 +24,7 @@ public class SeenMessageServlet extends HttpServlet {
 			String response = SeenMessageService.getMessages(idSession, friendLogin);
 			resp.getWriter().write(response);
 		}
-		else { // Gerer cas erreur
+		else { 
 			resp.getWriter().write("{ \"Erreur\" : \"Argument 'id_session' ou 'pseudo_other' n'existe pas\" }");
 		}
 	}

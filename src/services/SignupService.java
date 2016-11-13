@@ -13,7 +13,7 @@ import tools.DBStatic;
 import tools.Tools;
 
 /**
- * <b>CreateUserService est le service qui cree un nouvel utilisateur.</b>
+ * <b>SiginupService est le service qui cree un nouvel utilisateur.</b>
  * 
  * @return 
  *   result - Un JSON contenant "ok" si tout s'est bien passe ou le message 

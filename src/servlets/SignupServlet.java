@@ -12,12 +12,14 @@ import services.SignupService;
 import tools.Tools;
 
 /**
- * <b>CreateUserServlet est la servlet qui sert a creer un utilisateur.</b>
+ * <b>SignupServlet est la servlet qui sert a creer un utilisateur.</b>
  * 
  * @param login
  *            - Login de l'utilisateur
  * @param pw
  *            - Mot de passe de l'utilisateur
+ * @param mail
+ * 			  - l'adresse mail
  * 
  * @throws 1 Pas le bon nombre de parametres. 2 Si on a une SQLException. 3 Si
  *         on a une JSONException.

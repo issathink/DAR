@@ -25,7 +25,7 @@ public class SeenContactServlet extends HttpServlet {
 			String response = SeenContactService.getMessages(idSession);
 			resp.getWriter().write(response);
 		}
-		else { // Gerer cas erreur
+		else {
 			resp.getWriter().write("{ \"Erreur\" : \"Argument 'id_session' n'existe pas\" }");
 		}
 	}

@@ -22,6 +22,9 @@ import tools.DBStatic;
 import tools.LatLng;
 import tools.Tools;
 
+/*
+ * Service qui recupere les commentaires et la note moyenne d'une adresse
+ */
 public class GetCommentsAndNoteService {
 
 	public static String getComments(String adresse, String distance) {

@@ -11,6 +11,9 @@ import org.json.JSONObject;
 import tools.DBStatic;
 import tools.Tools;
 
+/*
+ * Service qui recupere les informations d'un utilisateur
+ */
 public class GetInfosService {
 
 	public static String getInfos(String sessionId) {

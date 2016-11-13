@@ -14,7 +14,7 @@ import services.SigninService;
 import tools.Tools;
 
 /**
- * <b>AuthenticateUserServlet est la servlet qui sert a recuperer le login et le
+ * <b>SigninServlet est la servlet qui sert a recuperer le login et le
  * mot de passe de l'utilisateur et le connecter.</b>
  * 
  * @param login
