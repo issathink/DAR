@@ -72,7 +72,7 @@ public class SeenMessageService {
 			statement = connexion.prepareStatement(requestUserLogin);
 			statement.setInt(1, Integer.parseInt(userId));
 			(resRequestToGetName = statement.executeQuery()).next();
-			String userLogin= resRequestToGetName.getString("login");
+			String userLogin = resRequestToGetName.getString("login");
 
 
 			String tableMessage = DBStatic.mysql_db + "." + NameOfTables.messages;
@@ -108,6 +108,7 @@ public class SeenMessageService {
 				}
 
 				JSONObject jObj = new JSONObject();
+				jObj.put("userLogin", StringEscapeUtils.escapeHtml4(userLogin));
 				jObj.put("login", StringEscapeUtils.escapeHtml4(pseudoSender));
 				jObj.put("message", StringEscapeUtils.escapeHtml4(message));
 				jObj.put("date_send", date);

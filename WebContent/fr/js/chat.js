@@ -164,13 +164,15 @@ function responseSetMessages(rep, pseudo_friend) {
 	while (myDiv.hasChildNodes()) // Remove l'ancien affichage
 		myDiv.removeChild(myDiv.lastChild);
 	var lastVu = null;
+	
 	for(var i=0 ; i<rep.length ; i++) {
 		var login = rep[i].login;
+		var userLogin = rep[i].userLogin;
 		var message = rep[i].message;
 		var date = rep[i].date_send;
 		var newBalise = document.createElement("p");
 		var num = (login === pseudo_friend) ? 2 : 1;
-		if(pseudo_friend === login)
+		if(pseudo_friend === userLogin)
 			num = 1;
 		var isRead = (login !== pseudo_friend) ? rep[i].isRead : null;
 		newBalise.innerHTML = message;
